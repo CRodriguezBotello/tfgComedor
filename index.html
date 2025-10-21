@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Cache-Control" content="no-store" />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="./css/styles.css"/>
+        <link rel="stylesheet" href="./css/dashboardpadres.css"/>
+        <link rel="stylesheet" href="./css/calendario.css"/>
+        <title>Panel de gestión</title>
+    </head>
+    <body>
+        <nav id="menuPadres" class="topnav">
+            <ul>
+                <li class="icon">
+                    <img src="./img/icons/menu.svg" alt="Menú"/>
+                </li>
+                <li class="active">
+                    <img src="./img/icons/home.svg" alt="Inicio"/>
+                    &nbsp;Inicio
+                </li>
+                <li>
+                    <img src="./img/icons/person.svg" alt="Gestión de hijos"/>
+                    &nbsp;Gestión de hijos
+                </li>
+                <li>
+                    <img src="./img/icons/calendar_month.svg" alt="Gestión mensual"/>
+                    &nbsp;Gestión mensual
+                </li>
+                <li>
+                    <img src="./img/icons/edit.svg" alt="Gestión de tu cuenta"/>
+                    &nbsp;Gestión de tu cuenta
+                </li>
+                <li>
+                    <img src="./img/icons/logout.svg" alt="Cerrar sesión"/>
+                    &nbsp;Cerrar sesión
+                </li>
+            </ul>
+        </nav>
+
+        <div id="inicioPadres">
+            <div id="divNotificacion"></div>
+            <h1 class="text-center my-4">Bienvenido al panel de padres/madres</h1>
+            <p class="p-2 text-center">
+                Desde aquí podrás gestionar tus datos personales, podrás añadir cúales de tus hijos irán al comedor 
+                y también podrás modificar sus datos, podrás añadirles o quitarles los días que irán o no irán
+                al comedor. 
+            </p>
+            <p class="p-2 text-center">
+			<a href="./menus/menu_basal_linea_caliente_septiembre_2025.pdf" target="_blank">Menú Septiembre</a> - <a href="./menus/menu_derivadas_septiembre_2025.pdf" target="_blank">Menú Derivados Septiembre</a>
+			</p>
+            <div id="calendario">
+                <table id="menuHijos">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="gestionHijosPadres">
+            <h1 class="text-center my-4">Gestión de hijos</h1>
+            
+            <div id="divAltaHijos">
+                <h3 class="text-center my-4">Dar de alta a tu hijo/a</h3>
+                <form method="POST" id="formAltaHijos" class="needs-validation" novalidate>
+                    <div class="formItem">
+                        <label for="nombreAlta">
+                            Nombre hijo/a (*) <input type="text" class="form-control" name="nombreAlta" maxlength="30" required/>
+                            <div class="invalid-feedback">Por favor, introduzca el nombre.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="apellidosAlta">
+                            Apellidos hijo/a (*) <input type="text" class="form-control" name="apellidosAlta" maxlength="90" required/>
+                            <div class="invalid-feedback">Por favor, introduzca los apellidos.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="cursoAlta">
+                            Curso <select id="selectCursoAlta" class="form-control" name="cursoAlta"><option value="-1" selected>Elija curso</option></select>
+                        </label>
+                    </div>
+                    <div class="formItem" id="loadingImgAlta">
+                        <img src="./img/loading.gif"/>
+                    </div>
+                    <div class="formItem">
+                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="button" class="btn btn-success">Dar de alta</button>
+                    </div>
+                </form>
+                <div id="divExitoAlta" class="w-75 p-1 container alert alert-success text-center rounded my-2">
+                    <p>Tu hijo/a ha sido dado de alta correctamente.</p>
+                </div>
+
+                <h3 class="textoHeader">Añade a tu hijo/a mediante PIN</h3>
+								<p class=avisoPIN ><strong>Padres divorciados/separados:</strong> si desean coordinar los menús de su hijo con otro padre, pueden proporcionarle el PIN. El PIN permite conocer qué días han sido ya reservados y evitar duplicidades.</p>
+                <form method="POST" id="formAltaHijosPin" class="needs-validation" novalidate>
+                    <div class="formItem">
+                        <label for="pinHijo">
+                            PIN de 8 digitos (*) <input type="text" class="form-control" name="pinHijo" maxlength="8" required/>
+                            <div class="invalid-feedback">Por favor, introduzca el PIN.</div>
+                        </label>
+                    </div>
+                    <div class="formItem" id="loadingImgPin">
+                        <img src="./img/loading.gif"/>
+                    </div>
+                    <div class="formItem">
+                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="button" class="btn btn-success">Añadir</button>
+                    </div>
+                </form>
+                <div id="divExitoAltaPin" class="w-75 p-1 container alert alert-success text-center rounded my-2">
+                    <p>Tu hijo ha sido añadido correctamente.</p>
+                </div>
+                <div id="divErrorAltaPin" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+            </div>
+            
+            <div id="divModificacionHijos">
+                <h3 class="text-center my-4">Modificación de datos de tu hijo/a</h3>
+                <form method="POST" id="formModificacionHijos" class="needs-validation" novalidate>
+                    <div class="formItem">
+                        <label for="nombreModificacion">
+                            Nombre hijo/a (*) <input type="text" class="form-control" name="nombreModificacion" maxlength="30" required/>
+                            <div class="invalid-feedback">Por favor, introduzca el nombre.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="apellidosModificacion">
+                            Apellidos hijo/a (*) <input type="text" class="form-control" name="apellidosModificacion" maxlength="90" required/>
+                            <div class="invalid-feedback">Por favor, introduzca los apellidos.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="cursoModificacion">
+                            Curso <select id="selectCursoModificacion" class="form-control" name="cursoModificacion"><option value="-1" selected>Elija curso</option></select>
+                            <div class="invalid-feedback">Por favor, seleccione un curso.</div>
+                        </label>
+                    </div>
+                    <div class="formItem" id="loadingImgModificacion">
+                        <img src="./img/loading.gif"/>
+                    </div>
+                    <div class="formItem">
+                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="button" class="btn btn-success">Actualizar</button>
+                    </div>
+                </form>
+                <div id="divExitoModificacion" class="w-75 p-1 container alert alert-success text-center rounded my-2">
+                    <p>Los datos de tu hijo/a han sido actualizados correctamente.</p>
+                </div>
+            </div>
+
+            <div id="divListadoHijos">
+                <table id="tablaHijos">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div id="modificacionPadres">
+            <h1 class="text-center my-4">Modificación de datos personales</h1>
+            <form method="post" class="needs-validation" novalidate>
+                <div class="formItem">
+                    <label for="nombre">
+                        Nuevo nombre (*) <input type="text" class="form-control" name="nombre" maxlength="30" required/>
+                        <div class="invalid-feedback">Por favor, introduzca su nombre.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="apellidos">
+                        Nuevos apellidos (*) <input type="text" class="form-control" name="apellidos" maxlength="90" required/>
+                        <div class="invalid-feedback">Por favor, introduzca sus apellidos.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="telefono">
+                        Nuevo teléfono (*) <input type="text" class="form-control" name="telefono" maxlength="9" pattern="^[0-9]{9}$" required/>
+                        <div class="invalid-feedback">Por favor, introduzca su nº de teléfono.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="correo">
+                        Nuevo email (*) <input type="email" class="form-control" name="correo" maxlength="90" required/>
+                    </label>
+                </div>
+                 <div class="formItem">
+                    <label for="iban">
+                        Nuevo IBAN sin espacios (*) <input type="text" class="form-control" name="iban" maxlength="34" required/>
+                        <div class="invalid-feedback">Por favor, introduzca un IBAN válido.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="politicaPrivacidad" class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="politicaPrivacidad" required/> Acepto sin reservas la <a href="https://fundacionloyola.com/vguadalupe/politica-de-privacidad/" target="_blank">Política de Privacidad</a>
+                        <div class="invalid-feedback">Acepte la política de privacidad para continuar.</div>
+                     </label>
+                </div>
+                <div class="formItem" id="loadingImg">
+                    <img src="./img/loading.gif"/>
+                </div>
+                <div class="formItem">
+                    <button type="button" class="btn btn-success">Actualizar datos</button>
+                </div>
+            </form>
+            <div id="divExitoModificacion" class="w-75 p-1 container alert alert-success text-center rounded my-2">
+                <p>Tus datos han sido actualizados.</p>
+            </div>
+            <div id="divErrorModificacion" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+
+            <h3 class="textoHeader">Eliminar cuenta</h3>
+            <div id="divEliminarPadre">
+                Pulsa en el siguiente botón si desea eliminar su cuenta permanentemente.
+                <button type="button" class="btn btn-danger d-block my-1 mx-auto">Eliminar cuenta</button>
+            </div>
+            <div id="divErrorBorrado" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+        </div>
+        <div id="calendarioGestion">
+            <div class="alert alert-info info-note" role="alert">
+                Los días mostrados con fondo azul son los que tiene reservados para el comedor.
+            </div>
+            <br>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <button id="prevMonth" class="btn btn-outline-secondary"><i class="fas fa-chevron-left"></i> Anterior</button>
+                </div>
+                <div class="col-auto">
+                    <button id="nextMonth" class="btn btn-outline-secondary">Siguiente <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <br>
+            <div class="col-auto">
+                <h4 id="monthYear" class="text-center"></h4>
+            </div>
+            <div class="container mt-4">
+                <div id="calendarGestion-container" class="card">
+                   
+                </div>
+            </div>
+            <br>
+        </div>
+        <script type="module" src="./js/controllers/padres.js"></script>
+    </body>
+</html>

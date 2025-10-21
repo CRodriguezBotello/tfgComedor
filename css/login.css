@@ -1,0 +1,21 @@
+form h3{
+	text-align:center;
+	margin-bottom:30px;
+}
+
+#imgLogin{
+	width:30%;
+	min-width: 150px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:40px;
+	margin-bottom:20px;
+}
+
+.imgLogin{
+	width:100%;
+}
+
+.btn-info{
+	min-width: 210px;
+}

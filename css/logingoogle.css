@@ -1,0 +1,53 @@
+div#divLogin {
+    width: auto;
+    max-width: 400px;
+    text-align: center;
+    display: block !important;
+    margin: 0 auto;
+}
+
+iframe {
+    margin: auto !important;
+}
+
+@media screen and (max-width: 500px) {
+    div#divLogin {
+        width: 90%;
+        min-width: auto;
+    }
+}
+
+/* Estilos personalizados */
+
+body {
+    background-color: #f8f9fa; /* Cambiar según el esquema de colores */
+}
+
+#divLogin {
+    background-color: #ffffff; /* Cambiar según el esquema de colores */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 50px; /* Ajustar según sea necesario */
+    max-width: 400px; /* Ajustar según sea necesario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Efecto de sombra */
+}
+
+#divLogin h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#logoContainer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#logoContainer img {
+    max-width: 300px; /* Ajustar según sea necesario */
+}
+
+#divError {
+    text-align: center;
+    margin-top: 20px;
+}
