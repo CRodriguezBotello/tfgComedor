@@ -1,0 +1,104 @@
+/* Reglas de las tablas dinámicas */
+table.dinamica {
+	box-sizing: border-box;
+	min-width: 100vw;
+	padding-right: 2rem;
+	width: auto;
+	flex: 1;
+	display: grid;
+	border-collapse: collapse;
+	font-size: 0.8rem;
+	overflow-x: scroll;
+	padding-bottom: 0.5rem;
+}
+table.dinamica thead,
+table.dinamica tbody,
+table.dinamica tr {
+	display: contents;
+}
+table.dinamica th,
+table.dinamica td {
+	padding: 0.3rem 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+table.dinamica th {
+	top: 0;
+	background: #00adc4;
+	color: white;
+	text-align: left;
+	font-weight: normal;
+	font-size: 1rem;
+	position: relative;
+}
+table.dinamica th:last-child {
+	border: 0;
+}
+table.dinamica .resize-handle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: black;
+	opacity: 0;
+	width: 3px;
+	cursor: col-resize;
+}
+table.dinamica .resize-handle:hover,
+/* The following selector is needed so the handle is visible during resize even if the mouse isn't over the handle anymore */
+.header--being-resized .resize-handle {
+	opacity: 0.5;
+}
+table.dinamica th:hover .resize-handle {
+	opacity: 0.3;
+}
+table.dinamica td {
+	padding: 0.1rem 0;
+	color: #808080;
+}
+table.dinamica tr:nth-child(even) td {
+	background: #f8f6ff;
+}
+table.dinamica img{
+	height: 1rem;
+	margin: 0 0.1rem;
+}
+table.dinamica img:hover,
+table.dinamica > img:hover{
+	background-color: lightblue;
+	border-radius: 0.2rem;
+}
+table.dinamica > img{
+	position: absolute;
+	top: 0px;
+	left: 95%;
+	float: right;
+}
+table.dinamica td.centrada{
+	text-align: center;
+}
+table.dinamica td.editable{
+	cursor: pointer;
+}
+table.dinamica td.editable:hover{
+	background-color: lightblue;
+}
+table.dinamica td.editable input,
+table.dinamica td.editable textarea,
+table.dinamica td.editable select
+{
+	display: none;
+	width: 90%;
+}
+table.dinamica td.activo {
+	color: blue;
+	cursor: pointer;
+}
+table.dinamica td.activo:hover {
+	text-decoration: underline;
+}
+table.dinamica td.no_editable:hover {
+	background-color: lightgrey;
+}
+

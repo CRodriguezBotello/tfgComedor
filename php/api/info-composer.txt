@@ -1,0 +1,5 @@
+Pasos para montar dependencias de Google en proyecto:
+ 1º (Primera vez) Instalar Composer https://getcomposer.org/download/
+ 2º (Primera vez) Reiniciar equipo
+ 3º Moverse a la ruta /src/php/api
+ 4º Ejecutar comando "composer require google/apiclient"

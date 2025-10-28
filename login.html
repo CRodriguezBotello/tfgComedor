@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+				<!-- Evitamos que se cargen contenidos de otros dominios
+				ACTIVAR EN PRODUCCIÓN
+				<meta http-equiv='Content-Security-Policy' content="default-src 'self';" />
+				-->
+				<!-- Obligamos al navegador a acceder solo por HTTPS -->
+				<meta http-equiv='Strict-Transport-Security' content=': max-age=2592000' />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="./css/styles.css"/>
+        <link rel="stylesheet" href="./css/login.css"/>
+        <title>Comedor EVG</title>
+    </head>
+    <body>
+        <form class="needs-validation" method="post" novalidate>
+        <div style="float: right;">
+                <a href="acerca_de.html">
+                    <img src="./img/icons/pregunta.svg" alt="Acerca de" style="width: 24px; height: 24px;"/>
+                    &nbsp;Acerca de
+                </a>
+            </div>
+			<div id="imgLogin">
+				<img class="imgLogin" src="./img/foto.jpg" draggable="false"/>
+			</div>
+			<div class="formItem">
+                <h3>Bienvenido/a</h3>
+            </div>
+            <div class="formItem">
+                <label for="correo">
+                    Dirección de email (*) <input type="email" class="form-control" name="correo" maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, indique su email.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="contrasenia">
+                    Contraseña (*) <input type="password" class="form-control" name="contrasenia" maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, introduzca su contraseña.</div>
+                </label>
+                <br/>
+                <input type=checkbox> Mostrar la contraseña. 
+            </div>
+            <div class="formItem" id="loadingImg">
+                <img src="./img/loading.gif"/>
+            </div>
+            <div class="formItem">
+                <button type="button" class="btn btn-info">Login</button>
+            </div>
+			<div class="formItem">
+                <p>¿No tienes cuenta? <a href="registro.html">Registrate</a></p>
+            </div>
+            <div class="formItem">
+                <p>Si has olvidado la contraseña. <a href="recuperar.html">Pulsa aquí</a></p>
+            </div>
+        </form>
+        <div id="divError" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+        <script type="module" src="js/controllers/login.js"></script>
+    </body>
+</html>
