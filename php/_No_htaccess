@@ -1,0 +1,17 @@
+#Requiere mod_rewrite habilitado
+# sudo a2enmod rewrite; systemctl restart apache2
+
+DirectoryIndex index.php index.html
+#Options +FollowSymLinks
+RewriteEngine on
+
+# redirect all api calls to /api/index.php
+RewriteRule ^api/((?!index\.php$).+)$ api/index.php [L,NC]
+
+# If the request is a file, folder or symlink that exists, serve it up
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# otherwise, serve your index.html app
+RewriteRule ^(.+)$ index.html [L]

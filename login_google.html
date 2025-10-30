@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <!-- Evitamos que se cargen contenidos de otros dominios
+    ACTIVAR EN PRODUCCIÓN
+    <meta http-equiv='Content-Security-Policy' content="default-src 'self';" />
+    -->
+    <!-- Obligamos al navegador a acceder solo por HTTPS -->
+    <meta http-equiv='Strict-Transport-Security' content=': max-age=2592000' />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="./css/styles.css"/>
+    <link rel="stylesheet" href="./css/logingoogle.css"/>
+    <title>Acceso para Personal y Alumnos - Comedor EVG</title>
+</head>
+<body>
+    <div id="divLogin" class="container d-inline-block my-2 p-2 bg-white rounded">
+        <h3>Acceso para Personal y Alumnos</h3>
+        <div id="loadingImg" class="mx-auto text-center my-2">
+            <img src="./img/loading.gif" alt="Loading..."/>
+        </div>
+        <div id="logoContainer">
+            <img src="./img/logo.png" alt="Logo">
+        </div>
+        <div id="divGoogleLogin"></div>
+    </div>
+    <div id="divError" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+
+    <!-- Scripts -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module" src="js/controllers/logingoogle.js"></script>
+</body>
+</html>
