@@ -137,12 +137,12 @@ class ControladorPadres {
         ])
         .then(([hijos, cursos]) => {
             const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
-<<<<<<< HEAD
+
             this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap);
-=======
+
             // se pasa también el id del padre para que la vista pueda usarlo al confirmar
             this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
->>>>>>> hugo
+
         })
         .catch(e => {
             console.error('Error cargando hijos para gestión diaria:', e);
@@ -355,8 +355,8 @@ class ControladorPadres {
              this.vistaModificacion.errorBorrado(e);
          })
     }
-<<<<<<< HEAD
-=======
+
+
 
     /**
      * Procesa los registros de gestión diaria:
@@ -433,7 +433,7 @@ class ControladorPadres {
     obtenerIncidencias(fecha) {
         return this.modelo.obtenerIncidencias(fecha);
     }
->>>>>>> hugo
+
 }
 
 new ControladorPadres();
