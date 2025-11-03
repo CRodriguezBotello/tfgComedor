@@ -137,7 +137,12 @@ class ControladorPadres {
         ])
         .then(([hijos, cursos]) => {
             const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
+<<<<<<< HEAD
             this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap);
+=======
+            // se pasa también el id del padre para que la vista pueda usarlo al confirmar
+            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
+>>>>>>> hugo
         })
         .catch(e => {
             console.error('Error cargando hijos para gestión diaria:', e);
@@ -350,6 +355,85 @@ class ControladorPadres {
              this.vistaModificacion.errorBorrado(e);
          })
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Procesa los registros de gestión diaria:
+     * - crea la fila en Dias si es necesario (POST altaDia)
+     * - actualiza tupper (PUT secretaria/tupper) y/o incidencia (PUT secretaria/incidencia)
+     * @param {Array} entradas Array de objetos {dia, idPersona, idPadre, tupper, incidencia}
+     * @returns {Promise}
+     */
+    procesarGestionDiaria(entradas) {
+        const promesas = entradas.map(ent => {
+            return this.modelo.marcarDiaComedor({
+                dia: ent.dia,
+                idPersona: ent.idPersona,
+                idPadre: ent.idPadre
+            })
+            .then(resAlta => {
+                console.log('Respuesta altaDia:', resAlta);
+                const ops = [];
+                if (typeof ent.tupper !== 'undefined') {
+                    ops.push(
+                        this.modelo.insertarTupper({
+                            dia: ent.dia,
+                            idPersona: ent.idPersona,
+                            tupper: ent.tupper
+                        }).then(res => { console.log('tupper OK', res); return res; })
+                          .catch(e => { console.error('tupper ERROR', e); throw e; })
+                    );
+                }
+                if (ent.incidencia && ent.incidencia !== '') {
+                    ops.push(
+                        this.modelo.insertarIncidencia({
+                            dia: ent.dia,
+                            idPersona: ent.idPersona,
+                            incidencia: ent.incidencia
+                        }).then(res => { console.log('incidencia OK', res); return res; })
+                          .catch(e => { console.error('incidencia ERROR', e); throw e; })
+                    );
+                }
+                return Promise.all(ops);
+            })
+            .catch(e => {
+                // si falla la alta, registrar y reintentar o fallar según política
+                console.warn('altaDia falló para', ent, e);
+                // Intentar al menos aplicar tupper/incidencia (si la fila existe)
+                const ops = [];
+                if (typeof ent.tupper !== 'undefined') {
+                    ops.push(this.modelo.insertarTupper({ dia: ent.dia, idPersona: ent.idPersona, tupper: ent.tupper }));
+                }
+                if (ent.incidencia && ent.incidencia !== '') {
+                    ops.push(this.modelo.insertarIncidencia({ dia: ent.dia, idPersona: ent.idPersona, incidencia: ent.incidencia }));
+                }
+                return Promise.all(ops);
+            });
+        });
+
+        // Devolver promesa global y propagar cualquier error para que la vista lo muestre
+        return Promise.all(promesas);
+    }
+
+    /**
+     * Devuelve los registros de tupper para una fecha.
+     * @param {Date} fecha Date objeto.
+     * @returns {Promise<Array>} Array con { idPersona, tupper }.
+     */
+    obtenerTupper(fecha) {
+        return this.modelo.obtenerTupper(fecha);
+    }
+
+    /**
+     * Devuelve las incidencias para una fecha.
+     * @param {Date} fecha Date objeto.
+     * @returns {Promise<Array>} Array con { idPersona, incidencia }.
+     */
+    obtenerIncidencias(fecha) {
+        return this.modelo.obtenerIncidencias(fecha);
+    }
+>>>>>>> hugo
 }
 
 new ControladorPadres();

@@ -144,11 +144,18 @@ export class Modelo {
 
     /**
      * Llamada para insertar fila a la tabla dias.
+<<<<<<< HEAD
      * @param {Object} datos Datos a enviar.
      * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     marcarDiaComedor(datos) {
         return Rest.post('dias', [], datos, false);
+=======
+     */
+    marcarDiaComedor(datos) {
+        // NO pasar 'false' para asegurar que Rest incluya Authorization header
+        return Rest.post('dias', [], datos);
+>>>>>>> hugo
     }
 
     /**
@@ -222,20 +229,32 @@ export class Modelo {
 
     /**
      * Llamada para insertar o modificar incidencia.
+<<<<<<< HEAD
      * @param {String} fecha String de la fecha.
      * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     insertarIncidencia(datos) {
         return Rest.put('secretaria', ['incidencia'], datos, false);
+=======
+     */
+    insertarIncidencia(datos) {
+        return Rest.put('secretaria', ['incidencia'], datos);
+>>>>>>> hugo
     }
 
     /**
      * Inserta un registro de tupperware en la base de datos.
+<<<<<<< HEAD
      * @param {Object} datos Los datos del registro de tupperware a insertar.
      * @returns {Promise} Una promesa que se resolverá después de que se haya completado la inserción.
      */
     insertarTupper(datos) {
         return Rest.put('secretaria', ['tupper'], datos, false);
+=======
+     */
+    insertarTupper(datos) {
+        return Rest.put('secretaria', ['tupper'], datos);
+>>>>>>> hugo
     }
 
     obtenerListadoPadres(busqueda){

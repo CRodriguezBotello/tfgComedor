@@ -217,16 +217,30 @@
          * @param object $datos Datos del día.
          */
         public static function altaDia($datos) {
+<<<<<<< HEAD
             $sql = 'INSERT INTO Dias(dia, idPersona, idPadre)';
             $sql .= ' VALUES(:dia, :idPersona, :idPadre)';
 
             $params = array(
                 'dia' => $datos->dia,
+=======
+             $sql = 'INSERT INTO Dias(dia, idPersona, idPadre)';
+             $sql .= ' VALUES(:dia, :idPersona, :idPadre)';
+ 
+            // Asegurar formato de fecha YYYY-MM-DD
+            $fecha = new DateTime($datos->dia);
+            $params = array(
+                'dia' => $fecha->format('Y-m-d'),
+>>>>>>> hugo
                 'idPersona' => $datos->idPersona,
                 'idPadre' => $datos->idPadre
             );
 
+<<<<<<< HEAD
             BD::insertar($sql, $params);
+=======
+            return BD::insertar($sql, $params);
+>>>>>>> hugo
         }
 
         /**
@@ -826,6 +840,7 @@
 
         public static function insertarTupper($datos) {
             $sql = 'UPDATE Dias SET tupper = :tupper WHERE idPersona = :idPersona AND dia = :dia';
+<<<<<<< HEAD
 
             $params = array(
                 'idPersona' => $datos->idPersona,
@@ -834,6 +849,16 @@
             );
 
             BD::actualizar($sql, $params);
+=======
+            $fecha = new DateTime($datos->dia);
+            $params = array(
+                'idPersona' => $datos->idPersona,
+                'tupper' => $datos->tupper,
+                'dia' => $fecha->format('Y-m-d')
+            );
+
+            return BD::actualizar($sql, $params);
+>>>>>>> hugo
         }
     }
 ?>

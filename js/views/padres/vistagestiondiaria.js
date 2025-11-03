@@ -12,7 +12,13 @@ export class VistaGestionDiaria {
                 </div>
                 <div class="text-center">
                     <button class="btn btn-primary seleccionar_fecha">Seleccionar fecha</button>
+<<<<<<< HEAD
                 </div>
+=======
+                    <button class="btn btn-success btn-confirmar ml-2">Confirmar</button>
+                </div>
+                <div id="mensajeFecha" class="text-center text-danger mt-2"></div>
+>>>>>>> hugo
             </div>
 
             <table id="tablaDiario" class="table table-striped text-center align-middle">
@@ -37,14 +43,21 @@ export class VistaGestionDiaria {
         this.div.querySelector('.btn-prev').addEventListener('click', () => this.cambiarFecha(-1));
         this.div.querySelector('.btn-next').addEventListener('click', () => this.cambiarFecha(1));
         this.div.querySelector('.seleccionar_fecha').addEventListener('click', () => this.seleccionarFecha());
+<<<<<<< HEAD
+=======
+        this.div.querySelector('.btn-confirmar').addEventListener('click', () => this.confirmar());
+>>>>>>> hugo
     }
 
     mostrar(ver) {
         this.div.classList.toggle('d-none', !ver);
     }
 
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> hugo
     obtenerDatos(usuario) {
         if (!this.controlador || typeof this.controlador.dameHijosDiaria !== 'function') {
             console.error('VistaGestionDiaria: controlador.dameHijosDiaria no disponible');
@@ -69,8 +82,12 @@ export class VistaGestionDiaria {
             });
     }
 
+<<<<<<< HEAD
 
     cargarListado(hijos, cursosMap = new Map()) {
+=======
+    cargarListado(hijos, cursosMap = new Map(), idPadre = null) {
+>>>>>>> hugo
         // Asegurar referencias
         this.tbody = this.div.querySelector('tbody');
         this.totalPedidos = this.div.querySelector('#totalPedidos');
@@ -80,7 +97,10 @@ export class VistaGestionDiaria {
             return;
         }
 
+<<<<<<< HEAD
         
+=======
+>>>>>>> hugo
         this.tbody.innerHTML = '';
 
         if (!hijos || hijos.length === 0) {
@@ -98,6 +118,13 @@ export class VistaGestionDiaria {
         hijos.forEach(hijo => {
             const tr = document.createElement('tr');
 
+<<<<<<< HEAD
+=======
+            // Guardar ids en data-attributes para su posterior uso
+            tr.dataset.idPersona = hijo.id;
+            if (idPadre != null) tr.dataset.idPadre = idPadre;
+
+>>>>>>> hugo
             const tdNombre = document.createElement('td');
             tdNombre.textContent = hijo.nombre || '';
             tr.appendChild(tdNombre);
@@ -116,14 +143,21 @@ export class VistaGestionDiaria {
 
             const tdIncidencia = document.createElement('td');
             const textarea = document.createElement('textarea');
+<<<<<<< HEAD
             textarea.className = 'form-control';
+=======
+            textarea.className = 'form-control incidencia-text';
+>>>>>>> hugo
             textarea.rows = 1;
             tdIncidencia.appendChild(textarea);
             tr.appendChild(tdIncidencia);
 
             this.tbody.appendChild(tr);
 
+<<<<<<< HEAD
             
+=======
+>>>>>>> hugo
             checkbox.addEventListener('change', () => {
                 total = this.div.querySelectorAll('.tupper-checkbox:checked').length;
                 if (this.totalPedidos) this.totalPedidos.textContent = total;
@@ -131,8 +165,56 @@ export class VistaGestionDiaria {
         });
     }
 
+<<<<<<< HEAD
 
     
+=======
+    confirmar() {
+        const fecha = this.div.querySelector('#fechaDiaria').value;
+        if (!fecha) {
+            alert('Seleccione primero una fecha.');
+            return;
+        }
+
+        const filas = Array.from(this.tbody.querySelectorAll('tr'));
+        const entradas = [];
+
+        filas.forEach(tr => {
+            const idPersona = tr.dataset.idPersona;
+            if (!idPersona) return;
+
+            const checkbox = tr.querySelector('.tupper-checkbox');
+            const textarea = tr.querySelector('.incidencia-text');
+            const tupper = checkbox && checkbox.checked ? 1 : 0;
+            const incidencia = textarea ? textarea.value.trim() : '';
+
+            if (tupper === 0 && incidencia === '') return; // nada que enviar para este hijo
+
+            entradas.push({
+                dia: fecha,
+                idPersona: Number(idPersona),
+                idPadre: tr.dataset.idPadre ? Number(tr.dataset.idPadre) : null,
+                tupper,
+                incidencia
+            });
+        });
+
+        if (entradas.length === 0) {
+            alert('No hay cambios para guardar.');
+            return;
+        }
+
+        // Llamar al controlador para procesar los cambios
+        this.controlador.procesarGestionDiaria(entradas)
+            .then(() => {
+                alert('Guardado correctamente.');
+            })
+            .catch(e => {
+                console.error('Error guardando datos de gestión diaria:', e);
+                alert('Error al guardar. Revisa la consola.');
+            });
+    }
+>>>>>>> hugo
 
     cambiarFecha(dias) {
         const input = this.div.querySelector('#fechaDiaria');
@@ -142,7 +224,73 @@ export class VistaGestionDiaria {
     }
 
     seleccionarFecha() {
+<<<<<<< HEAD
         const fecha = this.div.querySelector('#fechaDiaria').value;
         console.log("Fecha seleccionada:", fecha);
+=======
+        const fechaStr = this.div.querySelector('#fechaDiaria').value;
+        if (!fechaStr) {
+            alert('Seleccione primero una fecha.');
+            return;
+        }
+        console.log("Fecha seleccionada:", fechaStr);
+
+        const mensajeDiv = this.div.querySelector('#mensajeFecha');
+        const fechaObj = new Date(fechaStr);
+        const diaSemana = fechaObj.getDay(); // 0 domingo, 6 sábado
+
+        if (diaSemana === 0 || diaSemana === 6) {
+            mensajeDiv.textContent = 'Aviso: los fines de semana no se pueden marcar.';
+        } else {
+            mensajeDiv.textContent = '';
+        }
+
+        // Pedir al controlador los registros de tupper e incidencias para esa fecha
+        Promise.all([
+            // pasar Date al controlador (modelo espera Date)
+            this.controlador.obtenerTupper(fechaObj),
+            this.controlador.obtenerIncidencias(fechaObj)
+        ])
+        .then(([tuppers, incidencias]) => {
+            // Construir mapas rápidos por idPersona
+            const tmap = new Map();
+            (tuppers || []).forEach(r => {
+                // r debe tener idPersona y tupper
+                tmap.set(Number(r.idPersona), Number(r.tupper));
+            });
+            const imap = new Map();
+            (incidencias || []).forEach(r => {
+                // r debe tener idPersona y incidencia
+                imap.set(Number(r.idPersona), r.incidencia);
+            });
+
+            // Aplicar datos a las filas existentes
+            const filas = Array.from(this.tbody.querySelectorAll('tr'));
+            let total = 0;
+            filas.forEach(tr => {
+                const idAttr = tr.dataset.idPersona || tr.dataset.idpersona;
+                const idPersona = idAttr ? Number(idAttr) : null;
+                if (!idPersona) return;
+
+                const checkbox = tr.querySelector('.tupper-checkbox');
+                const textarea = tr.querySelector('.incidencia-text');
+
+                if (checkbox) {
+                    const marcado = tmap.has(idPersona) ? (tmap.get(idPersona) === 1) : false;
+                    checkbox.checked = marcado;
+                    if (marcado) total++;
+                }
+                if (textarea) {
+                    textarea.value = imap.has(idPersona) ? imap.get(idPersona) : '';
+                }
+            });
+
+            if (this.totalPedidos) this.totalPedidos.textContent = total;
+        })
+        .catch(e => {
+            console.error('Error cargando datos del día:', e);
+            alert('Error cargando datos del día. Revisa la consola.');
+        });
+>>>>>>> hugo
     }
 }
