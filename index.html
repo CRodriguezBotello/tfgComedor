@@ -13,33 +13,38 @@
         <link rel="stylesheet" href="./css/styles.css"/>
         <link rel="stylesheet" href="./css/dashboardpadres.css"/>
         <link rel="stylesheet" href="./css/calendario.css"/>
+        <link rel="stylesheet" href="./css/gestiondiaria.css"/>
         <title>Panel de gestión</title>
     </head>
     <body>
         <nav id="menuPadres" class="topnav">
             <ul>
-                <li class="icon">
+                <li class="icon" data-view="inicioPadres">
                     <img src="./img/icons/menu.svg" alt="Menú"/>
                 </li>
-                <li class="active">
+                <li class="active" data-view="inicioPadres">
                     <img src="./img/icons/home.svg" alt="Inicio"/>
                     &nbsp;Inicio
                 </li>
-                <li>
+                <li data-view="gestionHijosPadres">
                     <img src="./img/icons/person.svg" alt="Gestión de hijos"/>
                     &nbsp;Gestión de hijos
                 </li>
-                <li>
+                <li data-view="calendarioGestion">
                     <img src="./img/icons/calendar_month.svg" alt="Gestión mensual"/>
                     &nbsp;Gestión mensual
                 </li>
-                <li>
+                <li data-view="modificacionPadres">
                     <img src="./img/icons/edit.svg" alt="Gestión de tu cuenta"/>
                     &nbsp;Gestión de tu cuenta
                 </li>
-                <li>
+                <li data-view="logout">
                     <img src="./img/icons/logout.svg" alt="Cerrar sesión"/>
                     &nbsp;Cerrar sesión
+                </li>
+                <li data-view="gestionDiariaPadres">
+                    <img src="./img/icons/diaria.svg" alt="diaria"/>
+                    &nbsp;Gestión Diaria
                 </li>
             </ul>
         </nav>
@@ -49,7 +54,7 @@
             <h1 class="text-center my-4">Bienvenido al panel de padres/madres</h1>
             <p class="p-2 text-center">
                 Desde aquí podrás gestionar tus datos personales, podrás añadir cúales de tus hijos irán al comedor 
-                y también podrás modificar sus datos, podrás añadirles o quitarles los días que irán o no irán
+                y también podrás modificar sus datos, podrás añadirles o quitarles los días que irán o no 
                 al comedor. 
             </p>
             <p class="p-2 text-center">
@@ -244,6 +249,16 @@
             </div>
             <br>
         </div>
+
+
+
+        <div id="gestionDiariaPadres" class="vista d-none">
+            
+
+        </div>
+        <!--<div id="gestionDiariaPadres" style="display:none;"></div>-->
+
+
         <script type="module" src="./js/controllers/padres.js"></script>
     </body>
 </html>
