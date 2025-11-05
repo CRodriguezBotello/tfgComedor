@@ -1,6 +1,3 @@
-/**
- * Contiene la vista del menú de padres.
- */
 export class VistaMenuPadres {
     constructor(controlador, nav) {
         this.controlador = controlador;
@@ -12,6 +9,7 @@ export class VistaMenuPadres {
         this.liGestionCalendario = this.nav.getElementsByTagName('li')[3];
         this.liModificacion = this.nav.getElementsByTagName('li')[4];
         this.liCerrarSesion = this.nav.getElementsByTagName('li')[5];
+        this.liGestionDiaria = this.nav.getElementsByTagName('li')[6];
         
         this.liHamburger.onclick = this.toggleMenu.bind(this);
         this.liInicio.onclick = this.inicio.bind(this);
@@ -19,6 +17,7 @@ export class VistaMenuPadres {
         this.liModificacion.onclick = this.modificacion.bind(this);
         this.liGestionCalendario.onclick = this.gestionCalendario.bind(this);
         this.liCerrarSesion.onclick = this.cerrarSesion.bind(this);
+        this.liGestionDiaria.onclick = this.gestionDiaria.bind(this);
     }
 
     /**
@@ -32,6 +31,8 @@ export class VistaMenuPadres {
         this.liGestionCalendario.classList.remove('active');
         this.liModificacion.classList.remove('active');
     }
+
+    
 
     /**
      * Muestra/oculta menú de navegación.
@@ -50,6 +51,16 @@ export class VistaMenuPadres {
         this.liGestionHijos.classList.add('active');
         this.liGestionCalendario.classList.remove('active');
         this.liModificacion.classList.remove('active');
+    }
+
+    gestionDiaria(){
+        this.controlador.verVistaGestionDiaria();
+
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liGestionDiaria.classList.add('active');
     }
 
     /**

@@ -4,6 +4,7 @@ import { VistaMenuPadres } from "../views/padres/vistamenu.js";
 import { VistaGestionHijos } from "../views/padres/vistagestionhijos.js";
 import { VistaModificarPadres } from "../views/padres/vistamodificar.js";
 import { VistaCalendario } from "../views/padres/vistacalendario.js";
+import { VistaGestionDiaria } from "../views/padres/vistagestiondiaria.js";
 import { Rest } from "../services/rest.js";
 
 /**
@@ -17,6 +18,7 @@ class ControladorPadres {
         window.onerror = (error) => console.error('Error capturado. ' + error);
     }
 
+    
     /**
      * Inicia la aplicación.
      */
@@ -35,7 +37,9 @@ class ControladorPadres {
         this.vistaGestionHijos = new VistaGestionHijos(this, document.getElementById('gestionHijosPadres'));
         this.vistaModificacion = new VistaModificarPadres(this, document.getElementById('modificacionPadres'));
         this.vistaCalendario = new VistaCalendario(this, document.getElementById('calendarioGestion'));
-        
+        this.vistaGestionDiaria = new VistaGestionDiaria(this, document.getElementById('gestionDiariaPadres'));
+
+
         this.vistaModificacion.actualizarCampos(this.#usuario);
         this.vistaGestionHijos.actualizar(this.#usuario);
         this.vistaInicio.obtenerPadre(this.#usuario);
@@ -91,7 +95,8 @@ class ControladorPadres {
         this.vistaInicio.mostrar(true);
         this.vistaGestionHijos.mostrar(false);
         this.vistaModificacion.mostrar(false);
-        this.vistaCalendario.mostrar(false)
+        this.vistaCalendario.mostrar(false);
+        this.vistaGestionDiaria.mostrar(false);
     }
 
     /**
@@ -102,7 +107,49 @@ class ControladorPadres {
         this.vistaCalendario.mostrar(false)
         this.vistaGestionHijos.mostrar(true);
         this.vistaModificacion.mostrar(false);
+        this.vistaGestionDiaria.mostrar(false);
     }
+
+
+
+    /**
+     * Devuelve los hijos del padre para la vista de Gestión Diaria.
+     * @param {Number} idPadre ID del padre.
+     * @returns {Promise<Array>} Array con los hijos y su curso.
+     */
+    dameHijosDiaria(idPadre) {
+        return this.modelo.dameHijosDiaria(idPadre);
+    }
+
+
+    verVistaGestionDiaria() {
+        this.vistaInicio.mostrar(false);
+        this.vistaGestionHijos.mostrar(false);
+        this.vistaModificacion.mostrar(false);
+        this.vistaCalendario.mostrar(false);
+
+        this.vistaGestionDiaria.mostrar(true);
+
+        // Cargar hijos y cursos y pasar mapa de id->nombre a la vista
+        Promise.all([
+            this.modelo.dameHijos(this.#usuario.id),
+            this.modelo.obtenerCursos()
+        ])
+        .then(([hijos, cursos]) => {
+            const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
+
+            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap);
+
+            // se pasa también el id del padre para que la vista pueda usarlo al confirmar
+            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
+
+        })
+        .catch(e => {
+            console.error('Error cargando hijos para gestión diaria:', e);
+            this.vistaGestionDiaria.cargarListado([], new Map());
+        });
+    }
+
 
     /**
      * Cambia a la vista de modificación de datos personales.
@@ -112,6 +159,7 @@ class ControladorPadres {
         this.vistaCalendario.mostrar(false)
         this.vistaGestionHijos.mostrar(false);
         this.vistaModificacion.mostrar(true);
+        this.vistaGestionDiaria.mostrar(false);
     }
     
     /**
@@ -121,7 +169,8 @@ class ControladorPadres {
         this.vistaInicio.mostrar(false);
         this.vistaGestionHijos.mostrar(false);
         this.vistaModificacion.mostrar(false);   
-        this.vistaCalendario.mostrar(true)
+        this.vistaCalendario.mostrar(true);
+        this.vistaGestionDiaria.mostrar(false);
     }
     
     /**
@@ -306,6 +355,85 @@ class ControladorPadres {
              this.vistaModificacion.errorBorrado(e);
          })
     }
+
+
+
+    /**
+     * Procesa los registros de gestión diaria:
+     * - crea la fila en Dias si es necesario (POST altaDia)
+     * - actualiza tupper (PUT secretaria/tupper) y/o incidencia (PUT secretaria/incidencia)
+     * @param {Array} entradas Array de objetos {dia, idPersona, idPadre, tupper, incidencia}
+     * @returns {Promise}
+     */
+    procesarGestionDiaria(entradas) {
+        const promesas = entradas.map(ent => {
+            return this.modelo.marcarDiaComedor({
+                dia: ent.dia,
+                idPersona: ent.idPersona,
+                idPadre: ent.idPadre
+            })
+            .then(resAlta => {
+                console.log('Respuesta altaDia:', resAlta);
+                const ops = [];
+                if (typeof ent.tupper !== 'undefined') {
+                    ops.push(
+                        this.modelo.insertarTupper({
+                            dia: ent.dia,
+                            idPersona: ent.idPersona,
+                            tupper: ent.tupper
+                        }).then(res => { console.log('tupper OK', res); return res; })
+                          .catch(e => { console.error('tupper ERROR', e); throw e; })
+                    );
+                }
+                if (ent.incidencia && ent.incidencia !== '') {
+                    ops.push(
+                        this.modelo.insertarIncidencia({
+                            dia: ent.dia,
+                            idPersona: ent.idPersona,
+                            incidencia: ent.incidencia
+                        }).then(res => { console.log('incidencia OK', res); return res; })
+                          .catch(e => { console.error('incidencia ERROR', e); throw e; })
+                    );
+                }
+                return Promise.all(ops);
+            })
+            .catch(e => {
+                // si falla la alta, registrar y reintentar o fallar según política
+                console.warn('altaDia falló para', ent, e);
+                // Intentar al menos aplicar tupper/incidencia (si la fila existe)
+                const ops = [];
+                if (typeof ent.tupper !== 'undefined') {
+                    ops.push(this.modelo.insertarTupper({ dia: ent.dia, idPersona: ent.idPersona, tupper: ent.tupper }));
+                }
+                if (ent.incidencia && ent.incidencia !== '') {
+                    ops.push(this.modelo.insertarIncidencia({ dia: ent.dia, idPersona: ent.idPersona, incidencia: ent.incidencia }));
+                }
+                return Promise.all(ops);
+            });
+        });
+
+        // Devolver promesa global y propagar cualquier error para que la vista lo muestre
+        return Promise.all(promesas);
+    }
+
+    /**
+     * Devuelve los registros de tupper para una fecha.
+     * @param {Date} fecha Date objeto.
+     * @returns {Promise<Array>} Array con { idPersona, tupper }.
+     */
+    obtenerTupper(fecha) {
+        return this.modelo.obtenerTupper(fecha);
+    }
+
+    /**
+     * Devuelve las incidencias para una fecha.
+     * @param {Date} fecha Date objeto.
+     * @returns {Promise<Array>} Array con { idPersona, incidencia }.
+     */
+    obtenerIncidencias(fecha) {
+        return this.modelo.obtenerIncidencias(fecha);
+    }
+
 }
 
 new ControladorPadres();

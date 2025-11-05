@@ -89,9 +89,19 @@
             }
         
             // Si todo está correcto, procedemos a insertar el día
-            DAOUsuario::altaDia($datos);
-            header('HTTP/1.1 200 OK');
-            die();
+            // Asegurar formato de fecha antes de insertar
+            $datos->dia = $fecha->format('Y-m-d');
+            $insertResult = DAOUsuario::altaDia($datos);
+            header('Content-type: application/json; charset=utf-8');
+            if ($insertResult === false) {
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['inserted' => false, 'error' => 'Error al insertar día.']);
+                die();
+            } else {
+                header('HTTP/1.1 200 OK');
+                echo json_encode(['inserted' => true]);
+                die();
+            }
         }
 
         /**

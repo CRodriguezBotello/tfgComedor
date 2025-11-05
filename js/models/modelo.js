@@ -65,6 +65,44 @@ export class Modelo {
         return Rest.get('hijos', [], queryParams);
     }
 
+
+    /**
+     * Devuelve los hijos del padre para la vista de Gestión Diaria.
+     * Ajusta la URL al endpoint real de tu API.
+     */
+    async dameHijosDiaria(idPadre) {
+        // Cambia esta URL al endpoint real (por ejemplo: `/api/hijos?padre=${idPadre}`)
+        const url = `/api/hijos/porPadre/${encodeURIComponent(idPadre)}`;
+
+        // intenta obtener token/autorization si lo guardas en sessionStorage
+        const usuario = sessionStorage.getItem('usuario') ? JSON.parse(sessionStorage.getItem('usuario')) : null;
+        const headers = { 'Accept': 'application/json' };
+        if (usuario && usuario.autorizacion) headers['Authorization'] = usuario.autorizacion;
+
+        try {
+            const res = await fetch(url, { method: 'GET', headers });
+            const text = await res.text();
+
+            if (!res.ok) {
+                console.error('dameHijosDiaria - HTTP error', res.status, text);
+                throw new Error(`HTTP ${res.status}`);
+            }
+
+            try {
+                const json = JSON.parse(text);
+                return json;
+            } catch (e) {
+                // respuesta no JSON (probable HTML de error/redirect)
+                console.error('dameHijosDiaria - respuesta no JSON:', text);
+                throw new Error('Respuesta del servidor no es JSON. Revisa la URL / autorización / backend.');
+            }
+        } catch (e) {
+            console.error('Error obteniendo hijos diaria:', e);
+            throw e;
+        }
+    }
+
+
     /**
      * Eliminar fila de las tablas: Persona, Hijo e Hijo_Padre.
      * @param {Number} id ID del hijo.
@@ -106,11 +144,10 @@ export class Modelo {
 
     /**
      * Llamada para insertar fila a la tabla dias.
-     * @param {Object} datos Datos a enviar.
-     * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     marcarDiaComedor(datos) {
-        return Rest.post('dias', [], datos, false);
+        // NO pasar 'false' para asegurar que Rest incluya Authorization header
+        return Rest.post('dias', [], datos);
     }
 
     /**
@@ -124,7 +161,7 @@ export class Modelo {
 
     /**
      * Llamada para obtener usuarios apuntados al comedor en la fecha.
-     * @param {String} fecha String de la fecha. 
+     * @param {String} fecha String de la fecha.
      * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     obtenerUsuariosApuntados(fecha) {
@@ -136,7 +173,7 @@ export class Modelo {
 
     /**
      * Llamada para obtener las incidencias de los usuarios del comedor de una fecha.
-     * @param {String} fecha String de la fecha. 
+     * @param {String} fecha String de la fecha.
      * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     obtenerIncidencias(fecha) {
@@ -157,7 +194,7 @@ export class Modelo {
         queryParams.set('fecha', fecha.getDate() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getFullYear());
         return Rest.get('secretaria', [], queryParams);
     }
-    
+
     /**
      * Llamada para obtener a los usuarios apuntados al comedor en un mes.
      * @param {Number} mes Nº del mes.
@@ -184,28 +221,22 @@ export class Modelo {
 
     /**
      * Llamada para insertar o modificar incidencia.
-     * @param {String} fecha String de la fecha. 
-     * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     insertarIncidencia(datos) {
-        return Rest.put('secretaria', ['incidencia'], datos, false);
+        return Rest.put('secretaria', ['incidencia'], datos);
     }
 
     /**
-    * Inserta un registro de tupperware en la base de datos.
-    * @param {Object} datos Los datos del registro de tupperware a insertar.
-    * @returns {Promise} Una promesa que se resolverá después de que se haya completado la inserción.
-    */
+     * Inserta un registro de tupperware en la base de datos.
+     */
     insertarTupper(datos) {
-        return Rest.put('secretaria', ['tupper'], datos, false);
+        return Rest.put('secretaria', ['tupper'], datos);
     }
-    
+
     obtenerListadoPadres(busqueda){
         const queryParams = new Map();
-
         queryParams.set('proceso', 'padres');
         queryParams.set('busqueda', busqueda);
-
         return Rest.get('secretaria', [], queryParams);
     }
 
@@ -221,8 +252,8 @@ export class Modelo {
     borrarCuentaPadre(id) {
         return Rest.delete('padres', [id]);
     }
-    
-	/**
+
+    /**
      * Llamada para obtener los registros del Q19 de un mes.
      * @param {Number} mes Nº del mes.
      * @returns {Promise} Devuelve la promesa asociada a la petición.
@@ -235,9 +266,9 @@ export class Modelo {
     }
 
     /**
-    * Obtiene la constante relacionada con los registros de tupperware.
-    * @returns {Promise} Una promesa que se resolverá con la constante relacionada con los registros de tupperware.
-    */
+     * Obtiene la constante relacionada con los registros de tupperware.
+     * @returns {Promise} Una promesa que se resolverá con la constante relacionada con los registros de tupperware.
+     */
     obtenerConstanteTupper() {
         const queryParams = new Map();
         queryParams.set('proceso', 'tupper');
@@ -247,13 +278,13 @@ export class Modelo {
     /**
      * Obtiene la constante relacionada con el menú.
      * @returns {Promise} Una promesa que se resolverá con la constante relacionada con el menú.
-    */
+     */
     obtenerConstanteMenu() {
         const queryParams = new Map();
         queryParams.set('proceso', 'menu');
         return Rest.get('constantes', [], queryParams);
     }
-    
+
     /**
      * Obtiene los datos de la gestión mensual.
      * @returns {Promise} Una promesa que se resolverá con la constante relacionada con el calendario.
@@ -263,6 +294,6 @@ export class Modelo {
         queryParams.set('idPadre', idPadre);
         queryParams.set('anio', anio);
         queryParams.set('mes', mes);
-        return Rest.get('calendario', [], queryParams);       
+        return Rest.get('calendario', [], queryParams);
     }
 }

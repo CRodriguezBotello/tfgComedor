@@ -1,4 +1,7 @@
 <?php
+
+    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+
     require_once('vendor/autoload.php');
     require_once(dirname(__DIR__) . '/daos/daousuario.php');
     require_once(dirname(__DIR__) . '/models/usuario.php');
@@ -16,11 +19,11 @@
         // Se configura por inyección de dependencias
         public static $clave = null;
         public static $algoritmo_encriptacion = null;
-        public static $iv = ''; // FALTA LA CADENA DE CARACTERES QUE ESTÁ EN EL CÓDIGO COMPLETO
+        public static $iv = 'k37d!8e3'; // FALTA LA CADENA DE CARACTERES QUE ESTÁ EN EL CÓDIGO COMPLETO
 		public static $secretaria = null;
 
         //Id de cliente de Google.
-        private static $ID_CLIENTE = ''; // FALTA EL ID DE CLIENTE DEL PROYECTO DE GOOGLE
+        private static $ID_CLIENTE = '601383626177-ka9ptjmgj5br4crhvidc3vh169lj9p2a.apps.googleusercontent.com'; // FALTA EL ID DE CLIENTE DEL PROYECTO DE GOOGLE
 
         /**
          * Autentifica al usuario con el email y la clave.
