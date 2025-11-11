@@ -56,10 +56,18 @@
             $horaActual = (int)$fechaActual->format('H');
         
             // Verificar si la fecha enviada es menor o igual que la fecha actual
-            if ($fecha <= $fechaActual) {
-                header('HTTP/1.1 400 Bad Request');
-                echo json_encode(array("error" => "La fecha enviada es menor o igual que la fecha actual"));
-                die();
+            $zona = new DateTimeZone('Europe/Madrid'); // ajusta si usas otra zona
+            $hoy = new DateTime('now', $zona);
+            $hoy->setTime(0, 0, 0);
+        
+            $fecha_enviada = DateTime::createFromFormat('Y-m-d', $datos->dia);
+            if (!$fecha_enviada) {
+                return $this->response(400, ['error' => 'Formato de fecha inválido']);
+            }
+            $fecha_enviada->setTime(0, 0, 0);
+        
+            if ($fecha_enviada < $hoy) {
+                return $this->response(400, ['error' => 'La fecha enviada es menor que la fecha actual']);
             }
         
             // Verificar si la fecha enviada es el día siguiente y si ya pasó las HORALIMITE:00 horas del día actual

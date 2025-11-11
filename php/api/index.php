@@ -5,11 +5,10 @@
 * También identifica al usuario (autenticación).
 */
 $config = require_once('config.php');
-if ($config['debug']) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-}
+// DEBUG: mostrar errores en desarrollo (quitar en producción)
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 try {
     // Inyección de dependencias
     require_once('./services/bd.php');

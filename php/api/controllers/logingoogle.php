@@ -1,4 +1,4 @@
- <?php
+<?php
     error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
     require_once('vendor/autoload.php');
     require_once(dirname(__DIR__) . '/daos/daousuario.php');

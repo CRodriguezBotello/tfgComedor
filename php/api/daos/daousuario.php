@@ -125,6 +125,52 @@
             return DAOUsuario::crearDias($resultado);
         }
 
+
+        public static function eliminarHijoDefinitivo($idHijo, $idPadre) {
+            // Iniciar transacción usando el helper BD del proyecto
+            if (!BD::iniciarTransaccion()) {
+                throw new Exception('No es posible iniciar la transacción.');
+            }
+
+            try {
+                // 1) Eliminar la relación padre-hijo concreta
+                $sql = 'DELETE FROM Hijo_Padre WHERE idHijo = :idHijo AND idPadre = :idPadre';
+                BD::borrar($sql, array('idHijo' => $idHijo, 'idPadre' => $idPadre));
+
+                // 2) Comprobar si quedan otros padres activos para este hijo
+                $sql = 'SELECT COUNT(*) AS cnt FROM Hijo_Padre WHERE idHijo = :idHijo AND activo = 1';
+                $res = BD::seleccionar($sql, array('idHijo' => $idHijo));
+                $otros = (isset($res[0]['cnt']) ? (int)$res[0]['cnt'] : 0);
+
+                if ($otros === 0) {
+                    // No hay otros padres: eliminar todas las referencias y la persona
+                    // a) eliminar cualquier fila residual en Hijo_Padre
+                    $sql = 'DELETE FROM Hijo_Padre WHERE idHijo = :idHijo';
+                    BD::borrar($sql, array('idHijo' => $idHijo));
+
+                    // b) eliminar Dias asociados (evita conflicto FK)
+                    $sql = 'DELETE FROM Dias WHERE idPersona = :idHijo';
+                    BD::borrar($sql, array('idHijo' => $idHijo));
+
+                    // c) eliminar Persona (la FK en Hijo tiene ON DELETE CASCADE)
+                    $sql = 'DELETE FROM Persona WHERE id = :id';
+                    BD::borrar($sql, array('id' => $idHijo));
+                }
+
+                if (!BD::commit()) {
+                    throw new Exception('No se pudo confirmar la transacción.');
+                }
+
+                return true;
+            } catch (Exception $e) {
+                // Intentar rollback si el helper lo soporta
+                if (method_exists('BD', 'rollBack')) {
+                    BD::rollBack();
+                }
+                throw $e;
+            }
+        }
+
         /**
          * Obtener los datos de las personas que tienen 'x' día asignado.
          * @param DateTime $fecha Fecha.
@@ -755,7 +801,7 @@
          * @return array Devuelve las incidencias. 
          */
         public static function obtenerListadoPadres($busqueda) {
-            $sql  = 'SELECT p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato, p1.referenciaUnicaMandato, ';
+            $sql  = 'SELECT p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato, ';
 						$sql .= 'GROUP_CONCAT(CONCAT(p2.nombre, " ", p2.apellidos) SEPARATOR ", ") AS hijos '; 
 						$sql .= 'FROM Persona p1 ';
             $sql .= 'INNER JOIN Padre ON p1.id = Padre.id ';
@@ -836,6 +882,66 @@
             );
 
             return BD::actualizar($sql, $params);
+        }
+
+        /**
+         * Elimina definitivamente la cuenta de un padre y limpia referencias.
+         * - Para cada hijo con idPadreAlta = padre:
+         *     * si tiene otros padres activos -> reasigna idPadreAlta a uno de ellos
+         *     * si no tiene otros padres -> elimina Hijo_Padre, Dias del hijo y Persona del hijo
+         * - Elimina relaciones Hijo_Padre del padre, Dias con idPadre y Persona del padre
+         *
+         * @param int $idPadre
+         * @throws Exception
+         */
+        public static function eliminarPadreDefinitivo($idPadre) {
+            if (!BD::iniciarTransaccion()) {
+                throw new Exception('No es posible iniciar la transacción.');
+            }
+
+            try {
+                // 1) Obtener hijos cuyo idPadreAlta es este padre
+                $sql = 'SELECT id FROM Hijo WHERE idPadreAlta = :idPadre';
+                $hijos = BD::seleccionar($sql, array('idPadre' => $idPadre));
+
+                foreach ($hijos as $h) {
+                    $idHijo = (int)$h['id'];
+
+                    // Buscar otros padres activos para este hijo
+                    $sql = 'SELECT idPadre FROM Hijo_Padre WHERE idHijo = :idHijo AND idPadre != :idPadre AND activo = 1';
+                    $otros = BD::seleccionar($sql, array('idHijo' => $idHijo, 'idPadre' => $idPadre));
+
+                    if (!empty($otros)) {
+                        // Reasignar idPadreAlta al primer padre encontrado
+                        $nuevoPadre = (int)$otros[0]['idPadre'];
+                        $sqlUpd = 'UPDATE Hijo SET idPadreAlta = :nuevoPadre WHERE id = :idHijo';
+                        BD::modificar($sqlUpd, array('nuevoPadre' => $nuevoPadre, 'idHijo' => $idHijo));
+                    } else {
+                        // No hay otros padres: eliminar hijo totalmente
+                        BD::borrar('DELETE FROM Hijo_Padre WHERE idHijo = :idHijo', array('idHijo' => $idHijo));
+                        BD::borrar('DELETE FROM Dias WHERE idPersona = :idHijo', array('idHijo' => $idHijo));
+                        BD::borrar('DELETE FROM Persona WHERE id = :idHijo', array('idHijo' => $idHijo));
+                    }
+                }
+
+                // 2) Eliminar relaciones padre-hijo para este padre
+                BD::borrar('DELETE FROM Hijo_Padre WHERE idPadre = :idPadre', array('idPadre' => $idPadre));
+
+                // 3) Eliminar entradas de Dias asociadas al padre (opcional, evita restos)
+                BD::borrar('DELETE FROM Dias WHERE idPadre = :idPadre', array('idPadre' => $idPadre));
+
+                // 4) Eliminar la Persona del padre (cascade eliminará Padre y Usuario)
+                BD::borrar('DELETE FROM Persona WHERE id = :idPadre', array('idPadre' => $idPadre));
+
+                if (!BD::commit()) {
+                    throw new Exception('No se pudo confirmar la transacción.');
+                }
+
+                return true;
+            } catch (Exception $e) {
+                if (method_exists('BD', 'rollBack')) BD::rollBack();
+                throw $e;
+            }
         }
     }
 ?>

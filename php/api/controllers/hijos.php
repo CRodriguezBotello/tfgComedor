@@ -92,25 +92,29 @@
             // Si no existe $usuario, es porque la autorización ha fallado.
             if (!$usuario) {
                 header('HTTP/1.1 401 Unauthorized');
+                echo json_encode(['error' => 'No autorizado']);
                 die();
             }
 
-            if (count($pathParams)) {
-                switch ($pathParams[0]) {
-                    case 'eliminarHijo':
-												DAOUsuario::eliminarHijo($pathParams[1], $usuario->id);
-            						header('HTTP/1.1 200 OK');
-                        break;
-
-                    case 'eliminarRelacion':
-                        $this->eliminarRelacion($pathParams[1], $pathParams[2]);
-                        break;
-                }
-            }
-            else {
+            // Esperamos: /hijos/eliminarHijo/{id} (id en pathParams[1])
+            if (!isset($pathParams[1]) || !is_numeric($pathParams[1])) {
                 header('HTTP/1.1 400 Bad Request');
+                echo json_encode(['error' => 'ID hijo inválido']);
+                die();
             }
-            
+
+            $idHijo = (int)$pathParams[1];
+
+            try {
+                DAOUsuario::eliminarHijoDefinitivo($idHijo, $usuario->id);
+                header('Content-Type: application/json; charset=utf-8');
+                header('HTTP/1.1 200 OK');
+                echo json_encode(['ok' => true]);
+            } catch (Exception $e) {
+                error_log('Error eliminar hijo: ' . $e->getMessage());
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['error' => 'Error interno al eliminar hijo']);
+            }
             die();
         }
 

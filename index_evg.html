@@ -162,8 +162,8 @@
                     </div>
                     <div class="formItem">
                         <label for="dni">
-                            DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" maxlength="9" required/>
-                            <div class="invalid-feedback">Por favor, introduzca un DNI válido.</div>
+                            DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" id="dniModificacionPadres" maxlength="9" pattern="^[0-9]{8}[A-Za-z]$" title="DNI: 8 números y letra final" required/>
+                            <div class="invalid-feedback">Por favor, introduzca un DNI válido (8 números y letra final).</div>
                         </label>
                     </div>
                     <div class="formItem">

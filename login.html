@@ -4,11 +4,7 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-				<!-- Evitamos que se cargen contenidos de otros dominios
-				ACTIVAR EN PRODUCCIÓN
-				<meta http-equiv='Content-Security-Policy' content="default-src 'self';" />
-				-->
-				<!-- Obligamos al navegador a acceder solo por HTTPS -->
+
 				<meta http-equiv='Strict-Transport-Security' content=': max-age=2592000' />
 
         <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
@@ -53,11 +49,16 @@
             <div class="formItem">
                 <button type="button" class="btn btn-info">Login</button>
             </div>
-			<div class="formItem">
+            <div class="formItem">
                 <p>¿No tienes cuenta? <a href="registro.html">Registrate</a></p>
             </div>
             <div class="formItem">
                 <p>Si has olvidado la contraseña. <a href="recuperar.html">Pulsa aquí</a></p>
+            </div>
+
+           
+            <div class="formItem mt-2">
+                <a href="login_google.html" class="btn btn-outline-primary">Acceso con Google</a>
             </div>
         </form>
         <div id="divError" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>

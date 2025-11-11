@@ -137,12 +137,8 @@ class ControladorPadres {
         ])
         .then(([hijos, cursos]) => {
             const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
-
-            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap);
-
             // se pasa también el id del padre para que la vista pueda usarlo al confirmar
             this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
-
         })
         .catch(e => {
             console.error('Error cargando hijos para gestión diaria:', e);
@@ -356,8 +352,6 @@ class ControladorPadres {
          })
     }
 
-
-
     /**
      * Procesa los registros de gestión diaria:
      * - crea la fila en Dias si es necesario (POST altaDia)
@@ -433,7 +427,32 @@ class ControladorPadres {
     obtenerIncidencias(fecha) {
         return this.modelo.obtenerIncidencias(fecha);
     }
-
 }
 
 new ControladorPadres();
+
+{ 
+    // función añadida: borrar un hijo definitivamente
+    async function borrarHijo(idHijo) {
+        try {
+            // Ajusta la URL si tu router añade "api/index.php" de otra forma
+            const url = `/php/api/index.php/hijos/eliminarHijo/${idHijo}`;
+            await Rest.delete(url);
+            // Actualiza la vista que muestra los hijos (ajusta según tu implementación)
+            // por ejemplo: this.verVistaGestionHijos(); o recarga la lista
+            if (typeof controladorPadres !== 'undefined' && controladorPadres.obtenerHijos) {
+                controladorPadres.obtenerHijos(); // o la función que refresca la lista
+            } else {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.error('Error borrando hijo:', err);
+            // mostrar mensaje al usuario (ajusta según tu UI)
+            const divError = document.getElementById('divError');
+            if (divError) divError.textContent = `Error al eliminar: ${err.message || err}`;
+        }
+    }
+
+    // Ejemplo: exportar o exponer la función para usar en handlers de botones
+    window.borrarHijo = borrarHijo;
+}

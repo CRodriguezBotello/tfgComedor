@@ -116,13 +116,22 @@ export class VistaModificarPadres extends Vista {
             this.divError.style.display = 'none'
 
         if (cont == total) {
+            // Validar IBAN: debe ser 2 letras + 22 números (sin espacios)
+            const ibanValor = this.inputs[4].value || '';
+            if (!this.validarIBAN(ibanValor)) {
+                this.divError.innerHTML = '<p>Introduzca un IBAN válido (2 letras seguidas de 22 dígitos, p. ej. ES1234567890123456789012).</p>';
+                this.divError.style.display = 'block';
+                this.inputs[4].focus();
+                return;
+            }
+
             const datos = {
                 'id': this.idUsuario,
                 'nombre': this.inputs[0].value,
                 'apellidos': this.inputs[1].value,
                 'telefono': this.inputs[2].value,
                 'correo': this.inputs[3].value,
-                'iban': this.inputs[4].value
+                'iban': ibanValor
             };
 
             this.btnActualizar.disabled = true;
@@ -154,4 +163,12 @@ export class VistaModificarPadres extends Vista {
         if (this.divErrorBorrado.style.display == 'block')
             this.divErrorBorrado.style = 'none';
 	}
+
+    // Nuevo método: validar IBAN → 2 letras + 22 dígitos (ignora espacios)
+    validarIBAN(iban) {
+        if (!iban) return false;
+        const limpio = iban.replace(/\s+/g, '').toUpperCase();
+        // debe tener exactamente 24 caracteres: 2 letras + 22 dígitos
+        return /^[A-Z]{2}\d{22}$/.test(limpio);
+    }
 }

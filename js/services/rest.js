@@ -85,4 +85,28 @@ export class Rest {
 
         return true;
     }
+
+    static postJson(url, data) {
+        const opts = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+        return fetch(url, opts)
+            .then(async res => {
+                const text = await res.text();
+                // intentar parsear JSON, si no, devolver texto
+                let body;
+                try { body = JSON.parse(text); } catch(e) { body = text; }
+                if (!res.ok) {
+                    console.error('REST error:', res.status, body);
+                    // rethrow con info para que la capa superior lo muestre
+                    const err = new Error('HTTP ' + res.status);
+                    err.status = res.status;
+                    err.body = body;
+                    throw err;
+                }
+                return body;
+            });
+    }
 }

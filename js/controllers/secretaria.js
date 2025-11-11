@@ -261,3 +261,229 @@ class ControladorSecretaria {
 }
 
 new ControladorSecretaria();
+
+(function(){
+
+    
+    function initEditarPadreDesdeServidor() {
+        const tabla = document.querySelector('#tablaGestionPadres') || document.querySelector('#tablaPadres');
+        if (!tabla) return;
+
+        tabla.addEventListener('click', async (ev) => {
+            const btn = ev.target.closest('.btnEditarPadre, .editar-padre, .btn-edit');
+            if (!btn) return;
+
+            // Buscamos id en data-id del botón o en la fila
+            const id = btn.dataset.id || btn.getAttribute('data-id') || btn.closest('tr')?.dataset.id;
+            if (!id) {
+                console.warn('Editar: id no encontrado en el botón/fila.');
+                return;
+            }
+
+            try {
+                
+                const url = `/php/api/index.php?controller=padres&action=get&id=${encodeURIComponent(id)}`;
+                const res = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+                if (!res.ok) throw new Error('Respuesta no OK: ' + res.status);
+                const data = await res.json();
+
+                // Formulario destino (ajusta selector al que uses)
+                const form = document.querySelector('#formModificarPadre') || document.querySelector('#modificarPadreForm') || document.querySelector('#modificacionPadres form');
+                if (!form) {
+                    console.warn('Formulario de modificación no encontrado.');
+                    return;
+                }
+
+                // Rellenar inputs/selects/textarea por name con los datos devueltos
+                Object.keys(data).forEach(key => {
+                    try {
+                        const field = form.elements.namedItem(key);
+                        if (!field) return;
+                        if (field.type === 'checkbox') {
+                            field.checked = !!data[key];
+                        } else if (field.tagName === 'SELECT') {
+                            field.value = data[key] ?? '';
+                        } else {
+                            field.value = data[key] ?? '';
+                        }
+                    } catch (e) {
+                        
+                    }
+                });
+
+                
+                if (!form.elements.namedItem('id')) {
+                    const hid = document.createElement('input');
+                    hid.type = 'hidden';
+                    hid.name = 'id';
+                    hid.value = id;
+                    form.appendChild(hid);
+                } else {
+                    form.elements.namedItem('id').value = id;
+                }
+
+                
+                const modal = document.querySelector('#modalModificarPadre');
+                if (modal) {
+                    if (typeof bootstrap !== 'undefined') {
+                        const bs = new bootstrap.Modal(modal);
+                        bs.show();
+                    } else {
+                        modal.style.display = 'block';
+                    }
+                } else {
+                    
+                    form.scrollIntoView({ behavior: 'smooth' });
+                }
+
+            } catch (err) {
+                console.error('Error cargando datos del padre:', err);
+                alert('No se pudieron cargar los datos. Revisa la consola.');
+            }
+        });
+    }
+
+    
+    async function recargarFilaPadre(id) {
+        if (!id) return;
+        try {
+            const url = `/php/api/index.php?controller=padres&action=get&id=${encodeURIComponent(id)}`;
+            const res = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!res.ok) throw new Error('Respuesta no OK: ' + res.status);
+            const data = await res.json();
+
+            const row = document.querySelector(`#tablaGestionPadres tbody tr[data-id="${id}"]`) || document.querySelector(`#tablaPadres tbody tr[data-id="${id}"]`);
+            if (!row) return;
+
+            // Actualiza celdas visibles: adapta índices según tu tabla
+            const cols = row.querySelectorAll('td');
+            if (cols.length) {
+                if (cols[0]) cols[0].textContent = data.nombre ?? cols[0].textContent;
+                if (cols[1]) cols[1].textContent = data.apellidos ?? cols[1].textContent;
+                if (cols[2]) cols[2].textContent = data.email ?? cols[2].textContent;
+            }
+
+            
+            Object.keys(data).forEach(k => {
+                row.dataset[k] = data[k];
+            });
+        } catch (err) {
+            console.error('Error recargando fila:', err);
+        }
+    }
+
+    // iniciar
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            initEditarPadreDesdeServidor();
+            window.__recargarFilaPadre = recargarFilaPadre;
+        });
+    } else {
+        initEditarPadreDesdeServidor();
+        window.__recargarFilaPadre = recargarFilaPadre;
+    }
+
+})();
+
+{
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formModificacionPadres');
+  if (!form) return;
+
+  const dniInput = document.getElementById('dniModificacionPadres');
+  const btnActualizar = form.querySelector('button.btn-success');
+
+  const dniRegex = /^[0-9]{8}[A-Za-z]$/;
+
+  const marcarError = (msg) => {
+    dniInput.classList.add('is-invalid');
+    const fb = dniInput.closest('label')?.querySelector('.invalid-feedback');
+    if (fb) fb.textContent = msg;
+  };
+
+  const limpiarError = () => {
+    dniInput.classList.remove('is-invalid');
+  };
+
+  if (btnActualizar) {
+    btnActualizar.addEventListener('click', (e) => {
+      const val = (dniInput?.value || '').trim();
+      if (!dniRegex.test(val)) {
+        e.preventDefault();
+        // evita que otros manejadores procesen la acción si el DNI es inválido
+        if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+        marcarError('Introduzca un DNI válido (8 dígitos y una letra final).');
+        return;
+      }
+      limpiarError();
+      // si es válido, continuar (otros manejadores pueden procesar la actualización)
+    });
+  }
+});
+}
+
+(function() {
+    // Handler de búsqueda para Gestión de Usuarios (padres)
+    const listadoPadres = document.getElementById('divListadoPadres');
+    if (!listadoPadres) return;
+
+    // Buscar input de buscador dentro del contenedor (flexible)
+    const inputBusqueda = listadoPadres.querySelector('input[type="search"], input[name="busqueda"], #buscador input') || listadoPadres.querySelector('input');
+    const btnBuscar = listadoPadres.querySelector('#buscador button, #buscador .btn') || null;
+
+    function normalizar(s) {
+        // Normaliza: quita acentos, pasa a minúsculas y recorta espacios
+        return (s || '').toString()
+            .normalize('NFD')                 // separa diacríticos
+            .replace(/[\u0300-\u036f]/g, '')  // elimina diacríticos (acentos)
+            .replace(/\s+/g, ' ')             // normaliza espacios
+            .trim()
+            .toLowerCase();
+    }
+
+    function filtrarTablaGestionPadres(query) {
+        const q = normalizar(query);
+        // Intenta varias ids posibles para la tabla de padres
+        const tabla = document.getElementById('tablaGestionPadres') || document.querySelector('#divListadoPadres table') || document.querySelector('table.dinamica');
+        if (!tabla) return;
+        const cuerpo = tabla.tBodies[0] || tabla;
+        const filas = Array.from(cuerpo.rows || []);
+        if (!q) {
+            filas.forEach(r => r.style.display = '');
+            return;
+        }
+        filas.forEach(fila => {
+            const textoFila = Array.from(fila.cells || []).map(c => normalizar(c.textContent || c.innerText)).join(' ');
+            fila.style.display = textoFila.indexOf(q) !== -1 ? '' : 'none';
+        });
+    }
+
+    if (btnBuscar) {
+        btnBuscar.addEventListener('click', (e) => {
+            e.preventDefault();
+            filtrarTablaGestionPadres(inputBusqueda ? inputBusqueda.value : '');
+        });
+    }
+
+    if (inputBusqueda) {
+        inputBusqueda.addEventListener('keyup', (e) => {
+            // Buscar al pulsar Enter
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                filtrarTablaGestionPadres(inputBusqueda.value);
+            } else {
+                // Búsqueda en tiempo real sin necesidad de Enter (descomentar si se desea)
+                filtrarTablaGestionPadres(inputBusqueda.value);
+            }
+        });
+    }
+
+    // Si la tabla se carga dinámicamente, observar cambios y reaplicar filtro actual
+    const tablaPadres = document.getElementById('tablaGestionPadres') || document.querySelector('#divListadoPadres table');
+    if (tablaPadres && window.MutationObserver) {
+        const observer = new MutationObserver(() => {
+            filtrarTablaGestionPadres(inputBusqueda ? inputBusqueda.value : '');
+        });
+        observer.observe(tablaPadres, { childList: true, subtree: true });
+    }
+})();
