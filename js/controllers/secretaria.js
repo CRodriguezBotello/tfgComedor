@@ -73,6 +73,25 @@ class ControladorSecretaria {
              console.error(e);
          })
     }
+    // Función exacta que debes poner en tu secretaria.js
+    async desactivarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a desactivar:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.desactivarPadreSecretaria(datos);
+            console.log("Padre desactivado:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} desactivado correctamente`);
+        } catch (error) {
+            console.error("Fallo al desactivar padre:", error);
+            alert("Error al desactivar padre, revisa la consola");
+        }
+    }
     
     obtenerTuppers(fecha) {
         return this.modelo.obtenerTupper(fecha)
@@ -621,30 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.cargarListaMenus();
     }
 });
-}
-// Función exacta que debes poner en tu secretaria.js
-async function desactivarPadre(padreSeleccionado) {
-    if (!padreSeleccionado || !padreSeleccionado.id) {
-        console.error("No hay padre seleccionado o no tiene ID");
-        return;
-    }
-    // Solo enviamos el ID
-    const datos = { id: padreSeleccionado.id };
-    console.log("Enviando a desactivar:", datos);
-    try {
-        // Usar el controlador global si existe
-        const ctrl = window.controladorSecretaria;
-        if (!ctrl || !ctrl.modelo || typeof ctrl.modelo.desactivarPadreSecretaria !== 'function') {
-            throw new Error('Controlador o método no disponible');
-        }
-        // Llamada al modelo que hace el PUT
-        const respuesta = await ctrl.modelo.desactivarPadreSecretaria(datos);
-        console.log("Padre desactivado:", respuesta);
-        alert(`Padre ${padreSeleccionado.nombre} desactivado correctamente`);
-    } catch (error) {
-        console.error("Fallo al desactivar padre:", error);
-        alert("Error al desactivar padre, revisa la consola");
-    }
 }
 
 (function installMenuSecretariaHandler() {

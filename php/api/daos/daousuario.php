@@ -16,12 +16,10 @@
         public static function autenticarLogin($login) {
             if (!BD::iniciarTransaccion())
                 throw new Exception('No es posible iniciar la transacción.');
-
-            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular FROM Persona';
+            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular, activo FROM Persona';
             $sql .= ' WHERE correo=:correo';
             $params = array('correo' => $login->usuario);
             $persona = BD::seleccionar($sql, $params);
-
             // Chequear si existe o no alguien con ese correo.
             if (!$persona) {
                 if (!BD::commit()) throw new Exception('No se pudo confirmar la transacción.');
@@ -31,11 +29,13 @@
             $sql = 'SELECT * FROM Persona';
             $sql .= ' WHERE correo = :usuario';
             $params = array('usuario' => $login->usuario);
+            if(!$persona[0]['activo']){
+                if (!BD::commit()) throw new Exception('No se pudo confirmar la transacción.');
+                else return false;
+            }
             $resultado = BD::seleccionar($sql, $params);
-
             if (!BD::commit()) 
                 throw new Exception('No se pudo confirmar la transacción.');
-
             if (password_verify($login->clave, $resultado[0]['clave'])) {
                 return DAOUsuario::crearUsuario($resultado);
             }
@@ -952,5 +952,7 @@
                 throw $e;
             }
         }
+
+        
     }
 ?>
