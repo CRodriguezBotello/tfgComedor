@@ -286,10 +286,13 @@ export class Modelo {
     }
 
     /**
-     * Obtiene los datos de la gestión mensual.
-     * @returns {Promise} Una promesa que se resolverá con la constante relacionada con el calendario.
+     * :calendario_de_sobremesa: Obtiene los datos del calendario (días de los hijos con tupper)
+     * @param {Number} idPadre
+     * @param {Number} anio
+     * @param {Number} mes
+     * @returns {Promise<Array>} Array con hijos, sus nombres y los días/tupper
      */
-    obtenerDiasCalendario(idPadre,anio,mes) {
+    obtenerDiasCalendario(idPadre, anio, mes) {
         const queryParams = new Map();
         queryParams.set('idPadre', idPadre);
         queryParams.set('anio', anio);

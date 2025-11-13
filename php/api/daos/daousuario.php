@@ -207,38 +207,42 @@
         }
         
         public static function obtenerDiasCalendario($idPadre, $anio, $mes) {
-        $sql = '
-            SELECT 
-                h.id AS id_hijo, 
-                p.nombre, 
-                GROUP_CONCAT(DISTINCT DATE_FORMAT(d.dia, "%d-%m-%Y") ORDER BY d.dia ASC) AS dias
-            FROM 
-                Hijo h
-            JOIN 
-                Persona p ON h.id = p.id
-            JOIN 
-                Dias d ON h.id = d.idPersona
-            JOIN 
-                Hijo_Padre hp ON h.id = hp.idHijo
-            WHERE 
-                h.activo = 1 AND hp.idPadre = ? AND YEAR(d.dia) = ? AND MONTH(d.dia) = ?
-            GROUP BY 
-                h.id, p.nombre
-            ORDER BY 
-                h.id;
-        ';
-        // Ejecutar la consulta con los parámetros idPadre, anio, mes
-        $resultado = BD::seleccionar($sql, [$idPadre, $anio, $mes]);
-        $datos = [];
-        foreach ($resultado as $fila) {
-            $datos[] = [
-                'id_hijo' => $fila['id_hijo'],
-                'nombre' => $fila['nombre'],
-                'dias' => explode(',', $fila['dias'])
-            ];
+            $sql = '
+                SELECT
+                    h.id AS id_hijo,
+                    p.nombre,
+                    p.apellidos,
+                    DATE_FORMAT(d.dia, "%d-%m-%Y") AS fecha,
+                    d.tupper
+                FROM Hijo h
+                JOIN Persona p ON h.id = p.id
+                JOIN Dias d ON h.id = d.idPersona
+                JOIN Hijo_Padre hp ON h.id = hp.idHijo
+                WHERE h.activo = 1
+                AND hp.idPadre = ?
+                AND YEAR(d.dia) = ?
+                AND MONTH(d.dia) = ?
+                ORDER BY h.id, d.dia
+            ';
+            $resultado = BD::seleccionar($sql, [$idPadre, $anio, $mes]);
+            $datos = [];
+            foreach ($resultado as $fila) {
+                $idHijo = $fila['id_hijo'];
+                if (!isset($datos[$idHijo])) {
+                    $datos[$idHijo] = [
+                        'id_hijo' => $idHijo,
+                        // concatenar nombre + apellidos para que la vista reciba el nombre completo
+                        'nombre' => trim($fila['nombre'] . ' ' . ($fila['apellidos'] ?? '')),
+                        'dias' => []
+                    ];
+                }
+                $datos[$idHijo]['dias'][] = [
+                    'fecha' => $fila['fecha'],
+                    'tupper' => (int)$fila['tupper']
+                ];
+            }
+            return array_values($datos); // devuelve array indexado por posición
         }
-        return $datos;
-    }
 
         /**
          * Obtener los datos de las personas que van al comedor en 'x' mes.

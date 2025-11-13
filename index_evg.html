@@ -29,28 +29,52 @@
                 <li class="icon">
                     <img src="./img/icons/menu.svg" alt="Menú"/>
                 </li>
-                <li class="active">
+                <li class="active" data-view="gestionDiaria">
                     <img src="./img/icons/today.svg" alt="Gestión diaria"/>
                     &nbsp;Gestión diaria
                 </li>
-                <li>
+                <li data-view="gestionMensual">
                     <img src="./img/icons/calendar_month.svg" alt="Gestión mensual"/>
                     &nbsp;Gestión mensual
                 </li>
-                <li>
+                <li data-view="gestionPadres">
                     <img src="./img/icons/person.svg" alt="Gestión de usuarios"/>
                     &nbsp;Gestión de usuarios
                 </li>
-                <li>
+                <li id="liCerrarSesion" data-action="logout">
                     <img src="./img/icons/logout.svg" alt="Cerrar sesión"/>
                     &nbsp;Cerrar sesión
                 </li>
-                <li style="float: right;" >
+                <li style="float: right;" data-view="acercade">
                     <img style="width: 24px; height: 24px;" src="./img/icons/pregunta.svg" alt="Acerca de"/>
                     &nbsp;Acerca de
                 </li>
+                <li data-view="gestionMenus">
+                    <img src="./img/icons/menus.svg" alt="Gestión de menús" />
+                    &nbsp;Gestión de menús
+                </li>
+                <li data-view="gestionTarifas">
+                    <img src="./img/icons/tarifas.svg" alt="Gestión de tarifas" />
+                    &nbsp;Gestión tarifas
+                </li>
             </ul>
         </nav>
+       
+        <div id="gestionTarifas" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de tarifas</h1>
+            <div class="mb-2">
+                <input id="nuevoNombre" class="form-control d-inline-block w-50" placeholder="Nombre tarifa" />
+                <input id="nuevoCantidad" class="form-control d-inline-block w-25 ml-2" placeholder="Cantidad" />
+                <button id="btnCrearTarifa" class="btn btn-success ml-2">Crear</button>
+            </div>
+            <table id="tablaTarifas" class="table table-striped">
+                <thead>
+                    <tr><th>Nombre</th><th>Cantidad</th><th>Acciones</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="tarifasMsg" class="my-2"></div>
+        </div>
 
         <div id="gestionDiaria">
             <h1 class="text-center my-4">Gestión diaria</h1>
@@ -225,6 +249,50 @@
             <p style="margin: 10px 0;"><strong>Licencia:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text" style="color: #2980b9; text-decoration: none;">GPL v3</a></p>
         </div>
 
+        <div id="gestionMenus" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de menús</h1>
+
+            <div class="form-row align-items-end">
+                <div class="form-group col-md-4">
+                    <label for="menusMes">Mes</label>
+                    <select id="menusMes" class="form-control">
+                        <option value="">-- Selecciona mes --</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="menusFile">PDF Menú</label>
+                    <input id="menusFile" class="form-control-file" type="file" accept="application/pdf"/>
+                </div>
+
+                <div class="form-group col-md-2 text-right">
+                    <button id="btnUploadMenu" type="button" class="btn btn-success">Subir</button>
+                </div>
+            </div>
+
+            <div id="menusFeedback" class="my-2"></div>
+
+            <hr/>
+
+            <h5>Menús actuales</h5>
+            <div id="listaMenus" class="list-group">
+                <!-- listado cargado vía JS: cada item muestra mes, enlace al PDF y botón borrar -->
+            </div>
+        </div>
+
+        <script type="module" src="./js/controllers/tarifas.js"></script>
         <script type="module" src="./js/controllers/secretaria.js"></script>
-    </body>
-</html>
+     </body>
+ </html>

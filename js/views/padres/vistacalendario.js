@@ -56,24 +56,19 @@ export class VistaCalendario extends Vista {
        this.hijos = hijos;
         if (hijos && hijos.length > 0) {
             this.calendarContainer.innerHTML = '';
-    
             const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             const monthName = monthNames[this.currentMonth];
             this.monthYearHeader.textContent = `${monthName} ${this.currentYear}`;
-    
             hijos.forEach(child => {
                 const childCalendar = document.createElement('div');
                 childCalendar.classList.add('child-calendar');
-    
                 const childMonthYearHeader = document.createElement('h2');
                 childMonthYearHeader.textContent = `${child.nombre}`;
                 childCalendar.appendChild(childMonthYearHeader);
-    
                 const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
                 const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
                 let firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
                 firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
-    
                 const weekRow = document.createElement('div');
                 weekRow.classList.add('calendar', 'week-row');
                 daysOfWeek.forEach(day => {
@@ -83,31 +78,31 @@ export class VistaCalendario extends Vista {
                     weekRow.appendChild(weekDay);
                 });
                 childCalendar.appendChild(weekRow);
-    
                 const daysList = document.createElement('div');
                 daysList.classList.add('calendar');
-    
                 for (let i = 0; i < firstDayIndex; i++) {
                     const emptyDay = document.createElement('div');
                     emptyDay.classList.add('day');
                     emptyDay.textContent = '';
                     daysList.appendChild(emptyDay);
                 }
-    
                 for (let i = 1; i <= daysInMonth; i++) {
                     const day = document.createElement('div');
                     day.classList.add('day');
                     day.textContent = i;
-                
                     const date = new Date(this.currentYear, this.currentMonth, i);
                     if (date.getDay() === 6 || date.getDay() === 0) {
                         day.classList.add('weekend');
                     }
-                
                     const formattedDate = `${('0' + i).slice(-2)}-${('0' + (this.currentMonth + 1)).slice(-2)}-${this.currentYear}`;
-                    if (child.dias.includes(formattedDate)) {
-                        day.classList.add('blue-day');
-                    }
+                   const diaObj = child.dias.find(d => d.fecha === formattedDate);
+                        if (diaObj) {
+                            if (diaObj.tupper == 1) {
+                                day.classList.add('yellow-day'); // día con tupper
+                            } else {
+                                day.classList.add('blue-day'); // día normal
+                            }
+                        }
                     daysList.appendChild(day);
                 }
                 childCalendar.appendChild(daysList);

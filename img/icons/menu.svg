@@ -1,3 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-<path fill="#fff" d="M155-218q-22 0-37.5-15.5T102-271q0-22 15.5-37.5T155-324h652q22 0 37.5 15.5T860-271q0 22-15.5 37.5T807-218H155Zm0-210q-22 0-37.5-15.5T102-481q0-22 15.5-37.5T155-534h652q22 0 37.5 15.5T860-481q0 22-15.5 37.5T807-428H155Zm0-208q-22 0-37.5-15.5T102-689q0-22 15.5-37.5T155-742h652q22 0 37.5 15.5T860-689q0 22-15.5 37.5T807-636H155Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" role="img" aria-hidden="true" focusable="false">
+  <rect width="24" height="24" fill="none"/>
+  <path d="M3 6h18M3 12h18M3 18h18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

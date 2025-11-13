@@ -487,3 +487,190 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(tablaPadres, { childList: true, subtree: true });
     }
 })();
+
+{
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicialización segura de la gestión de menús: sólo si existen los elementos
+    const selMes = document.getElementById('menusMes');
+    const inputFile = document.getElementById('menusFile');
+    const btnUpload = document.getElementById('btnUploadMenu');
+    const lista = document.getElementById('listaMenus');
+    const feedback = document.getElementById('menusFeedback');
+    const API_BASE = 'php/api/index.php?controller=menus&action=';
+
+    const mostrarFeedback = (msg, tipo = 'info') => {
+        if (!feedback) return;
+        feedback.innerHTML = `<div class="alert alert-${tipo}" role="alert">${msg}</div>`;
+        setTimeout(() => { if (feedback) feedback.innerHTML = ''; }, 4000);
+    };
+
+    // Función pública para cargar la lista de menús (solo si existe contenedor)
+    window.cargarListaMenus = async function cargarListaMenus() {
+        if (!lista) return;
+        try {
+            const res = await fetch(API_BASE + 'list', { method: 'GET', headers: { 'Accept': 'application/json' } });
+            if (!res.ok) throw new Error('Error al listar menús');
+            const data = await res.json();
+            lista.innerHTML = '';
+            for (let m = 1; m <= 12; m++) {
+                const item = document.createElement('div');
+                item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                const nombreMes = new Date(0, m - 1).toLocaleString('es-ES', { month: 'long' });
+                const url = data[m] || null;
+                const left = document.createElement('div');
+                left.innerHTML = `<strong>${nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}</strong>`;
+                if (url) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                    a.className = 'ml-3';
+                    a.textContent = 'Ver PDF';
+                    left.appendChild(a);
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'ml-3 text-muted';
+                    span.textContent = 'No hay menú';
+                    left.appendChild(span);
+                }
+                const right = document.createElement('div');
+                if (url) {
+                    const btnDel = document.createElement('button');
+                    btnDel.className = 'btn btn-sm btn-outline-danger';
+                    btnDel.textContent = 'Borrar';
+                    (function(month){
+                      btnDel.addEventListener('click', async () => {
+                        if (!confirm('¿Eliminar el menú de este mes?')) return;
+                        try {
+                          const res = await fetch(API_BASE + 'delete', {
+                            method: 'POST',
+                            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ month: month })
+                          });
+                          const json = await res.json();
+                          if (json.ok) {
+                            mostrarFeedback('Menú eliminado.', 'success');
+                            window.cargarListaMenus();
+                          } else {
+                            mostrarFeedback(json.error || 'Error al borrar.', 'danger');
+                          }
+                        } catch (e) {
+                          console.error(e);
+                          mostrarFeedback('Error al borrar.', 'danger');
+                        }
+                      });
+                    })(m);
+                    right.appendChild(btnDel);
+                } else {
+                    right.innerHTML = '<span class="text-muted small">Sin archivo</span>';
+                }
+                item.appendChild(left);
+                item.appendChild(right);
+                lista.appendChild(item);
+            }
+        } catch (e) {
+            console.error(e);
+            mostrarFeedback('No se han podido cargar los menús.', 'danger');
+        }
+    };
+
+    // Subir PDF (sólo si existe el botón)
+    if (btnUpload) {
+        btnUpload.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            console.log('Intentando subir menú...');
+            const month = parseInt(selMes?.value || 0, 10);
+            const file = inputFile?.files && inputFile.files[0];
+            if (!month || !file) {
+                mostrarFeedback('Selecciona mes y fichero PDF.', 'warning');
+                return;
+            }
+            if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+                mostrarFeedback('Solo se permiten archivos PDF.', 'warning');
+                return;
+            }
+            try {
+                const fd = new FormData();
+                fd.append('month', month);
+                fd.append('file', file);
+                const res = await fetch(API_BASE + 'upload', { method: 'POST', body: fd });
+                if (!res.ok) {
+                    console.error('Respuesta no OK', res.status, await res.text());
+                    mostrarFeedback('Error en la subida (ver consola).', 'danger');
+                    return;
+                }
+                const data = await res.json();
+                if (data.ok) {
+                    mostrarFeedback('Menú subido correctamente.', 'success');
+                    if (selMes) selMes.value = '';
+                    if (inputFile) inputFile.value = '';
+                    if (typeof window.cargarListaMenus === 'function') window.cargarListaMenus();
+                } else {
+                    console.error('Error API:', data);
+                    mostrarFeedback(data.error || 'Error al subir.', 'danger');
+                }
+            } catch (e) {
+                console.error(e);
+                mostrarFeedback('Error al subir fichero (excepción).', 'danger');
+            }
+        });
+    }
+
+    // Si la vista ya estaba visible al cargar, cargar la lista
+    if (document.getElementById('gestionMenus') && !document.getElementById('gestionMenus').classList.contains('d-none')) {
+        window.cargarListaMenus();
+    }
+});
+}
+
+(function installMenuSecretariaHandler() {
+  if (window.__menuSecretariaHandler) return;
+  window.__menuSecretariaHandler = true;
+
+  const VIEW_IDS = ['gestionDiaria','gestionMensual','gestionPadres','divQ19','acercade','gestionMenus'];
+
+  function hideAllViews() {
+    VIEW_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('d-none');
+    });
+  }
+
+  function setActiveLi(li) {
+    const items = document.querySelectorAll('#menuSecretaria ul li');
+    items.forEach(i => i.classList.remove('active'));
+    if (li) li.classList.add('active');
+  }
+
+  document.addEventListener('click', (ev) => {
+    const li = ev.target.closest('#menuSecretaria ul li');
+    if (!li) return;
+
+    // soporta li sin data-view (ej. iconos o acciones especiales)
+    const view = li.getAttribute('data-view');
+    if (!view) return;
+
+    ev.preventDefault();
+    hideAllViews();
+
+    const target = document.getElementById(view);
+    if (target) target.classList.remove('d-none');
+
+    setActiveLi(li);
+
+    // Si es la vista de menús, cargar la lista si la función existe
+    if (view === 'gestionMenus' && typeof window.cargarListaMenus === 'function') {
+      window.cargarListaMenus();
+    }
+
+    // Si quieres que la lógica del controlador se ejecute también, intenta llamar a métodos
+    // convencionales si existen (opcional)
+    try {
+      const ctrl = window.controladorSecretaria || null;
+      if (ctrl && typeof ctrl['verVista' + view.charAt(0).toUpperCase() + view.slice(1)] === 'function') {
+        // no lanzamos, solo intentamos (no necesario, dejo comentado)
+        // ctrl['verVista' + view.charAt(0).toUpperCase() + view.slice(1)]();
+      }
+    } catch(e) { /* no bloquear */ }
+  }, false);
+})();

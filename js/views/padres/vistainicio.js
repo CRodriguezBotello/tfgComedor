@@ -93,7 +93,9 @@ export class VistaInicioPadres extends Vista {
             contenedorHijo.classList.add('calendarioHijo');
 
             const tituloHijo = document.createElement('h3');
-            tituloHijo.textContent = hijo.nombre;
+            // Mostrar solo apellidos; si no existen, usar el nombre
+            const nombreCompleto = ((hijo.nombre || hijo.firstName || '') + ' ' + (hijo.apellidos || hijo.apellido || '')).trim();
+            tituloHijo.textContent = nombreCompleto;
             contenedorHijo.appendChild(tituloHijo);
 
             const tablaHijo = document.createElement('table');
@@ -106,6 +108,7 @@ export class VistaInicioPadres extends Vista {
                 const th = document.createElement('th');
                 th.textContent = dia;
                 trHead.appendChild(th);
+                
             }
             thead.appendChild(trHead);
             tablaHijo.appendChild(thead);

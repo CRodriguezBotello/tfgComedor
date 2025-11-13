@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__DIR__) . '/daos/daousuario.php');
-
 /**
  * Controlador de hijos.
  */
@@ -19,10 +18,11 @@ class Calendario {
         }
         if ($queryParams) {
             //TODO: Falta validar los parámetros
-            $idPadre = $queryParams['idPadre']; 
+            $idPadre = $queryParams['idPadre'];
             $anio = $queryParams['anio'];
             $mes = $queryParams['mes'];
-            $resultado = DAOUsuario::obtenerDiasCalendario($idPadre, $anio, $mes);
+            $tupper = $queryParams['tupper'];
+            $resultado = DAOUsuario::obtenerDiasCalendario($idPadre, $anio, $mes, $tupper);
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');
             echo(json_encode($resultado));
@@ -33,4 +33,4 @@ class Calendario {
             die();
         }
     }
-}  
+}

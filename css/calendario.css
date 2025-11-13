@@ -108,3 +108,13 @@ h2{
 .tablaMes td button:hover {
   background-color: #0069d9;
 }
+.yellow-day {
+    background-color: #9be19b;
+    color: white;
+}
+
+.green-note {
+    background-color: #9BE19B;
+    color: white;
+    margin-top: -1%;
+}

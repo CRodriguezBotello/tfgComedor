@@ -53,13 +53,13 @@
             <div id="divNotificacion"></div>
             <h1 class="text-center my-4">Bienvenido al panel de padres/madres</h1>
             <p class="p-2 text-center">
-                Desde aquí podrás gestionar tus datos personales, podrás añadir cúales de tus hijos irán al comedor 
+                Desde aquí podrás gestionar tus datos personales, podrás añadir cuáles de tus hijos irán al comedor 
                 y también podrás modificar sus datos, podrás añadirles o quitarles los días que irán o no 
                 al comedor. 
             </p>
             <p class="p-2 text-center">
-			<a href="./menus/menu_basal_linea_caliente_septiembre_2025.pdf" target="_blank">Menú Septiembre</a> - <a href="./menus/menu_derivadas_septiembre_2025.pdf" target="_blank">Menú Derivados Septiembre</a>
-			</p>
+                <span id="menusLinks" class="d-block"></span>
+            </p>
             <div id="calendario">
                 <table id="menuHijos">
                     <thead></thead>
@@ -194,7 +194,7 @@
                         Nuevo email (*) <input type="email" class="form-control" name="correo" maxlength="90" required/>
                     </label>
                 </div>
-                <div class="formItem iban">
+                 <div class="formItem">
                     <label for="iban">
                         Nuevo IBAN sin espacios (*) <input type="text" class="form-control" name="iban" maxlength="34" required/>
                         <div class="invalid-feedback">Por favor, introduzca un IBAN válido.</div>
@@ -229,6 +229,9 @@
             <div class="alert alert-info info-note" role="alert">
                 Los días mostrados con fondo azul son los que tiene reservados para el comedor.
             </div>
+            <div class="alert info-note green-note" role="alert">
+                Los días mostrados con fondo verde son los que tiene reservados con tupper.
+            </div>
             <br>
             <div class="row justify-content-center">
                 <div class="col-auto">
@@ -260,5 +263,6 @@
 
 
         <script type="module" src="./js/controllers/padres.js"></script>
+        <script type="module" src="./js/controllers/menusLinks.js"></script>
     </body>
 </html>

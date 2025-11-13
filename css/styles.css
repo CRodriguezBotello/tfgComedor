@@ -1,6 +1,4 @@
-/* =========================
-   ESTILOS COMUNES
-========================= */
+/* ESTILOS COMUNES */
 
 /* ----- FUENTE ----- */
 @font-face {
@@ -9,16 +7,19 @@
     font-weight: normal;
     src: url("../font/opensans/OpenSans-VariableFont.ttf");
 }
+
 body {
     font-family: 'Open Sans';
 }
+
 /* ----- FORMULARIOS ----- */
 form div.formItem {
     margin: 10px auto;
     text-align: center;
 }
-div.formItem input,
-div.formItem select,
+
+div.formItem input, 
+div.formItem select, 
 div.formItem textarea {
     display: block;
     margin: auto;
@@ -30,11 +31,13 @@ div.formItem textarea {
     border-radius: 5px;
     background-color: white;
 }
+
 div.formItem input[type="file"] {
     border: 0;
     border-radius: 0;
     background-color: aliceblue;
 }
+
 form {
     /* más ancho para que los campos sean más largos */
     width: 45%;
@@ -47,15 +50,18 @@ form {
     color: #014179;
     background-color: aliceblue;
 }
+
 label {
     text-align: left;
 }
+
 div.formItem input[type="checkbox"] {
     min-width: 20px;
     width: auto;
     display: inline-block;
     position: static;
 }
+
 @media (max-width:576px) {
     form {
         width: 92%;
@@ -63,56 +69,67 @@ div.formItem input[type="checkbox"] {
         min-width: 250px;
         font-size: 0.95em;
     }
-    div.formItem input,
-    div.formItem select,
+    div.formItem input, 
+    div.formItem select, 
     div.formItem textarea {
         min-width: 0;
         width: 100%;
     }
 }
+
 div#divExito,
 div#divError {
     display: none;
 }
+
 #loadingImg {
     display: none;
 }
+
 #loadingImg img {
     width: 32px;
     height: 32px;
 }
+
 /* ----- MENÚ DE NAVEGACIÓN -----*/
+
 nav#menuPadres ul li,
 nav#menuSecretaria ul li {
     cursor: pointer;
 }
+
 .topnav {
     background-color: #333;
     overflow: hidden;
 }
+
 /* Style the links inside the navigation bar */
 .topnav li {
     float: left;
     display: block;
-    color: #F2F2F2;
+    color: #f2f2f2;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
 }
+
 /* Change the color of links on hover */
 .topnav li:hover {
-    background-color: #00A1A7;
+    background-color: #00a1a7;
 }
+
 /* Add an active class to highlight the current page */
 .topnav li.active {
-    background-color: #00ADC4;
+    background-color: #00adc4;
     color: white;
 }
+
 /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
     display: none;
 }
+
 @media screen and (max-width: 600px) {
     .topnav li:not(:first-child) {display: none;}
     .topnav li.icon {
@@ -120,6 +137,7 @@ nav#menuSecretaria ul li {
         display: block;
     }
 }
+  
 /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
 @media screen and (max-width: 600px) {
     .topnav.responsive {position: relative;}
