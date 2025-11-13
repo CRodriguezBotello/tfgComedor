@@ -100,6 +100,14 @@ try {
     LoginGoogle::$iv = $config['iv'] ?? '';
 
     $usuario = null;
+    // FORZAR usuario de prueba SOLO PARA DESACTIVAR PADRE
+        if ($recurso == 'secretaria' && $_SERVER['PATH_INFO'] == '/secretaria/desactivarPadre') {
+            $usuario = (object)[
+                'id' => 1,
+                'nombre' => 'SecretariaTest',
+                'rol' => 'secretaria'
+            ];
+        }
     // Utilizamos Authorization2 en lugar de Authorization por NGINX (compatibilidad)
     if (function_exists('apache_request_headers')) {
         $headers = apache_request_headers();

@@ -54,6 +54,13 @@ export class Modelo {
         return Rest.get('festivos', [], queryParams);
     }
 
+    async desactivarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/desactivarPadre', [], body);
+        console.log("Padre desactivado:", respuesta);
+        return respuesta;
+    }
+
     /**
      * Obtener hijos de un padre.
      * @param {Array} id ID del padre.

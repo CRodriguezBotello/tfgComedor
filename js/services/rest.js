@@ -57,18 +57,24 @@ export class Rest {
 
     static async put(path, pathParams = [], requestBody = null, json = true) {
         const url = Rest._construirURL(path, pathParams);
+        // Construimos las opciones correctamente
         const opciones = {
             method: 'PUT',
-            headers: Rest._getHeaders(),
-            body: JSON.stringify(requestBody)
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include', // mantiene la sesión
+            body: requestBody ? JSON.stringify(requestBody) : null
         };
         const respuesta = await fetch(url, opciones);
         const cuerpo = await respuesta.text();
-
-        if (!respuesta.ok) throw new Error(`${respuesta.status} - ${respuesta.statusText}: ${cuerpo}`);
-
+        if (!respuesta.ok) {
+            throw new Error(`${respuesta.status} - ${respuesta.statusText}: ${cuerpo}`);
+        }
         if (json) {
-            try { return JSON.parse(cuerpo); } catch { return cuerpo; }
+            try { 
+                return JSON.parse(cuerpo); 
+            } catch { 
+                return cuerpo; 
+            }
         }
         return cuerpo;
     }

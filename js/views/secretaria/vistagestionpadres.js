@@ -172,6 +172,7 @@ export class VistaGestionPadres extends Vista {
      */
     editar(padre) {
         this.mostrarOcultarCrud(false, true);
+        console.log('Padre seleccionado:', padre);
         this.idUsuario = padre.id;
         this.inputsModificar[0].value = padre.nombre;
         this.inputsModificar[1].value = padre.apellidos;
@@ -182,6 +183,8 @@ export class VistaGestionPadres extends Vista {
         this.inputsModificar[6].value = padre.titular;
         this.inputsModificar[7].value = padre.fechaFirmaMandato;
         this.inputsModificar[8].value = padre.referenciaUnicaMandato;
+        // Cuando se selecciona un padre para editar:
+        window.controladorSecretaria.padreActual = padre; // Guarda el objeto completo
     }
 
     /**

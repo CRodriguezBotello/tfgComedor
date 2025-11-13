@@ -221,6 +221,11 @@
                         <button type="button" class="btn btn-danger">Cancelar</button>
                         <button type="button" class="btn btn-success">Actualizar</button>
                     </div>
+                    <div id="desactivarPadre" class="w-75 p-1 container alert alert-warning text-center rounded my-2">
+                        <p>¿Desea desactivar este padre/madre? Esta acción desactivará también a todos sus hijos/as y no podrá ser revertida.</p>
+                        <button type="button" class="btn btn-secondary" >Cancelar</button><br>
+                        <button type="button" class="btn btn-danger" onclick="window.controladorSecretaria.desactivarPadre(window.controladorSecretaria.padreActual)"">Desactivar padre/madre</button>
+                    </div>
                 </form>
                 <div id="divErrorModificacion" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
             </div>

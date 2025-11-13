@@ -888,6 +888,11 @@
             return BD::actualizar($sql, $params);
         }
 
+        public static function desactivarPadre(int $idPersona) {
+            $sql = "UPDATE Persona SET activo = 0 WHERE id = :id";
+            BD::actualizar($sql, ['id' => $idPersona]);
+        }
+
         /**
          * Elimina definitivamente la cuenta de un padre y limpia referencias.
          * - Para cada hijo con idPadreAlta = padre:
