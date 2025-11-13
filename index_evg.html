@@ -146,13 +146,22 @@
         <div id="gestionPadres">
             <h1 class="text-center my-4">Gestión Padres</h1>
             <div id="divListadoPadres">
-                <div id="buscador">
-                    <input name="busqueda" type="text" placeholder="Buscar por nombre, apellidos o correo electrónico">
-                    <button>Buscar</button>
+                <div id="contenedorBusquedaVertical">
+                    <div id="buscador">
+                        <input name="busqueda" type="text" placeholder="Buscar por nombre, apellidos o correo electrónico">
+                        <button>Buscar</button>
+                    </div>
+                    <div id="filtrar">
+                        <input type="checkbox" name="desactivados" value="desac">
+                        <label for="desactivados">Desactivados</label>
+                    </div>
                 </div>
+
                 <div id="divExitoModificacion" class="w-50 p-1 container alert alert-success text-center rounded">
                     <p>Los datos han sido actualizados.</p>
                 </div>
+
+
                 <table id="tablaGestionPadres">
                     <thead></thead>
                     <tbody></tbody>

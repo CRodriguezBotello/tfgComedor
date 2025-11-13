@@ -12,6 +12,48 @@ body {
     font-family: 'Open Sans';
 }
 
+/* ----- Contenedor vertical ----- */
+#contenedorBusquedaVertical {
+  display: flex;
+  flex-direction: column; /* apila verticalmente */
+  align-items: center;    /* centra horizontalmente */
+  gap: 8px;               /* espacio entre buscador y checkbox */
+}
+
+/* ----- BUSCADOR ----- */
+#buscador {
+  display: flex;
+  align-items: center;
+  gap: 5px;  /* espacio entre input y botón */
+}
+
+#buscador input {
+  width: 250px; /* tamaño fijo del input */
+}
+
+/* ----- FILTRAR ----- */
+#filtrar {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* espacio entre checkbox y label */
+}
+
+#filtrar input[type="checkbox"] {
+  width: 20px;   /* checkbox más grande */
+  height: 20px;  /* checkbox más grande */
+  margin: 0;
+}
+
+#filtrar label {
+  margin: 0;
+  line-height: 1;
+}
+
+
+
+
+
+
 /* ----- FORMULARIOS ----- */
 form div.formItem {
     margin: 10px auto;
