@@ -109,24 +109,37 @@ class Login {
      * @param {Object} e Error.
      */
     error(e) {
-        if (e != null) {
-            if (e == 'Error: 401 - Unauthorized') {
-                this.divError.innerHTML = '<p>Los datos introducidos no son correctos.</p>';
+        let mensaje = 'Error al iniciar sesión';
+        try {
+            const texto = (e && e.message) ? e.message : String(e);
+            // texto: "403 - Forbidden: { ... }" => extraer cuerpo JSON tras ':'
+            const idx = texto.indexOf(':');
+            const cuerpo = idx >= 0 ? texto.slice(idx + 1).trim() : '';
+            if (cuerpo) {
+                try {
+                    const json = JSON.parse(cuerpo);
+                    if (json && json.error === 'usuario_desactivado') {
+                        mensaje = 'Usuario desactivado. Consulte con administración.';
+                    } else if (json && json.mensaje) {
+                        mensaje = json.mensaje;
+                    }
+                } catch (_) {
+                    if (texto.includes('401')) mensaje = 'Usuario o contraseña incorrectos.';
+                    else if (texto.includes('408')) mensaje = 'No hay conexión con la base de datos. Intente de nuevo más tarde.';
+                }
+            } else {
+                if (texto.includes('401')) mensaje = 'Usuario o contraseña incorrectos.';
             }
-            else if (e == 'Error: 408 - Request Timeout') {
-                this.divError.innerHTML = '<p>No hay conexión con la base de datos. Intente de nuevo más tarde.</p>';
-            }
-            else {
-                this.divError.innerHTML = '<p>' + e + '</p>';
-            }
+        } catch (_) {}
 
+        if (this.divError) {
+            this.divError.innerHTML = `<p>${mensaje}</p>`;
             this.divError.style.display = 'block';
-            this.form.classList.remove('was-validated');
-            window.scrollTo(0, document.body.scrollHeight);
+        } else {
+            alert(mensaje);
         }
-        else {
-            this.divError.style.display = 'none';
-        }
+        this.form.classList.remove('was-validated');
+        window.scrollTo(0, document.body.scrollHeight);
     }
 }
 

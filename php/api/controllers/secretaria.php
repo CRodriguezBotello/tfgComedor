@@ -26,16 +26,6 @@
                         header('HTTP/1.1 200 OK');
                         break;
 
-                    case 'incidencia':
-                        DAOUsuario::insertarIncidencia($datos);
-                        header('HTTP/1.1 200 OK');
-                        break;
-                        
-                    case 'tupper':
-                        DAOUsuario::insertarTupper($datos);
-                        header('HTTP/1.1 200 OK');
-                        break;
-                    
                     case 'desactivarPadre':
                         // $datos viene como stdClass { id: ... }
                         $idPersona = isset($datos->id) ? (int)$datos->id : null;
@@ -46,9 +36,19 @@
                         }
                         // Llamamos al DAO para actualizar la tabla Persona
                         DAOUsuario::desactivarPadre($idPersona);
-                           header('HTTP/1.1 200 OK');
-                            echo json_encode(['mensaje' => "Persona con ID $idPersona desactivada"]);
-                            die();
+                        header('HTTP/1.1 200 OK');
+                        echo json_encode(['mensaje' => "Persona con ID $idPersona desactivada"]);
+                        die();
+                        break;
+
+                    case 'incidencia':
+                        DAOUsuario::insertarIncidencia($datos);
+                        header('HTTP/1.1 200 OK');
+                        break;
+                        
+                    case 'tupper':
+                        DAOUsuario::insertarTupper($datos);
+                        header('HTTP/1.1 200 OK');
                         break;
                     
                     default:
@@ -105,11 +105,12 @@
                     case 'q19':
                         $this->obtenerQ19($queryParams['mes']);
                         break;
+
                     case 'desactivarPadre':
                         // No hace falta hacer nada aquí, el proceso se realiza en PUT.
                         header('HTTP/1.1 200 OK');
                         die();
-                        break;
+                        break;                   
 
                     default:
                         header('HTTP/1.1 501 Not Implemented');
@@ -132,12 +133,6 @@
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');
             echo json_encode($usuarios);
-            die();
-        }
-
-        function desactivarPadre($idPadre) {
-            DAOUsuario::desactivarPadre($idPadre);
-            header('HTTP/1.1 200 OK');
             die();
         }
 
@@ -220,6 +215,12 @@
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');
             echo json_encode($tupper);
+            die();
+        }
+
+        function desactivarPadre($idPadre) {
+            DAOUsuario::desactivarPadre($idPadre);
+            header('HTTP/1.1 200 OK');
             die();
         }
     }

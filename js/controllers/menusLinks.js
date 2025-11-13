@@ -7,6 +7,45 @@ async function loadMenus() {
     const res = await fetch(API_LIST, { cache: 'no-store' });
     if (!res.ok) throw new Error('No se pudo listar menús');
     menusData = await res.json();
+
+    // Normaliza las URLs recibidas para apuntar siempre a la carpeta /menus/
+    const getProjectBasePath = () => {
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const idx = parts.findIndex(p => p.toLowerCase().includes('comedor'));
+      if (idx >= 0) return '/' + parts.slice(0, idx + 1).join('/');
+      // fallback: si no encuentra "comedor" usa los dos primeros segmentos (por ejemplo /hugo/Proyecto)
+      if (parts.length >= 2) return '/' + parts.slice(0, 2).join('/');
+      return '';
+    };
+
+    const base = window.location.origin + getProjectBasePath() + '/menus/';
+
+    const normalize = (val) => {
+      if (!val) return null;
+      val = String(val).trim();
+      // si es URL absoluta o empieza con /, devolver tal cual
+      if (/^(https?:)?\/\//.test(val) || val.startsWith('/')) {
+        // si contiene "/menus/" y es absoluta, recortar hasta /menus/ y rehacer con base detectada
+        const mIdx = val.indexOf('/menus/');
+        if (mIdx >= 0) {
+          const filename = val.substring(mIdx + 7);
+          return base + encodeURIComponent(filename);
+        }
+        return val;
+      }
+      // si contiene "menus/" o "/menus/" quitar prefijo y tomar nombre de archivo
+      let filename = val;
+      const menusPos = val.indexOf('menus/');
+      if (menusPos >= 0) filename = val.substring(menusPos + 6);
+      // si venía "ruta/archivo.pdf" tomar último segmento
+      filename = filename.split('/').pop();
+      return base + encodeURIComponent(filename);
+    };
+
+    for (const k in menusData) {
+      menusData[k] = normalize(menusData[k]);
+    }
+
   } catch (e) {
     console.error('Error cargando menús', e);
     menusData = {};

@@ -100,8 +100,7 @@ try {
     LoginGoogle::$iv = $config['iv'] ?? '';
 
     $usuario = null;
-    // FORZAR usuario de prueba SOLO PARA DESACTIVAR PADRE
-        if ($recurso == 'secretaria' && $_SERVER['PATH_INFO'] == '/secretaria/desactivarPadre') {
+     if ($recurso == 'secretaria' && $_SERVER['PATH_INFO'] == '/secretaria/desactivarPadre') {
             $usuario = (object)[
                 'id' => 1,
                 'nombre' => 'SecretariaTest',

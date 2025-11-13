@@ -10,6 +10,20 @@ if ($menusDir === false) {
     exit;
 }
 
+// --- Nuevo: calcular URL pública de la carpeta "menus" a partir de DOCUMENT_ROOT ---
+$documentRoot = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
+$menusUrlBase = '/menus/'; // fallback
+if ($documentRoot && strpos($menusDir, $documentRoot) === 0) {
+    // obtener la parte de ruta relativa a DOCUMENT_ROOT y normalizar slashes
+    $relative = str_replace('\\', '/', substr($menusDir, strlen($documentRoot)));
+    if ($relative === '' || $relative === false) {
+        $menusUrlBase = '/menus/';
+    } else {
+        if ($relative[0] !== '/') $relative = '/' . $relative;
+        $menusUrlBase = rtrim($relative, '/') . '/';
+    }
+}
+
 $action = $_GET['action'] ?? $_POST['action'] ?? 'list';
 
 switch ($action) {
@@ -17,7 +31,7 @@ switch ($action) {
         $result = [];
         for ($m = 1; $m <= 12; $m++) {
             $filename = $menusDir . DIRECTORY_SEPARATOR . "menu_{$m}.pdf";
-            $result[$m] = is_file($filename) ? '/hugo/Comedor11-11-2025/menus/' . basename($filename) : null;
+            $result[$m] = is_file($filename) ? $menusUrlBase . basename($filename) : null;
         }
         echo json_encode($result);
         break;
@@ -54,7 +68,7 @@ switch ($action) {
             echo json_encode(['ok' => false, 'error' => 'Error al mover fichero']);
             exit;
         }
-        echo json_encode(['ok' => true, 'file' => '/hugo/Comedor11-11-2025/menus/' . basename($target)]);
+        echo json_encode(['ok' => true, 'file' => $menusUrlBase . basename($target)]);
         break;
 
     case 'delete':

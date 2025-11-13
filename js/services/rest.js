@@ -55,29 +55,31 @@ export class Rest {
         return cuerpo;
     }
 
+
     static async put(path, pathParams = [], requestBody = null, json = true) {
-        const url = Rest._construirURL(path, pathParams);
-        // Construimos las opciones correctamente
-        const opciones = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // mantiene la sesión
-            body: requestBody ? JSON.stringify(requestBody) : null
-        };
-        const respuesta = await fetch(url, opciones);
-        const cuerpo = await respuesta.text();
-        if (!respuesta.ok) {
-            throw new Error(`${respuesta.status} - ${respuesta.statusText}: ${cuerpo}`);
-        }
-        if (json) {
-            try { 
-                return JSON.parse(cuerpo); 
-            } catch { 
-                return cuerpo; 
-            }
-        }
-        return cuerpo;
-    }
+            const url = Rest._construirURL(path, pathParams);
+            // Construimos las opciones correctamente incluyendo headers globales (Authorization2)
+            const headers = Object.assign({}, Rest._getHeaders(), { 'Content-Type': 'application/json' });
+            const opciones = {
+                method: 'PUT',
+                headers: headers,
+                credentials: 'include', // mantiene la sesión
+                body: requestBody ? JSON.stringify(requestBody) : null
+            };
+             const respuesta = await fetch(url, opciones);
+             const cuerpo = await respuesta.text();
+             if (!respuesta.ok) {
+                 throw new Error(`${respuesta.status} - ${respuesta.statusText}: ${cuerpo}`);
+             }
+             if (json) {
+                 try { 
+                     return JSON.parse(cuerpo); 
+                 } catch { 
+                     return cuerpo; 
+                 }
+             }
+             return cuerpo;
+         }
 
     static async delete(path, pathParams = []) {
         const url = Rest._construirURL(path, pathParams);

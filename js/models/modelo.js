@@ -41,6 +41,13 @@ export class Modelo {
         return Rest.get('cursos', [], []);
     }
 
+    async desactivarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/desactivarPadre', [], body);
+        console.log("Padre desactivado:", respuesta);
+        return respuesta;
+    }
+
     /**
      * Realiza el proceso de obtener filas de la tabla festivos.
      * @param {Date} inicioMes Primer día del mes.
@@ -52,13 +59,6 @@ export class Modelo {
         queryParams.set('inicio', inicioMes.getDate() + '-' + (inicioMes.getMonth()+1) + '-' + inicioMes.getFullYear());
         queryParams.set('final', finMes.getDate() + '-' + (finMes.getMonth()+1) + '-' + finMes.getFullYear());
         return Rest.get('festivos', [], queryParams);
-    }
-
-    async desactivarPadreSecretaria(padre) {
-        const body = { id: padre.id }; // ¡Ojo! solo el id
-        const respuesta = await Rest.put('secretaria/desactivarPadre', [], body);
-        console.log("Padre desactivado:", respuesta);
-        return respuesta;
     }
 
     /**

@@ -31,7 +31,14 @@
             $params = array('usuario' => $login->usuario);
             if(!$persona[0]['activo']){
                 if (!BD::commit()) throw new Exception('No se pudo confirmar la transacción.');
-                else return false;
+                else {
+                    // Devolvemos un objeto indicando que el usuario está desactivado
+                    $res = new stdClass();
+                    $res->desactivado = true;
+                    $res->id = $persona[0]['id'];
+                    $res->correo = $persona[0]['correo'];
+                    return $res;
+                }
             }
             $resultado = BD::seleccionar($sql, $params);
             if (!BD::commit()) 
@@ -42,6 +49,11 @@
             else {
                 return false;
             }
+        }
+
+        public static function desactivarPadre(int $idPersona) {
+            $sql = "UPDATE Persona SET activo = 0 WHERE id = :id";
+            BD::actualizar($sql, ['id' => $idPersona]);
         }
         
         /**
@@ -888,11 +900,6 @@
             return BD::actualizar($sql, $params);
         }
 
-        public static function desactivarPadre(int $idPersona) {
-            $sql = "UPDATE Persona SET activo = 0 WHERE id = :id";
-            BD::actualizar($sql, ['id' => $idPersona]);
-        }
-
         /**
          * Elimina definitivamente la cuenta de un padre y limpia referencias.
          * - Para cada hijo con idPadreAlta = padre:
@@ -952,7 +959,5 @@
                 throw $e;
             }
         }
-
-        
     }
 ?>

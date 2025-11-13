@@ -73,25 +73,6 @@ class ControladorSecretaria {
              console.error(e);
          })
     }
-    // Función exacta que debes poner en tu secretaria.js
-    async desactivarPadre(padreSeleccionado) {
-        if (!padreSeleccionado || !padreSeleccionado.id) {
-            console.error("No hay padre seleccionado o no tiene ID");
-            return;
-        }
-        // Solo enviamos el ID
-        const datos = { id: padreSeleccionado.id };
-        console.log("Enviando a desactivar:", datos);
-        try {
-            // Llamada al modelo que hace el PUT
-            const respuesta = await this.modelo.desactivarPadreSecretaria(datos);
-            console.log("Padre desactivado:", respuesta);
-            alert(`Padre ${padreSeleccionado.nombre} desactivado correctamente`);
-        } catch (error) {
-            console.error("Fallo al desactivar padre:", error);
-            alert("Error al desactivar padre, revisa la consola");
-        }
-    }
     
     obtenerTuppers(fecha) {
         return this.modelo.obtenerTupper(fecha)
@@ -201,6 +182,26 @@ class ControladorSecretaria {
     verVistaGestionPadres() {
 				this.ocultarVistas()
         this.vistaGestionPadres.mostrar(true);
+    }
+
+    // Función exacta que debes poner en tu secretaria.js
+    async desactivarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a desactivar:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.desactivarPadreSecretaria(datos);
+            console.log("Padre desactivado:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} desactivado correctamente`);
+        } catch (error) {
+            console.error("Fallo al desactivar padre:", error);
+            alert("Error al desactivar padre, revisa la consola");
+        }
     }
     
     /**
