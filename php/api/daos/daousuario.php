@@ -261,13 +261,20 @@
          * @param Integer $mes Mes.
          */
         public static function obtenerUsuariosPorMes($mes) {
-            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, COUNT(Dias.idPersona) AS "numeroMenus" ';
-						$sql .= ', GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias '; 
-						$sql .= 'FROM Persona ';
-            $sql .= 'JOIN Dias ON Persona.id = Dias.idPersona ';
-            $sql .= 'WHERE MONTH(dia) = :mes ';
-            $sql .= 'GROUP BY Persona.id ';
-						$sql .= 'ORDER BY Persona.apellidos ';
+            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
+                        COUNT(Dias.idPersona) AS numeroMenus,
+                        SUM(Dias.tupper) AS tupper,
+                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
+                        GROUP_CONCAT(
+                            CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
+                            ORDER BY Dias.dia ASC
+                            SEPARATOR ", "
+                        ) AS diasTupper
+                        FROM Persona
+                        JOIN Dias ON Persona.id = Dias.idPersona
+                        WHERE MONTH(Dias.dia) = :mes
+                        GROUP BY Persona.id
+                        ORDER BY Persona.apellidos';
             $params = array('mes' => $mes);
             $usuarios = BD::seleccionar($sql, $params);
             

@@ -3,7 +3,7 @@ import {Vista} from '../vista.js';
 /**
  * Contiene la vista de gestión mensual de secretaría.
  */
-export class VistaGestionMensual extends Vista {
+export class VistaResumenMensual extends Vista {
     /**
 	 *	Constructor de la clase.
 	 *	@param {ControladorSecretaria} controlador Controlador de la vista.

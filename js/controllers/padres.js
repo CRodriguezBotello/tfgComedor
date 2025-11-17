@@ -5,6 +5,7 @@ import { VistaGestionHijos } from "../views/padres/vistagestionhijos.js";
 import { VistaModificarPadres } from "../views/padres/vistamodificar.js";
 import { VistaCalendario } from "../views/padres/vistacalendario.js";
 import { VistaGestionDiaria } from "../views/padres/vistagestiondiaria.js";
+import { VistaResumenMensual } from "../views/padres/vistaresumenmensual.js";
 import { Rest } from "../services/rest.js";
 
 /**
@@ -38,6 +39,7 @@ class ControladorPadres {
         this.vistaModificacion = new VistaModificarPadres(this, document.getElementById('modificacionPadres'));
         this.vistaCalendario = new VistaCalendario(this, document.getElementById('calendarioGestion'));
         this.vistaGestionDiaria = new VistaGestionDiaria(this, document.getElementById('gestionDiariaPadres'));
+        this.resumenMensual = new VistaResumenMensual(this, document.getElementById('resumenMensual'));
 
 
         this.vistaModificacion.actualizarCampos(this.#usuario);
@@ -97,6 +99,7 @@ class ControladorPadres {
         this.vistaModificacion.mostrar(false);
         this.vistaCalendario.mostrar(false);
         this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(false);
     }
 
     /**
@@ -108,6 +111,7 @@ class ControladorPadres {
         this.vistaGestionHijos.mostrar(true);
         this.vistaModificacion.mostrar(false);
         this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(false);
     }
 
 
@@ -129,6 +133,32 @@ class ControladorPadres {
         this.vistaCalendario.mostrar(false);
 
         this.vistaGestionDiaria.mostrar(true);
+        this.resumenMensual.mostrar(false);
+
+        // Cargar hijos y cursos y pasar mapa de id->nombre a la vista
+        Promise.all([
+            this.modelo.dameHijos(this.#usuario.id),
+            this.modelo.obtenerCursos()
+        ])
+        .then(([hijos, cursos]) => {
+            const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
+            // se pasa también el id del padre para que la vista pueda usarlo al confirmar
+            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
+        })
+        .catch(e => {
+            console.error('Error cargando hijos para gestión diaria:', e);
+            this.vistaGestionDiaria.cargarListado([], new Map());
+        });
+    }
+
+    verVistaResumenMensual() {
+        this.vistaInicio.mostrar(false);
+        this.vistaGestionHijos.mostrar(false);
+        this.vistaModificacion.mostrar(false);
+        this.vistaCalendario.mostrar(false);
+
+        this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(true);
 
         // Cargar hijos y cursos y pasar mapa de id->nombre a la vista
         Promise.all([
@@ -156,6 +186,7 @@ class ControladorPadres {
         this.vistaGestionHijos.mostrar(false);
         this.vistaModificacion.mostrar(true);
         this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(false);
     }
     
     /**
@@ -167,6 +198,7 @@ class ControladorPadres {
         this.vistaModificacion.mostrar(false);   
         this.vistaCalendario.mostrar(true);
         this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(false);
     }
     
     /**
