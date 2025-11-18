@@ -159,21 +159,28 @@ class ControladorPadres {
 
         this.vistaGestionDiaria.mostrar(false);
         this.resumenMensual.mostrar(true);
+        
+    }
 
-        // Cargar hijos y cursos y pasar mapa de id->nombre a la vista
-        Promise.all([
-            this.modelo.dameHijos(this.#usuario.id),
-            this.modelo.obtenerCursos()
-        ])
-        .then(([hijos, cursos]) => {
-            const cursosMap = new Map((cursos || []).map(c => [c.id, c.nombre]));
-            // se pasa también el id del padre para que la vista pueda usarlo al confirmar
-            this.vistaGestionDiaria.cargarListado(hijos || [], cursosMap, this.#usuario.id);
+    obtenerUsuariosMensual(mes) {
+        console.log(this.#usuario.id);
+        this.modelo.obtenerHijosPadreApuntadosMensual(mes, this.#usuario.id)
+        .then(usuarios => {
+            this.resumenMensual.cargarIncidencias(usuarios);
         })
         .catch(e => {
-            console.error('Error cargando hijos para gestión diaria:', e);
-            this.vistaGestionDiaria.cargarListado([], new Map());
-        });
+            console.error(e);
+        })
+    }
+
+    obtenerIncidenciasMensual(mes) {
+        this.modelo.obtenerIncidenciasHijoMensual(mes, this.#usuario.id)
+         .then(incidencias => {
+             this.resumenMensual.cargarListado(incidencias);
+         })
+         .catch(e => {
+             console.error(e);
+         })
     }
 
 

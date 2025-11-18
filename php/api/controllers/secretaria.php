@@ -1,227 +1,212 @@
 <?php
-    require_once(dirname(__DIR__) . '/daos/daousuario.php');
+require_once(dirname(__DIR__) . '/daos/daousuario.php');
+
+/**
+ * Controlador de secretaría.
+ */
+class Secretaria {
+    /**
+     * Insertar/modificar incidencia.
+     * @param array $pathParams No utilizado.
+     * @param array $queryParams No utilizado.
+     * @param object $datos Objeto con ID y la incidencia.
+     * @param object $usuario Usuario que realiza el proceso.
+     */
+    function put($pathParams, $queryParams, $datos, $usuario) {
+        if (!$usuario) {
+            header('HTTP/1.1 401 Unauthorized');
+            die();
+        }
+
+        if (count($pathParams)) {
+            switch ($pathParams[0]) {
+                case 'modificarPadre':
+                    DAOUsuario::modificarPadreSecretaria($datos);
+                    header('HTTP/1.1 200 OK');
+                    break;
+
+                case 'desactivarPadre':
+                    $idPersona = isset($datos->id) ? (int)$datos->id : null;
+                    if (!$idPersona) {
+                        header('HTTP/1.1 400 Bad Request');
+                        echo json_encode(['error' => 'ID de padre no proporcionado']);
+                        die();
+                    }
+                    DAOUsuario::desactivarPadre($idPersona);
+                    header('HTTP/1.1 200 OK');
+                    echo json_encode(['mensaje' => "Persona con ID $idPersona desactivada"]);
+                    die();
+                    break;
+
+                case 'incidencia':
+                    DAOUsuario::insertarIncidencia($datos);
+                    header('HTTP/1.1 200 OK');
+                    break;
+
+                case 'tupper':
+                    DAOUsuario::insertarTupper($datos);
+                    header('HTTP/1.1 200 OK');
+                    break;
+
+                default:
+                    header('HTTP/1.1 501 Not Implemented');
+                    break;
+            }
+        } else {
+            header('HTTP/1.1 400 Bad Request');
+        }
+
+        die();
+    }
 
     /**
-     * Controlador de secretaría.
+     * Manejo de GET según proceso.
      */
-    class Secretaria {
-        /**
-         * Insertar/modificar incidencia.
-         * @param array $pathParams No utilizado.
-         * @param array $queryParams No utilizado.
-         * @param object $datos Objeto con ID y la incidencia.
-         * @param object $usuario Usuario que realiza el proceso.
-         */
-        function put($pathParams, $queryParams, $datos, $usuario) {
-            // Si no existe $usuario, es porque la autorización ha fallado.
-            if (!$usuario) {
-                header('HTTP/1.1 401 Unauthorized');
-                die();
-            }
+    function get($pathParams, $queryParams, $usuario) {
+        if (!$usuario) {
+            header('HTTP/1.1 401 Unauthorized');
+            die();
+        }
 
-            if (count($pathParams)) {
-                switch ($pathParams[0]) {
-                    case 'modificarPadre':
-                        DAOUsuario::modificarPadreSecretaria($datos);
-                        header('HTTP/1.1 200 OK');
-                        break;
+        if (count($queryParams) && isset($queryParams['proceso'])) {
+            switch ($queryParams['proceso']) {
+                case 'usuarios':
+                    $this->obtenerUsuarios($queryParams['fecha']);
+                    break;
 
-                    case 'desactivarPadre':
-                        // $datos viene como stdClass { id: ... }
-                        $idPersona = isset($datos->id) ? (int)$datos->id : null;
-                        if (!$idPersona) {
-                            header('HTTP/1.1 400 Bad Request');
-                            echo json_encode(['error' => 'ID de padre no proporcionado']);
-                            die();
-                        }
-                        // Llamamos al DAO para actualizar la tabla Persona
-                        DAOUsuario::desactivarPadre($idPersona);
-                        header('HTTP/1.1 200 OK');
-                        echo json_encode(['mensaje' => "Persona con ID $idPersona desactivada"]);
+                case 'incidencias':
+                    $this->obtenerIncidencias($queryParams['fecha']);
+                    break;
+
+                case 'usuariosMes':
+                    $this->obtenerUsuariosMes($queryParams['mes']);
+                    break;
+
+                case 'incidenciasMes':
+                    $this->obtenerIncidenciasMes($queryParams['mes']);
+                    break;
+
+                case 'padres':
+                    $this->obtenerListadoPadres($queryParams['busqueda']);
+                    break;
+
+                case 'tupper':
+                    $this->obtenerTupper($queryParams['fecha']);
+                    break;
+
+                case 'q19':
+                    $this->obtenerQ19($queryParams['mes']);
+                    break;
+
+                case 'desactivarPadre':
+                    header('HTTP/1.1 200 OK');
+                    die();
+                    break;
+
+                // NUEVOS PROCESOS
+                case 'hijosPadreMensual':
+                    if (!isset($queryParams['mes']) || !isset($queryParams['idPadre'])) {
+                        header('HTTP/1.1 400 Bad Request');
+                        echo json_encode(['error' => 'Parámetros incompletos']);
                         die();
-                        break;
+                    }
+                    $this->obtenerHijosPadreApuntadosMensual($queryParams['mes'], $queryParams['idPadre']);
+                    break;
 
-                    case 'incidencia':
-                        DAOUsuario::insertarIncidencia($datos);
-                        header('HTTP/1.1 200 OK');
-                        break;
-                        
-                    case 'tupper':
-                        DAOUsuario::insertarTupper($datos);
-                        header('HTTP/1.1 200 OK');
-                        break;
-                    
-                    default:
-                        header('HTTP/1.1 501 Not Implemented');
-                        break;
-                }
-            }
-            else {
-                header('HTTP/1.1 400 Bad Request');
-            }
-
-            die();
-        }
-
-        /**
-         * Sacar los usuarios de una fecha (Si existe proceso) Sacar los usuarios de un mes (Si existe procesom).
-         * @param array $pathParams No utilizado.
-         * @param array $queryParams No utilizado.
-         * @param object $usuario Usuario que realiza el proceso.
-         */
-        function get($pathParams, $queryParams, $usuario) {
-            // Si no existe $usuario, es porque la autorización ha fallado.
-            if (!$usuario) {
-                header('HTTP/1.1 401 Unauthorized');
-                die();
-            }
-
-            if (count($queryParams) && isset($queryParams['proceso'])) {
-                switch ($queryParams['proceso']) {
-                    case 'usuarios':
-                        $this->obtenerUsuarios($queryParams['fecha']);
-                        break;
-
-                    case 'incidencias':
-                        $this->obtenerIncidencias($queryParams['fecha']);
-                        break;
-
-                    case 'usuariosMes':
-                        $this->obtenerUsuariosMes($queryParams['mes']);
-                        break;
-
-                    case 'incidenciasMes':
-                        $this->obtenerIncidenciasMes($queryParams['mes']);
-                        break;
-
-                    case 'padres':
-                        $this->obtenerListadoPadres($queryParams['busqueda']);
-                        break;
-                        
-                    case 'tupper':
-                        $this->obtenerTupper($queryParams['fecha']);
-                        break;
-
-                    case 'q19':
-                        $this->obtenerQ19($queryParams['mes']);
-                        break;
-
-                    case 'desactivarPadre':
-                        // No hace falta hacer nada aquí, el proceso se realiza en PUT.
-                        header('HTTP/1.1 200 OK');
+                case 'incidenciasHijoMensual':
+                    if (!isset($queryParams['mes']) || !isset($queryParams['idPadre'])) {
+                        header('HTTP/1.1 400 Bad Request');
+                        echo json_encode(['error' => 'Parámetros incompletos']);
                         die();
-                        break;                   
+                    }
+                    $this->obtenerIncidenciasHijoMensual($queryParams['mes'], $queryParams['idPadre']);
+                    break;
 
-                    default:
-                        header('HTTP/1.1 501 Not Implemented');
-                        die();
-                }
+                default:
+                    header('HTTP/1.1 501 Not Implemented');
+                    die();
             }
-            else {
-                header('HTTP/1.1 400 Bad Request');
-                die();
-            }
-        }
-        
-        /**
-         * Obtener usuarios mensuales.
-         * @param string $mes Mes.
-         */
-        function obtenerUsuariosMes($mes) {
-            $usuarios = DAOUsuario::obtenerUsuariosPorMes($mes);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($usuarios);
-            die();
-        }
-
-        /**
-         * Obtener incidencias mensuales.
-         * @param string $mes Mes.
-         */
-        function obtenerIncidenciasMes($mes) {
-            $incidencias = DAOUsuario::obtenerIncidenciasPorMes($mes);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($incidencias);
-            die();
-        }
-
-        /**
-         * Obtener usuarios.
-         * @param string $date Fecha.
-         */
-        function obtenerUsuarios($date) {
-            $fecha = new DateTime($date);
-            $fecha = $fecha->format('Y-m-d');
-            
-            $usuarios = DAOUsuario::obtenerUsuariosPorDia($fecha);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($usuarios);
-            die();
-        }
-
-        /**
-         * Obtener incidencias.
-         * @param string $date Fecha.
-         */
-        function obtenerIncidencias($date) {
-            $fecha = new DateTime($date);
-            $fecha = $fecha->format('Y-m-d');
-            
-            $incidencias = DAOUsuario::obtenerIncidenciasPorDia($fecha);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($incidencias);
-            die();
-        }
-          /**
-         * Obtener padres.
-         * @param string $busqueda Busqueda.
-         */
-        function obtenerListadoPadres($busqueda) {
-            $padres = DAOUsuario::obtenerListadoPadres($busqueda);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($padres);
-            die();
-        }
-
-        /**
-         * Obtener Q19 de un mes.
-         * @param string $mes Mes.
-         */
-        function obtenerQ19($mes) {
-            $q19 = DAOUsuario::obtenerQ19($mes);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($q19);
-            die();
-        }
-
-        function obtenerTupper($date) {
-            $fecha = new DateTime($date);
-            $fecha = $fecha->format('Y-m-d');
-            
-            $tupper = DAOUsuario::obtenerTupper($fecha);
-
-            header('Content-type: application/json; charset=utf-8');
-            header('HTTP/1.1 200 OK');
-            echo json_encode($tupper);
-            die();
-        }
-
-        function desactivarPadre($idPadre) {
-            DAOUsuario::desactivarPadre($idPadre);
-            header('HTTP/1.1 200 OK');
+        } else {
+            header('HTTP/1.1 400 Bad Request');
             die();
         }
     }
+
+    // FUNCIONES EXISTENTES
+
+    function obtenerUsuariosMes($mes) {
+        $usuarios = DAOUsuario::obtenerUsuariosPorMes($mes);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($usuarios);
+        die();
+    }
+
+    function obtenerIncidenciasMes($mes) {
+        $incidencias = DAOUsuario::obtenerIncidenciasPorMes($mes);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($incidencias);
+        die();
+    }
+
+    function obtenerUsuarios($date) {
+        $fecha = (new DateTime($date))->format('Y-m-d');
+        $usuarios = DAOUsuario::obtenerUsuariosPorDia($fecha);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($usuarios);
+        die();
+    }
+
+    function obtenerIncidencias($date) {
+        $fecha = (new DateTime($date))->format('Y-m-d');
+        $incidencias = DAOUsuario::obtenerIncidenciasPorDia($fecha);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($incidencias);
+        die();
+    }
+
+    function obtenerListadoPadres($busqueda) {
+        $padres = DAOUsuario::obtenerListadoPadres($busqueda);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($padres);
+        die();
+    }
+
+    function obtenerQ19($mes) {
+        $q19 = DAOUsuario::obtenerQ19($mes);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($q19);
+        die();
+    }
+
+    function obtenerTupper($date) {
+        $fecha = (new DateTime($date))->format('Y-m-d');
+        $tupper = DAOUsuario::obtenerTupper($fecha);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($tupper);
+        die();
+    }
+
+    function desactivarPadre($idPadre) {
+        DAOUsuario::desactivarPadre($idPadre);
+        header('HTTP/1.1 200 OK');
+        die();
+    }
+
+    // NUEVAS FUNCIONES
+
+    function obtenerHijosPadreApuntadosMensual($mes, $idPadre) {
+        $datos = DAOUsuario::obtenerHijosPadreApuntadosMensual($mes, $idPadre);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($datos);
+        die();
+    }
+
+    function obtenerIncidenciasHijoMensual($mes, $idPadre) {
+        $dao = new DAOUsuario();
+        $datos = $dao->obtenerHijosPadreApuntadosMensual($mes, $idPadre);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($datos);
+        die();
+    }
+}
 ?>

@@ -15,16 +15,22 @@ export class Rest {
     }
 
     static _construirURL(path, pathParams = [], queryParams) {
-        let url = `${Rest.#URL}/${path}/${pathParams.join('/')}`;
-        if (queryParams) {
-            url += '?';
-            queryParams.forEach((valor, clave) => {
-                url += `${clave}=${valor}&`;
-            });
-            url = url.slice(0, -1);
-        }
-        return encodeURI(url.replace('//', '/null/'));
+    let url = `${Rest.#URL}/${path}`;
+
+    if (pathParams && pathParams.length > 0) {
+        url += `/${pathParams.join('/')}`;
     }
+
+    if (queryParams) {
+        url += '?';
+        queryParams.forEach((valor, clave) => {
+            url += `${clave}=${valor}&`;
+        });
+        url = url.slice(0, -1);
+    }
+
+    return encodeURI(url);
+}
 
     static async get(path, pathParams = [], queryParams) {
         const url = Rest._construirURL(path, pathParams, queryParams);
@@ -44,6 +50,8 @@ export class Rest {
             headers: Rest._getHeaders(),
             body: JSON.stringify(requestBody)
         };
+        console.log("URL final:", url);
+        console.log("Headers:", Rest._getHeaders());
         const respuesta = await fetch(url, opciones);
         const cuerpo = await respuesta.text();
 

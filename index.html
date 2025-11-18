@@ -46,6 +46,10 @@
                     <img src="./img/icons/diaria.svg" alt="diaria"/>
                     &nbsp;Gestión Diaria
                 </li>
+                <li data-view="resumenMensual">
+                    <img src="./img/icons/calendar_month.svg" alt="Resumen Mensual"/>
+                    &nbsp;Resumen Mensual
+                </li>
             </ul>
         </nav>
 
@@ -256,13 +260,11 @@
 
 
         <div id="gestionDiariaPadres" class="vista d-none">
-            
-
         </div>
 
         <div id="resumenMensual">
-            <h1 class="text-center my-4">Gestión mensual</h1>
-            <div class="container">
+            <h1 class="text-center my-4">Resumen mensual</h1>
+            <div class="contenedor">
                 <button type="button" class="btn btn-info btn-prev">Mes anterior</button>
                 <span id="mes"></span>
                 <button type="button" class="btn btn-info btn-next">Mes siguiente</button>
@@ -272,7 +274,6 @@
                 <tbody></tbody>
             </table>
         </div>
-        <!--<div id="gestionDiariaPadres" style="display:none;"></div>-->
 
 
         <script type="module" src="./js/controllers/padres.js"></script>

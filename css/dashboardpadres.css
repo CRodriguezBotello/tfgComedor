@@ -239,3 +239,25 @@ div#divErrorBorrado {
 #inicioPadres > #divNotificacion > div.desmarcado {
     background: linear-gradient(to right, #FFC3A0, #FF6F91);
 }
+
+#resumenMensual {
+    display: none;
+}
+
+.contenedor {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contenedor .btn {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.contenedor .btn-prev {
+    margin-right: 10px;
+}
+
+.contenedor .btn-next {
+    margin-left: 10px;
+}

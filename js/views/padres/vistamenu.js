@@ -10,6 +10,7 @@ export class VistaMenuPadres {
         this.liModificacion = this.nav.getElementsByTagName('li')[4];
         this.liCerrarSesion = this.nav.getElementsByTagName('li')[5];
         this.liGestionDiaria = this.nav.getElementsByTagName('li')[6];
+        this.liResumenMensual = this.nav.getElementsByTagName('li')[7];
         
         this.liHamburger.onclick = this.toggleMenu.bind(this);
         this.liInicio.onclick = this.inicio.bind(this);
@@ -18,6 +19,7 @@ export class VistaMenuPadres {
         this.liGestionCalendario.onclick = this.gestionCalendario.bind(this);
         this.liCerrarSesion.onclick = this.cerrarSesion.bind(this);
         this.liGestionDiaria.onclick = this.gestionDiaria.bind(this);
+        this.liResumenMensual.onclick = this.resumenMensual.bind(this);
     }
 
     /**
@@ -30,6 +32,8 @@ export class VistaMenuPadres {
         this.liGestionHijos.classList.remove('active');
         this.liGestionCalendario.classList.remove('active');
         this.liModificacion.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
     }
 
     
@@ -51,6 +55,8 @@ export class VistaMenuPadres {
         this.liGestionHijos.classList.add('active');
         this.liGestionCalendario.classList.remove('active');
         this.liModificacion.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
     }
 
     gestionDiaria(){
@@ -61,6 +67,18 @@ export class VistaMenuPadres {
         this.liModificacion.classList.remove('active');
         this.liGestionCalendario.classList.remove('active');
         this.liGestionDiaria.classList.add('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+
+    resumenMensual(){
+        this.controlador.verVistaResumenMensual();
+
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.add('active');
     }
 
     /**
@@ -73,6 +91,8 @@ export class VistaMenuPadres {
         this.liGestionHijos.classList.remove('active');
         this.liGestionCalendario.classList.remove('active');
         this.liModificacion.classList.add('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
     }
 
     gestionCalendario() {
@@ -82,6 +102,8 @@ export class VistaMenuPadres {
         this.liGestionHijos.classList.remove('active');
         this.liModificacion.classList.remove('active');
         this.liGestionCalendario.classList.add('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
     }
 
     /**

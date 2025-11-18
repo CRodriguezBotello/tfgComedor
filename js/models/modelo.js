@@ -227,6 +227,38 @@ export class Modelo {
     }
 
     /**
+     * Llamada para obtener a los usuarios apuntados al comedor en un mes.
+     * @param {Number} mes Nº del mes.
+     * @param {Number} idPadre ID del padre (usuario que ha iniciado sesión).
+     * @returns {Promise} Devuelve la promesa asociada a la petición.
+     */
+    obtenerHijosPadreApuntadosMensual(mes, idPadre) {
+        console.log("Modelo: obtenerHijosPadreApuntadosMensual", mes, idPadre);
+        const queryParams = new Map();
+        queryParams.set('proceso', 'usuariosMes');
+        queryParams.set('mes', mes);
+        queryParams.set('idPadre', idPadre);
+        return Rest.get('secretaria', [], queryParams);
+    }
+
+
+    /**
+    * Llamada para obtener las incidencias de los hijos de un padre en un mes.
+    * @param {Number} mes Nº del mes.
+    * @param {Number} idPadre ID del padre (usuario que ha iniciado sesión).
+    * @returns {Promise} Devuelve la promesa asociada a la petición.
+    */
+    obtenerIncidenciasHijoMensual(mes, idPadre) {
+        console.log("Modelo: obtenerIncidenciasHijoMensual", mes, idPadre);
+        const queryParams = new Map();
+        queryParams.set('mes', mes);
+        queryParams.set('idPadre', idPadre); // Pasamos el ID del padre
+        return Rest.get('secretaria', [], queryParams);
+    }
+
+
+
+    /**
      * Llamada para insertar o modificar incidencia.
      */
     insertarIncidencia(datos) {

@@ -86,6 +86,72 @@
         }
 
         /**
+        * Obtiene las incidencias de los hijos de un padre en un mes determinado.
+        *
+        * @param PDO $pdo Conexión PDO a la base de datos.
+        * @param int $mes Número del mes (1-12).
+        * @param int $idPadre ID del padre.
+        * @return array Array de resultados con idPersona e incidencias.
+        */
+        function obtenerIncidenciasHijoMensual(PDO $pdo, int $mes, int $idPadre): array {
+            echo "entra en dao usuario";
+            $sql = 'SELECT d.idPersona, 
+                        GROUP_CONCAT(CONCAT(DATE_FORMAT(d.dia, "%d/%m/%Y"), " - ", d.incidencia) SEPARATOR "\n ") AS incidencias
+                    FROM Dias d
+                    INNER JOIN Hijo_Padre hp ON d.idPersona = hp.idHijo
+                    WHERE MONTH(d.dia) = :mes
+                    AND hp.idPadre = :idPadre
+                    AND hp.activo = 1
+                    GROUP BY d.idPersona';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':mes', $mes, PDO::PARAM_INT);
+            $stmt->bindValue(':idPadre', $idPadre, PDO::PARAM_INT);
+            var_dump($stmt);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
+        * Obtener los datos de las personas que van al comedor en 'x' mes,
+        * filtrando solo los hijos del padre que ha iniciado sesión.
+        *
+        * @param Integer $mes Mes.
+        * @param Integer $idPadre ID del padre que ha iniciado sesión.
+        * @return array Array con los usuarios y sus datos de comedor.
+        */
+        public static function obtenerHijosPadreApuntadosMensual($mes, $idPadre) {
+            echo "entra en dao hijo apuntados mensual";
+            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
+                        COUNT(Dias.idPersona) AS numeroMenus,
+                        SUM(Dias.tupper) AS tupper,
+                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
+                        GROUP_CONCAT(
+                            CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
+                            ORDER BY Dias.dia ASC
+                            SEPARATOR ", "
+                        ) AS diasTupper
+                    FROM Persona
+                    JOIN Dias ON Persona.id = Dias.idPersona
+                    INNER JOIN Hijo_Padre hp ON Persona.id = hp.idHijo
+                    WHERE MONTH(Dias.dia) = :mes
+                    AND hp.idPadre = :idPadre
+                    AND hp.activo = 1
+                    GROUP BY Persona.id
+                    ORDER BY Persona.apellidos';
+
+            $params = array(
+                'mes' => $mes,
+                'idPadre' => $idPadre
+            );
+
+            $usuarios = BD::seleccionar($sql, $params);
+            
+            return $usuarios;
+        }
+
+        /**
          * Inserta/modifica incidencia de un día de un usuario en concreto.
          * @param object $datos Datos de la incidencia.
          */
@@ -260,6 +326,8 @@
          * Obtener los datos de las personas que van al comedor en 'x' mes.
          * @param Integer $mes Mes.
          */
+
+        
         public static function obtenerUsuariosPorMes($mes) {
             $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
                         COUNT(Dias.idPersona) AS numeroMenus,

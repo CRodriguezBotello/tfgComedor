@@ -6,7 +6,7 @@ import {Vista} from '../vista.js';
 export class VistaResumenMensual extends Vista {
     /**
 	 *	Constructor de la clase.
-	 *	@param {ControladorSecretaria} controlador Controlador de la vista.
+	 *	@param {ControladorPadres} controlador Controlador de la vista.
 	 *	@param {HTMLDivElement} div Div de HTML en el que se desplegará la vista.
 	 */
     constructor(controlador, div) {
@@ -17,9 +17,8 @@ export class VistaResumenMensual extends Vista {
 
         this.btnMesAnterior = this.div.getElementsByClassName('btn-prev')[0];
         this.btnMesSiguiente = this.div.getElementsByClassName('btn-next')[0];
-				this.btnQ19 = this.div.querySelectorAll('div>button')[2]
 
-        this.tabla = this.div.querySelector('#tablaGestionMensual');
+        this.tabla = this.div.querySelector('#tablaResumenMensual');
         this.thead = this.div.getElementsByTagName('thead')[0];
         this.tbody = this.div.getElementsByTagName('tbody')[0];
 
@@ -27,7 +26,6 @@ export class VistaResumenMensual extends Vista {
        
         this.btnMesAnterior.addEventListener('click', this.mesAnterior.bind(this));
         this.btnMesSiguiente.addEventListener('click', this.mesSiguiente.bind(this));
-				this.btnQ19.onclick = this.verQ19.bind(this)
        
         this.mes = document.getElementById('mes');
     }
@@ -37,7 +35,7 @@ export class VistaResumenMensual extends Vista {
      */
     inicializar() {
         this.controlador.obtenerUsuariosMensual(this.mesActual);
-        this.mes.textContent = this.obtenerMesActualEnLetras(this.mesActual)
+        this.mes.textContent = this.obtenerMesActualEnLetras(this.mesActual);
     }
 
     /**
@@ -284,8 +282,4 @@ export class VistaResumenMensual extends Vista {
         super.mostrar(ver);
         if (ver) this.inicializar();    // Al volver a mostrar la vista, refrescar listado.
     }
-
-		verQ19(){
-			this.controlador.verQ19(this.mesActual)
-		}
 }
