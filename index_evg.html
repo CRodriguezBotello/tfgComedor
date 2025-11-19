@@ -152,8 +152,8 @@
                         <button>Buscar</button>
                     </div>
                     <div id="filtrar">
-                        <input type="checkbox" name="desactivados" value="desac">
-                        <label for="desactivados">Desactivados</label>
+                        <input type="checkbox" id="checkDesactivados" name="desactivados" value="1">
+                        <label for="checkDesactivados">Desactivados</label>
                     </div>
                 </div>
 
@@ -235,6 +235,11 @@
                     <p>¿Desea desactivar este padre/madre? Esta acción desactivará también a todos sus hijos/as y no podrá ser revertida.</p>
                     <button type="button" class="btn btn-secondary" >Cancelar</button><br><br>
                     <button type="button" class="btn btn-danger" onclick="window.controladorSecretaria.desactivarPadre(window.controladorSecretaria.padreActual)">Desactivar padre/madre</button>
+                </div>
+                <div id="reactivarPadre" class="w-75 p-1 container alert alert-warning text-center rounded my-2">
+                    <p>¿Desea reactivar o eliminar definitivamente este padre/madre? Eliminar al padre también eliminará a todos sus hijos/as y no podrá ser revertida.</p>
+                    <button type="button" class="btn btn-secondary" >Eliminar  padre/madre</button><br><br>
+                    <button type="button" class="btn btn-danger" onclick="window.controladorSecretaria.reactivarPadre(window.controladorSecretaria.padreActual)">Reactivar padre/madre</button>
                 </div>
                 <div id="divErrorModificacion" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
             </div>

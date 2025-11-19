@@ -3,6 +3,7 @@ import { VistaMenuSecretaria } from "../views/secretaria/vistamenusecretaria.js"
 import { VistaGestionDiaria } from "../views/secretaria/vistagestiondiaria.js";
 import { VistaGestionMensual } from "../views/secretaria/vistagestionmensual.js";
 import { VistaGestionPadres } from "../views/secretaria/vistagestionpadres.js";
+// import { VistaReactivarPadre } from "../views/secretaria/vistareactivarpadre.js";
 import { VistaQ19 } from "../views/secretaria/vistaq19.js";
 import { Vista } from "../views/vista.js";
 import { Rest } from "../services/rest.js";
@@ -39,10 +40,34 @@ class ControladorSecretaria {
         this.vistaGestionDiaria = new VistaGestionDiaria(this, document.getElementById('gestionDiaria'));
         this.vistaGestionMensual = new VistaGestionMensual(this, document.getElementById('gestionMensual'));
         this.vistaGestionPadres = new VistaGestionPadres(this, document.getElementById('gestionPadres'));
+        // this.VistaReactivarPadre = document.getElementById('reactivarPadre');
         this.vistaQ19 = new VistaQ19(this, document.getElementById('divQ19'));
         this.acerca = new Vista(this, document.getElementById('acercade'));
    
         this.verVistaGestionDiaria();
+
+        // --- NUEVO: Listener checkbox "Desactivados" solo cuando está activado ---
+        const checkboxDesactivados = document.getElementById('checkDesactivados');
+        if (checkboxDesactivados) {
+            checkboxDesactivados.addEventListener('change', () => {
+                if (checkboxDesactivados.checked) {
+                    this.mostrarPadresDesactivados();
+                } else {
+                    this.verVistaGestionPadres(); // Vuelve a la vista normal de padres
+                }
+            });
+        }
+    }
+
+    async mostrarPadresDesactivados() {
+        try {
+            // Llama al modelo
+            const padres = await this.modelo.obtenerListadoPadresDesactivados();
+            // Actualiza la vista
+            this.vistaGestionPadres.iniciarTabla(padres);
+        } catch (e) {
+            console.error('Error mostrando padres desactivados:', e);
+        }
     }
 
     /**
@@ -156,6 +181,7 @@ class ControladorSecretaria {
         this.vistaGestionDiaria.mostrar(false);
         this.vistaGestionMensual.mostrar(false);
         this.vistaGestionPadres.mostrar(false);
+        // this.VistaReactivarPadre.mostrar(false);
         this.acerca.mostrar(false);
         this.vistaQ19.mostrar(false);
 		}
@@ -183,6 +209,11 @@ class ControladorSecretaria {
 				this.ocultarVistas()
         this.vistaGestionPadres.mostrar(true);
     }
+
+    // verVistaReactivarPadre() {
+    //             this.ocultarVistas()
+    //     this.VistaReactivarPadre.mostrar(true);
+    // }
 
     // Función exacta que debes poner en tu secretaria.js
     async desactivarPadre(padreSeleccionado) {

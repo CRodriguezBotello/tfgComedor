@@ -172,20 +172,6 @@
         }
 
         /**
-         * Eliminar padre.
-         * @param int $id ID de la persona padre.
-         * @return boolean True si se hizo el proceso, false si no.
-         */
-        public static function desactivaPadre($idPersona) {
-        	$sql  = 'UPDATE Persona ';
-					$sql .= 'SET activo = 0 ';
-        	$sql .= 'WHERE id = ( ';
-					$sql .= 'SELECT id FROM Padre WHERE id = :idPersona) ';
-          $params = array('idPersona' => $idPersona);
-          BD::actualizar($sql, $params);
-        }
-
-        /**
          * Obtener filas de la tabla días de las personas cuyos IDs estén en la lista.
          * @param array $idPersonas Lista con los IDs de las personas.
          * @return array Array con los días de todas las personas.
@@ -898,6 +884,7 @@
             $sql .= 'INNER JOIN Padre ON p1.id = Padre.id ';
 						$sql .= 'LEFT JOIN Hijo_Padre ON Hijo_Padre.idPadre = Padre.id ';
 						$sql .= 'LEFT JOIN Persona p2 ON Hijo_Padre.idHijo = p2.id ';
+                        $sql .= 'WHERE p1.activo = 1 ';
 						$sql .= 'GROUP BY p1.id ';
             if ($busqueda == "null") 
                 $params = null;
@@ -912,6 +899,26 @@
            
             return $padres;
         }
+
+        /**
+         * Obtener El listado de padres desactivados.
+         * @return array Devuelve las incidencias. 
+         */
+       public static function obtenerListadoPadresDesactivados() {
+        $params = null;
+        $sql  = 'SELECT p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato, ';
+        $sql .= 'GROUP_CONCAT(CONCAT(p2.nombre, " ", p2.apellidos) SEPARATOR ", ") AS hijos ';
+        $sql .= 'FROM Persona p1 ';
+        $sql .= 'INNER JOIN Padre ON p1.id = Padre.id ';
+        $sql .= 'LEFT JOIN Hijo_Padre ON Hijo_Padre.idPadre = Padre.id ';
+        $sql .= 'LEFT JOIN Persona p2 ON Hijo_Padre.idHijo = p2.id ';
+        $sql .= 'WHERE p1.activo = 0 '; // desactivados
+        $sql .= 'GROUP BY p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato';
+
+        $padres = BD::seleccionar($sql, $params);
+        return $padres;
+}
+
 
         /**
          * Modificar datos padre.

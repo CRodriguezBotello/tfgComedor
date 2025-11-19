@@ -89,6 +89,9 @@ class Secretaria {
                 case 'padres':
                     $this->obtenerListadoPadres($queryParams['busqueda']);
                     break;
+                case 'padresDesactivados':
+                    $this->obtenerListadoPadresDesactivados();
+                    break;
 
                 case 'tupper':
                     $this->obtenerTupper($queryParams['fecha']);
@@ -166,6 +169,13 @@ class Secretaria {
 
     function obtenerListadoPadres($busqueda) {
         $padres = DAOUsuario::obtenerListadoPadres($busqueda);
+        header('Content-type: application/json; charset=utf-8');
+        echo json_encode($padres);
+        die();
+    }
+
+    function obtenerListadoPadresDesactivados() {
+        $padres = DAOUsuario::obtenerListadoPadresDesactivados();
         header('Content-type: application/json; charset=utf-8');
         echo json_encode($padres);
         die();

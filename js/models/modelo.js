@@ -279,6 +279,12 @@ export class Modelo {
         return Rest.get('secretaria', [], queryParams);
     }
 
+    obtenerListadoPadresDesactivados(busqueda){
+        const queryParams = new Map();
+        queryParams.set('proceso', 'padresDesactivados');
+        return Rest.get('secretaria', [], queryParams);
+    }
+
     modificarPadreSecretaria(datos) {
         return Rest.put('secretaria', ['modificarPadre'], datos);
     }
