@@ -38,6 +38,32 @@ class Secretaria {
                     die();
                     break;
 
+                case 'reactivarPadre':
+                    $idPersona = isset($datos->id) ? (int)$datos->id : null;
+                    if (!$idPersona) {
+                        header('HTTP/1.1 400 Bad Request');
+                        echo json_encode(['error' => 'ID de padre no proporcionado']);
+                        die();
+                    }
+                    DAOUsuario::reactivarPadre($idPersona);
+                    header('HTTP/1.1 200 OK');
+                    echo json_encode(['mensaje' => "Persona con ID $idPersona reactivada"]);
+                    die();
+                    break;
+
+                case 'eliminarPadre':
+                    $idPersona = isset($datos->id) ? (int)$datos->id : null;
+                    if (!$idPersona) {
+                        header('HTTP/1.1 400 Bad Request');
+                        echo json_encode(['error' => 'ID de padre no proporcionado']);
+                        die();
+                    }
+                    DAOUsuario::eliminarPadre($idPersona);
+                    header('HTTP/1.1 200 OK');
+                    echo json_encode(['mensaje' => "Persona con ID $idPersona eliminada definitivamente"]);
+                    die();
+                    break;
+
                 case 'incidencia':
                     DAOUsuario::insertarIncidencia($datos);
                     header('HTTP/1.1 200 OK');
@@ -89,6 +115,7 @@ class Secretaria {
                 case 'padres':
                     $this->obtenerListadoPadres($queryParams['busqueda']);
                     break;
+                    
                 case 'padresDesactivados':
                     $this->obtenerListadoPadresDesactivados();
                     break;

@@ -48,6 +48,20 @@ export class Modelo {
         return respuesta;
     }
 
+    async reactivarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/reactivarPadre', [], body);
+        console.log("Padre desactivado:", respuesta);
+        return respuesta;
+    }
+
+    async eliminarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/eliminarPadre', [], body);
+        console.log("Padre eliminado definitivamente:", respuesta);
+        return respuesta;
+    }
+
     /**
      * Realiza el proceso de obtener filas de la tabla festivos.
      * @param {Date} inicioMes Primer día del mes.
@@ -279,7 +293,7 @@ export class Modelo {
         return Rest.get('secretaria', [], queryParams);
     }
 
-    obtenerListadoPadresDesactivados(busqueda){
+    obtenerListadoPadresDesactivados(){
         const queryParams = new Map();
         queryParams.set('proceso', 'padresDesactivados');
         return Rest.get('secretaria', [], queryParams);

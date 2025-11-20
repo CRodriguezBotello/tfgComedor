@@ -119,7 +119,7 @@ class Login {
                 try {
                     const json = JSON.parse(cuerpo);
                     if (json && json.error === 'usuario_desactivado') {
-                        mensaje = 'Usuario desactivado. Consulte con administración.';
+                        mensaje = 'Usuario desactivado o eliminado. Consulte con administración.';
                     } else if (json && json.mensaje) {
                         mensaje = json.mensaje;
                     }

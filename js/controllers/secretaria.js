@@ -3,7 +3,6 @@ import { VistaMenuSecretaria } from "../views/secretaria/vistamenusecretaria.js"
 import { VistaGestionDiaria } from "../views/secretaria/vistagestiondiaria.js";
 import { VistaGestionMensual } from "../views/secretaria/vistagestionmensual.js";
 import { VistaGestionPadres } from "../views/secretaria/vistagestionpadres.js";
-// import { VistaReactivarPadre } from "../views/secretaria/vistareactivarpadre.js";
 import { VistaQ19 } from "../views/secretaria/vistaq19.js";
 import { Vista } from "../views/vista.js";
 import { Rest } from "../services/rest.js";
@@ -40,7 +39,6 @@ class ControladorSecretaria {
         this.vistaGestionDiaria = new VistaGestionDiaria(this, document.getElementById('gestionDiaria'));
         this.vistaGestionMensual = new VistaGestionMensual(this, document.getElementById('gestionMensual'));
         this.vistaGestionPadres = new VistaGestionPadres(this, document.getElementById('gestionPadres'));
-        // this.VistaReactivarPadre = document.getElementById('reactivarPadre');
         this.vistaQ19 = new VistaQ19(this, document.getElementById('divQ19'));
         this.acerca = new Vista(this, document.getElementById('acercade'));
    
@@ -49,11 +47,45 @@ class ControladorSecretaria {
         // --- NUEVO: Listener checkbox "Desactivados" solo cuando está activado ---
         const checkboxDesactivados = document.getElementById('checkDesactivados');
         if (checkboxDesactivados) {
+            
             checkboxDesactivados.addEventListener('change', () => {
+
+                // ---- Lo que ya hacía tu función ----
                 if (checkboxDesactivados.checked) {
                     this.mostrarPadresDesactivados();
                 } else {
-                    this.verVistaGestionPadres(); // Vuelve a la vista normal de padres
+                    this.verVistaGestionPadres(); 
+                }
+
+                // ---- NUEVO: mostrar/ocultar según el checkbox ----
+                const form = document.getElementById("formModificacionPadres");
+                const desactivar = document.getElementById("desactivarPadre");
+                const reactivar = document.getElementById("reactivarPadre");
+
+                if (checkboxDesactivados.checked) {
+                    // Checkbox activado → ocultar form y desactivarPadre, mostrar reactivarPadre
+                    if (form) form.style.display = "none";
+                    if (desactivar) desactivar.style.display = "none";
+                    if (reactivar) reactivar.style.display = "block";
+
+                } else {
+                    // Checkbox desactivado → mostrar form y desactivarPadre, ocultar reactivarPadre
+                    if (form) form.style.display = "block";
+                    if (desactivar) desactivar.style.display = "block";
+                    if (reactivar) reactivar.style.display = "none";
+                }
+            });
+        }
+
+        // Selecciona el LI de "Gestión de usuarios"
+        const liGestionPadres = document.querySelector('li[data-view="gestionPadres"]');
+        if (liGestionPadres) {
+            liGestionPadres.addEventListener('click', () => {
+                const checkboxDesactivados = document.getElementById("checkDesactivados");
+                if (checkboxDesactivados) {
+                    checkboxDesactivados.checked = false;
+                    // Disparar el evento para actualizar la UI
+                    checkboxDesactivados.dispatchEvent(new Event('change'));
                 }
             });
         }
@@ -210,12 +242,6 @@ class ControladorSecretaria {
         this.vistaGestionPadres.mostrar(true);
     }
 
-    // verVistaReactivarPadre() {
-    //             this.ocultarVistas()
-    //     this.VistaReactivarPadre.mostrar(true);
-    // }
-
-    // Función exacta que debes poner en tu secretaria.js
     async desactivarPadre(padreSeleccionado) {
         if (!padreSeleccionado || !padreSeleccionado.id) {
             console.error("No hay padre seleccionado o no tiene ID");
@@ -233,6 +259,48 @@ class ControladorSecretaria {
             console.error("Fallo al desactivar padre:", error);
             alert("Error al desactivar padre, revisa la consola");
         }
+    }
+
+    async reactivarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a reactivar:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.reactivarPadreSecretaria(datos);
+            console.log("Padre reactivado:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} reactivado correctamente`);
+        } catch (error) {
+            console.error("Fallo al reactivar padre:", error);
+            alert("Error al reactivar padre, revisa la consola");
+        }
+    }
+
+    async eliminarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a eliminar definitivamente:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.eliminarPadreSecretaria(datos);
+            console.log("Padre eliminado definitivamente:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} eliminado definitivamente`);
+        } catch (error) {
+            console.error("Fallo al eliminar definitivamente al  padre:", error);
+            alert("Error al eliminar definitivamente al padre, revisa la consola");
+        }
+    }
+
+    cancelar() {
+        this.verVistaGestionPadres(); 
     }
     
     /**

@@ -52,9 +52,40 @@
         }
 
         public static function desactivarPadre(int $idPersona) {
-            $sql = "UPDATE Persona SET activo = 0 WHERE id = :id";
-            BD::actualizar($sql, ['id' => $idPersona]);
+            $sql = "
+                UPDATE Persona p
+                LEFT JOIN Hijo_Padre hp ON p.id = hp.idHijo
+                SET p.activo = 0
+                WHERE p.id = :idPadre OR hp.idPadre = :idPadre
+            ";
+            
+            BD::actualizar($sql, ['idPadre' => $idPersona]);
         }
+
+        public static function reactivarPadre(int $idPersona) {
+            $sql = "
+                UPDATE Persona p
+                LEFT JOIN Hijo_Padre hp ON p.id = hp.idHijo
+                SET p.activo = 1
+                WHERE p.id = :idPadre OR hp.idPadre = :idPadre
+            ";
+            
+            BD::actualizar($sql, ['idPadre' => $idPersona]);
+        }
+
+        public static function eliminarPadre(int $idPersona) {
+            $sql = " DELETE pPadre, pHijo, h 
+                    FROM Persona AS pPadre 
+                    LEFT JOIN Padre AS pa ON pa.id = pPadre.id 
+                    LEFT JOIN Hijo_Padre AS hp ON hp.idPadre = pa.id 
+                    LEFT JOIN Persona AS pHijo ON pHijo.id = hp.idHijo 
+                    LEFT JOIN Hijo AS h ON h.id = pHijo.id 
+                    WHERE pPadre.id = :idPadre;
+            ";
+            
+            BD::actualizar($sql, ['idPadre' => $idPersona]);
+        }
+
         
         /**
          * Obtener las incidencias de una fecha.
@@ -327,6 +358,7 @@
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
                         WHERE MONTH(Dias.dia) = :mes
+                        AND Persona.activo = 1
                         GROUP BY Persona.id
                         ORDER BY Persona.apellidos';
             $params = array('mes' => $mes);
@@ -905,19 +937,19 @@
          * @return array Devuelve las incidencias. 
          */
        public static function obtenerListadoPadresDesactivados() {
-        $params = null;
-        $sql  = 'SELECT p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato, ';
-        $sql .= 'GROUP_CONCAT(CONCAT(p2.nombre, " ", p2.apellidos) SEPARATOR ", ") AS hijos ';
-        $sql .= 'FROM Persona p1 ';
-        $sql .= 'INNER JOIN Padre ON p1.id = Padre.id ';
-        $sql .= 'LEFT JOIN Hijo_Padre ON Hijo_Padre.idPadre = Padre.id ';
-        $sql .= 'LEFT JOIN Persona p2 ON Hijo_Padre.idHijo = p2.id ';
-        $sql .= 'WHERE p1.activo = 0 '; // desactivados
-        $sql .= 'GROUP BY p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato';
+            $params = null;
+            $sql  = 'SELECT p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato, ';
+            $sql .= 'GROUP_CONCAT(CONCAT(p2.nombre, " ", p2.apellidos) SEPARATOR ", ") AS hijos ';
+            $sql .= 'FROM Persona p1 ';
+            $sql .= 'INNER JOIN Padre ON p1.id = Padre.id ';
+            $sql .= 'LEFT JOIN Hijo_Padre ON Hijo_Padre.idPadre = Padre.id ';
+            $sql .= 'LEFT JOIN Persona p2 ON Hijo_Padre.idHijo = p2.id ';
+            $sql .= 'WHERE p1.activo = 0 '; // desactivados
+            $sql .= 'GROUP BY p1.id, p1.nombre, p1.apellidos, p1.correo, p1.telefono, p1.dni, p1.iban, p1.titular, p1.fechaFirmaMandato';
 
-        $padres = BD::seleccionar($sql, $params);
-        return $padres;
-}
+            $padres = BD::seleccionar($sql, $params);
+            return $padres;
+        }
 
 
         /**
