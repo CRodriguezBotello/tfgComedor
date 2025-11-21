@@ -319,7 +319,8 @@
                         break;
 
                     case 'q19':
-                        $this->obtenerQ19($queryParams['mes']);
+                        // Pasar también el array de query params para poder atender idPersona (Q19 individual)
+                        $this->obtenerQ19($queryParams['mes'], $queryParams);
                         break;
 
                     case 'usuariosAnual':
@@ -425,8 +426,14 @@
          * Obtener Q19 de un mes.
          * @param string $mes Mes.
          */
-        function obtenerQ19($mes) {
-            $q19 = DAOUsuario::obtenerQ19($mes);
+        function obtenerQ19($mes, $queryParams = []) {
+            // Si se solicita un idPersona específico devolvemos la remesa individual para ese hijo
+            if (is_array($queryParams) && isset($queryParams['idPersona']) && $queryParams['idPersona']) {
+                $idHijo = intval($queryParams['idPersona']);
+                $q19 = DAOUsuario::obtenerQ19PorHijo($mes, $idHijo);
+            } else {
+                $q19 = DAOUsuario::obtenerQ19($mes);
+            }
 
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');

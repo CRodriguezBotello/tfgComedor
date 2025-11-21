@@ -99,6 +99,13 @@ export class VistaQ19 extends Vista {
 		console.log("Creando fila para recibo:", recibo);
 		const tr = document.createElement('tr')
 		tr.entidad = recibo
+		// añadir data-attributes útiles
+		try {
+			if (recibo.dni) tr.setAttribute('data-dni', String(recibo.dni));
+			if (recibo.referencia) tr.setAttribute('data-referencia', String(recibo.referencia));
+			if (recibo.fecha_mandato) tr.setAttribute('data-fecha-mandato', String(recibo.fecha_mandato));
+			if (recibo.concepto) tr.setAttribute('data-concepto', String(recibo.concepto));
+		} catch(e) {}
 
 		//Celda de iconos de operación
 		let td = document.createElement('td')
@@ -116,21 +123,25 @@ export class VistaQ19 extends Vista {
 		tr.append(td)
 		td.setAttribute('data-campo', 'titular')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.titular || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'iban')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.iban || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'referenciaUnicaMandato')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.referenciaUnicaMandato || recibo.referencia || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'fechaFirmaMandato')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.fechaFirmaMandato || recibo.fecha_mandato || ''
 
 		td = document.createElement('td')
 		tr.append(td)
@@ -146,6 +157,7 @@ export class VistaQ19 extends Vista {
 		recibo.referenciaAdeudo = `${(new Date()).getFullYear()}-${this.#mes}-${indice2}`
 		td.setAttribute('data-campo', 'referenciaAdeudo')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.referenciaAdeudo || ''
 
 		td = document.createElement('td')
 		tr.append(td)
@@ -165,12 +177,15 @@ export class VistaQ19 extends Vista {
 		}
 		td.setAttribute('data-campo', 'importe')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = (typeof recibo.importe === 'number') ? recibo.importe.toFixed(2) : (recibo.importe || '')
 
 		td = document.createElement('td')
 		tr.append(td)
-		recibo.concepto = `Comedor EVG ${this.#MESES[this.#mes]}.`
+		// Preferir concepto que venga del servidor/controlador
+		if (!recibo.concepto) recibo.concepto = `Comedor EVG ${this.#MESES[this.#mes]}.`
 		td.setAttribute('data-campo', 'concepto')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.concepto || ''
 
 		return tr
 	}

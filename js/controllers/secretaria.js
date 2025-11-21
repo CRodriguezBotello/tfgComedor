@@ -411,7 +411,63 @@ class ControladorSecretaria {
                     }
                 }
 
-                if (item.importe !== undefined && item.importe !== null) item.importe = Number(item.importe);
+                    if (item.importe !== undefined && item.importe !== null) item.importe = Number(item.importe);
+
+                    // --- Enriquecer campos para Q19: concepto, referencia (DNI) y fecha_mandato ---
+                    try {
+                        const year = (new Date()).getFullYear();
+                        const mesNum = (typeof mes === 'number' && mes >= 1 && mes <= 12) ? mes : (new Date().getMonth() + 1);
+
+                        // Nombre del hijo: probar varios campos
+                        let nombreHijo = '';
+                        if (item.hijos) {
+                            // puede venir como 'Juan Pérez, Ana ...' → tomar primer valor
+                            nombreHijo = String(item.hijos).split(',')[0].trim();
+                        }
+                        if (!nombreHijo) nombreHijo = String(item.nombre || item.nombre_hijo || item.alumno || item.nombreAlumno || item.titular || '').trim();
+
+                        // Construir concepto: COMEDOR/MES/AÑO/NOMBRE ALUMNO (mayúsculas)
+                        const safeNombre = nombreHijo ? String(nombreHijo).trim().toUpperCase() : '';
+                        item.concepto = `COMEDOR/${mesNum}/${year}/${safeNombre}`;
+
+                        // Obtener DNI/ref. soportando distintos nombres de campo
+                        const dniKeys = ['dni', 'nif', 'dni_padre', 'dniTitular', 'dniPadre', 'dniTitular'];
+                        let dni = null;
+                        for (const k of dniKeys) {
+                            if (item[k]) { dni = item[k]; break; }
+                            if (matched && matched[k]) { dni = matched[k]; break; }
+                        }
+                        if (dni) {
+                            const s = String(dni).trim();
+                            item.referencia = s;
+                            // también rellenar referenciaUnicaMandato para que la vista la muestre como ref. mandato
+                            item.referenciaUnicaMandato = s;
+                        }
+
+                        // Fecha del mandato: buscar en varios campos y normalizar a YYYY-MM-DD
+                        const fechaKeys = ['fechaFirmaMandato', 'fecha_mandato', 'fechaMandato', 'fecha'];
+                        let fecha = null;
+                        for (const k of fechaKeys) {
+                            if (item[k]) { fecha = item[k]; break; }
+                            if (matched && matched[k]) { fecha = matched[k]; break; }
+                        }
+                        if (fecha) {
+                            // normalizar: aceptar DD/MM/YYYY o YYYY-MM-DD
+                            const f = String(fecha).trim();
+                            const ddmmyyyy = /^([0-3]?\d)\/(0?[1-9]|1[0-2])\/(\d{4})$/; // 01/11/2025
+                            const iso = /^(\d{4})-(\d{2})-(\d{2})/; // 2025-11-01
+                            let normalized = f;
+                            if (ddmmyyyy.test(f)) {
+                                const m = f.match(ddmmyyyy);
+                                normalized = `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+                            } else if (iso.test(f)) {
+                                normalized = f.match(iso)[0];
+                            }
+                            item.fecha_mandato = normalized;
+                        }
+                    } catch (e) {
+                        // no bloquear la generación si hay problemas con nombres
+                    }
             });
 
             this.verVistaQ19();
@@ -425,6 +481,53 @@ class ControladorSecretaria {
                     this.vistaQ19.iniciar(q19, mes);
                 })
                 .catch(e => console.error('Error obteniendo Q19:', e));
+        });
+    }
+
+    /**
+     * Generar Q19 individual para un hijo (muestra en la vista Q19 un solo recibo preparado).
+     * @param {Number} idPersona ID del hijo
+     * @param {Number} mes Mes (1-12)
+     */
+    verQ19Individual(idPersona, mes){
+        // Pedir al modelo la remesa para ese hijo
+        this.modelo.obtenerQ19PorPersona(mes, idPersona)
+        .then(resp => {
+            const lista = Array.isArray(resp) ? resp : (resp && resp.result) ? resp.result : [];
+            // Tomar el primer elemento (si existe) y construir un recibo centrado en el PADRE
+            if (!Array.isArray(lista) || lista.length === 0) {
+                alert('No hay datos para este hijo en el mes seleccionado.');
+                return;
+            }
+            const item = lista[0];
+            try {
+                const year = (new Date()).getFullYear();
+                const mesNum = (typeof mes === 'number' && mes >= 1 && mes <= 12) ? mes : (new Date().getMonth() + 1);
+                const nombreHijo = item.nombreHijo || item.nombre || '';
+
+                // Construir recibo: mostrar datos del PADRE pero importe del hijo
+                const recibo = {
+                    titular: item.titularPadre || item.titular || '',
+                    iban: item.ibanPadre || item.iban || '',
+                    referenciaUnicaMandato: item.dniPadre || item.dni || '',
+                    referencia: item.dniPadre || item.dni || '',
+                    fechaFirmaMandato: item.fechaFirmaMandato || item.fecha_mandato || '',
+                    dias: Number(item.dias || 0),
+                    dias_tupper: Number(item.dias_tupper || 0),
+                    importe: Number(item.importe || 0),
+                    concepto: `COMEDOR/${mesNum}/${year}/${String(nombreHijo).trim().toUpperCase()}`
+                };
+
+                this.verVistaQ19();
+                this.vistaQ19.iniciar([recibo], mes);
+            } catch (e) {
+                console.error('Error procesando Q19 individual:', e);
+                alert('Error procesando Q19 individual. Revisa la consola.');
+            }
+        })
+        .catch(e => {
+            console.error('Error obteniendo Q19 individual:', e);
+            alert('No se pudo obtener Q19 individual. Revisa la consola.');
         });
     }
 
@@ -473,40 +576,7 @@ class ControladorSecretaria {
 		Muestra la vista del Q19.
 		@param mes {Number} Número del mes (1 es enero).
 	**/
-	verQ19(mes){
-		// Obtener datos Q19 y constantes de precios en paralelo.
-		Promise.all([
-			this.modelo.obtenerQ19(mes),
-			this.obtenerConstantesPrecios().catch(() => ({ precioMenu: null, precioTupper: null }))
-		])
-		.then(([q19, precios]) => {
-			// Aplicar precios iguales a la vista Q19 antes de iniciar.
-			if (this.vistaQ19) {
-				try {
-					if (precios) {
-						if (typeof this.vistaQ19.inicializarPrecios === 'function') {
-							this.vistaQ19.inicializarPrecios(precios.precioMenu, precios.precioTupper);
-						} else {
-							if (typeof this.vistaQ19.inicializarMenu === 'function') this.vistaQ19.inicializarMenu(precios.precioMenu);
-							if (typeof this.vistaQ19.inicializarTupper === 'function') this.vistaQ19.inicializarTupper(precios.precioTupper);
-						}
-					}
-				} catch(e) { console.error('Error aplicando precios a vistaQ19', e); }
-			}
-			this.verVistaQ19();
-			this.vistaQ19.iniciar(q19, mes);
-		})
-		.catch(err => {
-			// Si falla la paralela, intentar cargar al menos los datos Q19 y mostrar
-			console.warn('Error obteniendo Q19 o precios en paralelo:', err);
-			this.modelo.obtenerQ19(mes)
-				.then(q19 => {
-					this.verVistaQ19();
-					this.vistaQ19.iniciar(q19, mes);
-				})
-				.catch(e => console.error('Error obteniendo Q19:', e));
-		});
-	}
+    /* Duplicate simplified verQ19 removed — using the richer implementation defined earlier. */
 	
 	/**
     * Obtiene la constante de tupperware desde el modelo y la inicializa en la vista.

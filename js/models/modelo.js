@@ -303,6 +303,14 @@ export class Modelo {
         return Rest.get('secretaria', [], queryParams);
     }
 
+    obtenerQ19PorPersona(mes, idPersona) {
+        const queryParams = new Map();
+        queryParams.set('proceso', 'q19');
+        queryParams.set('mes', mes);
+        queryParams.set('idPersona', idPersona);
+        return Rest.get('secretaria', [], queryParams);
+    }
+
     /**
      * Obtiene la constante relacionada con los registros de tupperware.
      * @returns {Promise} Una promesa que se resolverá con la constante relacionada con los registros de tupperware.
