@@ -1,0 +1,120 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+h2{
+    margin-top: 20px;
+}
+.day {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.weekend {
+  background-color: #302f2f;
+}
+
+.blue-day {
+    background-color: #00adc4;
+    color: white;
+}
+.tablaMes {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 2em;
+  table-layout: fixed;
+}
+
+.tablaMes th, .tablaMes td {
+  border: 1px solid #ccc;
+  width: 14.28%;
+  height: 80px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: default;
+  transition: background 0.2s ease;
+}
+
+.tablaMes td.clicable {
+  cursor: pointer;
+}
+
+.tablaMes td.clicable:hover {
+  background-color: #e6f7e6;
+}
+
+.tablaMes td.marcado {
+  background-color: #9be19b !important;
+  font-weight: bold;
+}
+
+.tablaMes td.no-seleccionable {
+  background-color: #d3d3d3;
+  color: white;
+  cursor: not-allowed;
+}
+
+.tablaMes td.fueraMes {
+  background-color: #fafafa;
+  color: #ccc;
+}
+
+.controlesMes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1.5em;
+}
+
+.calendarioHijo {
+  margin-bottom: 3em;
+}
+
+.tituloMes {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.tablaMes td button {
+  display: inline-flex;             /* mejor control de alineación interna */
+  align-items: center;
+  justify-content: center;
+  width: 85%;                       /* se adapta al ancho de la celda */
+  min-width: 60px;                  /* evita que se encoja demasiado */
+  height: 28px;                     /* alto consistente */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: clamp(9px, 1vw, 11px); /* adapta tamaño al espacio disponible */
+  line-height: 1;
+  padding: 0 0.5rem;
+  white-space: normal;              /* permite salto si no cabe */
+  text-align: center;
+  word-break: break-word;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.tablaMes td button:hover {
+  background-color: #0069d9;
+}
+.yellow-day {
+    background-color: #9be19b;
+    color: white;
+}
+
+.green-note {
+    background-color: #9BE19B;
+    color: white;
+    margin-top: -1%;
+}

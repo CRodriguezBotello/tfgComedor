@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+				<!-- Evitamos que se cargen contenidos de otros dominios
+				ACTIVAR EN PRODUCCIÓN
+				<meta http-equiv='Content-Security-Policy' content="default-src 'self';" />
+				-->
+				<!-- Obligamos al navegador a acceder solo por HTTPS -->
+				<meta http-equiv='Strict-Transport-Security' content=': max-age=2592000' />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>        
+        <link rel="stylesheet" href="./css/styles.css"/>
+        <title>Comedor EVG</title>
+    </head>
+    <body>
+        <form method="post" class="needs-validation" autocomplete="off" novalidate>
+            <div class="formItem">
+                <label for="nombre">
+                    Nombre padre/madre (*) <input type="text" class="form-control" name="nombre" maxlength="30" required/>
+                    <div class="invalid-feedback">Por favor, introduzca su nombre.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="apellidos">
+                    Apellidos padre/madre (*) <input type="text" class="form-control" name="apellidos" maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, introduzca sus apellidos.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="correo">
+                    Dirección de email (*) <input type="email" class="form-control" name="correo" minlength="8"maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, introduzca su email.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="contrasenia">
+                    Contraseña (*) <input type="password" class="form-control" name="contrasenia" minlength="8" maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, introduzca una contraseña de<br> 8 caracteres mínimo.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="contrasenia2">
+                    Repita la contraseña (*) <input type="password" class="form-control" name="contrasenia2" minlength="8" maxlength="90" required/>
+                    <div class="invalid-feedback">Por favor, repita la misma contraseña.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="telefono">
+                    Nº de teléfono (*) <input type="text" class="form-control" name="telefono" maxlength="9" pattern="^[0-9]{9}$" required/>
+                    <div class="invalid-feedback">Por favor, introduzca su nº de teléfono.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="dni">
+                    DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" maxlength="9" required/>
+                    <div class="invalid-feedback">Por favor, introduzca un DNI válido.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="iban">
+                    IBAN sin espacios (*) <input type="text" class="form-control" name="iban" maxlength="24" required />
+                    <div class="invalid-feedback">Por favor, indique su IBAN.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="titular">
+                    Titular de la cuenta (*) <input type="text" class="form-control" name="titular" maxlength="120" required/>
+                    <div class="invalid-feedback">Por favor, indique el titular de la cuenta.</div>
+                </label>
+            </div>
+            <div class="formItem">
+                <label for="politicaPrivacidad" class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="politicaPrivacidad" required/> Acepto sin reservas la <a href="https://fundacionloyola.com/vguadalupe/politica-de-privacidad/" target="_blank">Política de Privacidad</a>
+                    <div class="invalid-feedback">Acepte la política de privacidad para continuar.</div>
+                 </label>
+            </div>
+            <div class="formItem">
+                <p>Tras realizar el registro podrá dar de alta a sus hijos/as en la aplicación.</p>
+            </div>
+            <div class="formItem" id="loadingImg">
+                <img src="./img/loading.gif"/>
+            </div>
+            <div class="formItem">
+				<button type="button" class="btn btn-danger">Cancelar</button>
+                <button type="button" class="btn btn-success">Registrarse</button>
+            </div>
+        </form>
+        <div id="divExito" class="w-75 p-1 container alert alert-success text-center rounded my-2">
+            <p>Te has registrado exitosamente. Redirigiendo.</p>
+        </div>
+        <div id="divError" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+    </body>
+    <script type="module" src="js/controllers/registro.js"></script>
+</html>
