@@ -149,14 +149,20 @@ export class VistaQ19 extends Vista {
 
 		td = document.createElement('td')
 		tr.append(td)
-		const menu = Array.isArray(this.#PRECIO_MENU) ? this.#PRECIO_MENU : [7.5, 6.5]
-		let precio = menu[0]
-		if (recibo.correo && /@fundacionloyola.es$/.test(recibo.correo))
-			precio = menu[1]
-		const tupper = Number(this.#PRECIO_TUPPER ?? 0.6)
+		// Preferir importe proporcionado por el servidor (si existe). Solo si no existe, calculamos localmente.
 		const dias = Number(recibo.dias) || 0
 		const diasTupper = Number(recibo.dias_tupper) || 0
-		recibo.importe = dias * precio + tupper * diasTupper
+		if (recibo.importe === undefined || recibo.importe === null || recibo.importe === '') {
+			const menu = Array.isArray(this.#PRECIO_MENU) ? this.#PRECIO_MENU : [7.5, 6.5]
+			let precio = menu[0]
+			if (recibo.correo && /@fundacionloyola.es$/.test(recibo.correo)) precio = menu[1]
+			const tupper = Number(this.#PRECIO_TUPPER ?? 0.6)
+			// cálculo fallback y redondeo a 2 decimales
+			recibo.importe = Number((dias * precio + diasTupper * tupper).toFixed(2))
+		} else {
+			// asegurar tipo numérico
+			recibo.importe = Number(recibo.importe)
+		}
 		td.setAttribute('data-campo', 'importe')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
 

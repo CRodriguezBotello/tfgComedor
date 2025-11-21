@@ -21,7 +21,7 @@ class ControladorSecretaria {
         this._incidenciasRequestId = 0;
         this._incidenciasAbortController = null;
     }
-    
+
     /**
      * Inicia la aplicación.
      */
@@ -361,48 +361,77 @@ class ControladorSecretaria {
         }
     }
 
-    async reactivarPadre(padreSeleccionado) {
-        if (!padreSeleccionado || !padreSeleccionado.id) {
-            console.error("No hay padre seleccionado o no tiene ID");
-            return;
-        }
-        // Solo enviamos el ID
-        const datos = { id: padreSeleccionado.id };
-        console.log("Enviando a reactivar:", datos);
-        try {
-            // Llamada al modelo que hace el PUT
-            const respuesta = await this.modelo.reactivarPadreSecretaria(datos);
-            console.log("Padre reactivado:", respuesta);
-            alert(`Padre ${padreSeleccionado.nombre} reactivado correctamente`);
-        } catch (error) {
-            console.error("Fallo al reactivar padre:", error);
-            alert("Error al reactivar padre, revisa la consola");
-        }
-    }
+    // Mantener solo UNA implementación de verQ19 (la que fusiona importes)
+    verQ19(mes){
+        // Obtener datos Q19 + listado gestión mensual + constantes de precios en paralelo.
+        Promise.all([
+            this.modelo.obtenerQ19(mes),
+            this.modelo.obtenerUsuariosApuntadosMensual(mes).catch(() => []),
+            this.obtenerConstantesPrecios().catch(() => ({ precioMenu: null, precioTupper: null }))
+        ])
+        .then(([q19, gestionMensual, precios]) => {
+            const listaQ19 = Array.isArray(q19) ? q19 : (q19 && q19.result) ? q19.result : [];
 
-    async eliminarPadre(padreSeleccionado) {
-        if (!padreSeleccionado || !padreSeleccionado.id) {
-            console.error("No hay padre seleccionado o no tiene ID");
-            return;
-        }
-        // Solo enviamos el ID
-        const datos = { id: padreSeleccionado.id };
-        console.log("Enviando a eliminar definitivamente:", datos);
-        try {
-            // Llamada al modelo que hace el PUT
-            const respuesta = await this.modelo.eliminarPadreSecretaria(datos);
-            console.log("Padre eliminado definitivamente:", respuesta);
-            alert(`Padre ${padreSeleccionado.nombre} eliminado definitivamente`);
-        } catch (error) {
-            console.error("Fallo al eliminar definitivamente al  padre:", error);
-            alert("Error al eliminar definitivamente al padre, revisa la consola");
-        }
+            if (this.vistaQ19 && precios) {
+                try {
+                    if (typeof this.vistaQ19.inicializarPrecios === 'function') {
+                        this.vistaQ19.inicializarPrecios(precios.precioMenu, precios.precioTupper);
+                    } else {
+                        if (typeof this.vistaQ19.inicializarMenu === 'function') this.vistaQ19.inicializarMenu(precios.precioMenu);
+                        if (typeof this.vistaQ19.inicializarTupper === 'function') this.vistaQ19.inicializarTupper(precios.precioTupper);
+                    }
+                } catch(e) { console.error('Error aplicando precios a vistaQ19', e); }
+            }
+
+            const map = new Map();
+            if (Array.isArray(gestionMensual)) {
+                gestionMensual.forEach(g => {
+                    try {
+                        if (g.correo) map.set(String(g.correo).toLowerCase(), g);
+                        if (g.iban) map.set(String(g.iban).toLowerCase(), g);
+                        if (g.titular) map.set(String(g.titular).toLowerCase(), g);
+                    } catch (e) {}
+                });
+            }
+
+            listaQ19.forEach(item => {
+                if (!item) return;
+                let matched = null;
+                if (item.correo && map.has(String(item.correo).toLowerCase())) matched = map.get(String(item.correo).toLowerCase());
+                else if (item.iban && map.has(String(item.iban).toLowerCase())) matched = map.get(String(item.iban).toLowerCase());
+                else if (item.titular && map.has(String(item.titular).toLowerCase())) matched = map.get(String(item.titular).toLowerCase());
+
+                if (matched) {
+                    const prefer = ['importe', 'importeTotal', 'importe_total', 'total', 'total_q19', 'totalq19'];
+                    for (const p of prefer) {
+                        if (matched[p] !== undefined && matched[p] !== null && matched[p] !== '') {
+                            item.importe = Number(matched[p]);
+                            break;
+                        }
+                    }
+                }
+
+                if (item.importe !== undefined && item.importe !== null) item.importe = Number(item.importe);
+            });
+
+            this.verVistaQ19();
+            this.vistaQ19.iniciar(listaQ19, mes);
+        })
+        .catch(err => {
+            console.warn('Error obteniendo Q19/gestión mensual/precios en paralelo:', err);
+            this.modelo.obtenerQ19(mes)
+                .then(q19 => {
+                    this.verVistaQ19();
+                    this.vistaQ19.iniciar(q19, mes);
+                })
+                .catch(e => console.error('Error obteniendo Q19:', e));
+        });
     }
 
     cancelar() {
-        this.verVistaGestionPadres(); 
+        this.verVistaGestionPadres();
     }
-    
+
     /**
      * Muestra la vista del Q19.
      */

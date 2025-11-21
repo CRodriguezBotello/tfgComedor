@@ -315,6 +315,7 @@
          * @param Integer $mes Mes.
          */
         public static function obtenerUsuariosPorMes($mes) {
+            // Añadimos cálculo del importe por usuario usando la fila de Precios
             $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
                         COUNT(Dias.idPersona) AS numeroMenus,
                         SUM(Dias.tupper) AS tupper,
@@ -323,9 +324,11 @@
                             CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
                             ORDER BY Dias.dia ASC
                             SEPARATOR ", "
-                        ) AS diasTupper
+                        ) AS diasTupper,
+                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(pr.precioTupper,0)) AS importe
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
+                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
                         WHERE MONTH(Dias.dia) = :mes
                         GROUP BY Persona.id
                         ORDER BY Persona.apellidos';
@@ -949,9 +952,12 @@
          * @return array Devuelve los registros de la remesa. 
          */
         public static function obtenerQ19($mes) {
-            $sql  = 'SELECT Persona.titular, Persona.correo, Persona.iban, COUNT(Dias.dia) AS dias, SUM(Dias.tupper) AS dias_tupper ';
+            // Añadimos cálculo de importe en servidor usando la fila actual de Precios (si existe)
+            $sql  = 'SELECT Persona.id, Persona.titular, Persona.correo, Persona.iban, COUNT(Dias.dia) AS dias, SUM(Dias.tupper) AS dias_tupper, ';
+            $sql .= '(COUNT(Dias.dia) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(pr.precioTupper,0)) AS importe ';
             $sql .= 'FROM Persona ';
             $sql .= 'JOIN Dias ON Dias.idPadre = Persona.id ';
+            $sql .= 'CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr ';
             $sql .= 'WHERE MONTH(Dias.dia) = :mes ';
             $sql .= 'GROUP BY Persona.id ';
             $params = array('mes' => $mes);
