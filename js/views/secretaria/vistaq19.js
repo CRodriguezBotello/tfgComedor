@@ -273,4 +273,3 @@ export class VistaQ19 extends Vista {
    }
 
 }
-

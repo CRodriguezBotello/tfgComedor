@@ -13,8 +13,9 @@ async function loadMenus() {
       const parts = window.location.pathname.split('/').filter(Boolean);
       const idx = parts.findIndex(p => p.toLowerCase().includes('comedor'));
       if (idx >= 0) return '/' + parts.slice(0, idx + 1).join('/');
-      // fallback: si no encuentra "comedor" usa los dos primeros segmentos (por ejemplo /hugo/Proyecto)
-      if (parts.length >= 2) return '/' + parts.slice(0, 2).join('/');
+      // fallback: si no encuentra "comedor" usar la carpeta del proyecto (primer segmento)
+      // así no añadimos el nombre de fichero (ej. index.html) a la ruta base
+      if (parts.length >= 1) return '/' + parts[0];
       return '';
     };
 
