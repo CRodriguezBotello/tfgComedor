@@ -34,7 +34,14 @@ export class VistaInicioPadres extends Vista {
     }
 
     obtenerFestivos(festivos) {
-        this.festivos = festivos;
+        // Normalizar la respuesta de backend a un array de strings 'YYYY-MM-DD'
+        if (Array.isArray(festivos)) {
+            this.festivos = festivos
+                .map(f => f.diaFestivo || f.fecha || f.dia || null)
+                .filter(Boolean);
+        } else {
+            this.festivos = [];
+        }
         this.controlador.dameHijosCalendario(this.idPadre);
     }
 
@@ -154,6 +161,8 @@ export class VistaInicioPadres extends Vista {
                         if (marcado) td.classList.add('marcado');
 
                         if (esFestivo || esFinDeSemana || esDiaBloqueado) {
+                            // marcar festivos visualmente en naranja y bloquear interacción
+                            if (esFestivo) td.classList.add('festivo');
                             td.classList.add('no-seleccionable');
                         } else {
                             td.classList.add('clicable');
