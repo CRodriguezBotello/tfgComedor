@@ -83,16 +83,20 @@ function isValidISODate(s) {
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('gestionFestivos')) return;
 
+  // soportar dos variantes del HTML: formulario compacto (formFestivo) o inputs sueltos (nuevoFestivo ...)
   const form = document.getElementById('formFestivo');
-  const inputFecha = document.getElementById('festivoFecha');
-  const inputDesc = document.getElementById('festivoDescripcion');
-  const inputId = document.getElementById('festivoId'); // guardamos oldFecha aquí cuando editamos
+  const inputFecha = document.getElementById('festivoFecha') || document.getElementById('nuevoFestivo');
+  const inputDesc = document.getElementById('festivoDescripcion') || document.getElementById('nuevoFestivoDescripcion');
+  const inputId = document.getElementById('festivoId'); // opcional: oldFecha cuando editamos
   const btnCancelar = document.getElementById('btnCancelarEdicion');
   const btnMostrarConfirm = document.getElementById('btnMostrarConfirmBorrarTodos');
   const divConfirm = document.getElementById('confirmBorrarTodos');
   const btnConfirmSi = document.getElementById('btnConfirmBorrarTodosSi');
   const btnConfirmNo = document.getElementById('btnConfirmBorrarTodosNo');
   const tabla = document.getElementById('tablaFestivos');
+  // botones del layout de index_evg.html
+  const btnCrearSimple = document.getElementById('btnCrearFestivo');
+  const btnBorrarTodosSimple = document.getElementById('btnBorrarTodosFestivos');
 
   // inicializar listado
   cargarFestivos();
@@ -118,17 +122,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function abrirEdicion(fecha, definicion) {
     if (!fecha) return;
-    inputFecha.value = fecha;
-    inputDesc.value = definicion || '';
-    inputId.value = fecha; // guardamos fecha antigua para PUT
-    btnCancelar.classList.remove('d-none');
-    inputFecha.focus();
+    // Si no existe inputFecha/similares, evitar errores
+    if (inputFecha) {
+      inputFecha.value = fecha;
+      // guardar fecha antigua en dataset para el layout compacto
+      inputFecha.dataset.oldFecha = fecha;
+    }
+    if (inputDesc) inputDesc.value = definicion || '';
+    if (inputId) inputId.value = fecha; // si existe el form completo
+    if (btnCancelar) btnCancelar.classList.remove('d-none');
+    if (inputFecha) inputFecha.focus();
   }
 
   function resetForm() {
-    form.reset();
-    inputId.value = '';
-    btnCancelar.classList.add('d-none');
+    if (form) form.reset();
+    if (inputFecha) {
+      inputFecha.removeAttribute('data-old-fecha');
+      // si no hay form debería limpiar el valor (opcional)
+      inputFecha.value = '';
+    }
+    if (inputDesc) inputDesc.value = '';
+    if (inputId) inputId.value = '';
+    if (btnCancelar) btnCancelar.classList.add('d-none');
   }
 
   // submit: crear o modificar según inputId
@@ -197,4 +212,55 @@ document.addEventListener('DOMContentLoaded', () => {
       mostrarFeedback('Error eliminando festivo', 'danger');
     }
   }
+
+  // Handlers para los controles simples de index_evg.html
+  if (btnCrearSimple && inputFecha) {
+    btnCrearSimple.addEventListener('click', async (ev) => {
+      ev.preventDefault();
+      const fecha = inputFecha.value;
+      const descripcion = (inputDesc && inputDesc.value) ? inputDesc.value.trim() : '';
+      if (!fecha) {
+        mostrarFeedback('Fecha obligatoria', 'warning');
+        return;
+      }
+      if (!isValidISODate(fecha)) {
+        mostrarFeedback('Fecha debe ser YYYY-MM-DD', 'warning');
+        return;
+      }
+      try {
+        // Si existe data-old-fecha hacemos PUT (editar), si no POST (crear)
+        const oldFecha = inputFecha.dataset ? inputFecha.dataset.oldFecha : null;
+        if (oldFecha) {
+          const payload = { oldFecha: oldFecha, fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'PUT', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo modificado', 'success');
+        } else {
+          const payload = { fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo creado', 'success');
+        }
+        // limpiar campos si existen
+        resetForm();
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error guardando festivo', 'danger');
+      }
+    });
+  }
+
+  if (btnBorrarTodosSimple) {
+    btnBorrarTodosSimple.addEventListener('click', async () => {
+      if (!confirm('¿Borrar todos los festivos?')) return;
+      try {
+        await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ borrarTodos: true }) });
+        mostrarFeedback('Todos los festivos borrados', 'success');
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error borrando todos', 'danger');
+      }
+    });
+  }
+
 });
