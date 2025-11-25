@@ -17,9 +17,19 @@ export class VistaQ19 extends Vista {
 	 */
     constructor(controlador, div) {
         super(controlador, div)
-    		this.controlador.constanteTupper();
-				this.controlador.constanteMenu();
-				
+
+				// Cargar precios desde el endpoint (usa controller que llama al DAO)
+				this.fetchPrecios()
+					.then(({precio_tupper, precio_menu}) => {
+							this.inicializarTupper(precio_tupper)
+							this.inicializarMenu(precio_menu)
+					})
+					.catch(err => {
+							console.warn('No se pudieron cargar precios desde la BBDD, usando valores por defecto:', err);
+							this.inicializarTupper(0.6)
+							this.inicializarMenu([7.5, 6.5])
+					})
+
 				// Cogemos referencias a los elementos del interfaz
 				this.btnNuevoRegistro = this.div.querySelectorAll('img')[0]
 				this.btnDescargar = this.div.querySelectorAll('img')[1]
@@ -53,12 +63,22 @@ export class VistaQ19 extends Vista {
 		 @param mes {Number} Número del mes.
      */
     iniciar(q19, mes) {
-			this.#mes = mes
-			this.limpiar()
-			q19.forEach( (recibo, indice) => {
-					this.tbody.append(this.crearFila(recibo, indice))
-				})
-    }
+		// Muestra el div al quitar la clase "d-none"
+		const divQ19 = document.getElementById('divQ19');
+		divQ19.classList.remove('d-none');
+
+		console.log(q19, mes);  // Agregar este log para ver si los datos son los esperados
+		this.#mes = mes;
+		this.limpiar();
+		q19.forEach((recibo, indice) => {
+			this.tbody.append(this.crearFila(recibo, indice));
+		});
+	}
+
+	
+
+
+
 
     inicializarTupper(c) {
 			this.#PRECIO_TUPPER = c;
@@ -76,8 +96,16 @@ export class VistaQ19 extends Vista {
 		return {HTMLTrElement} Fila de la tabla.
 	**/
 	crearFila(recibo, indice){
+		console.log("Creando fila para recibo:", recibo);
 		const tr = document.createElement('tr')
 		tr.entidad = recibo
+		// añadir data-attributes útiles
+		try {
+			if (recibo.dni) tr.setAttribute('data-dni', String(recibo.dni));
+			if (recibo.referencia) tr.setAttribute('data-referencia', String(recibo.referencia));
+			if (recibo.fecha_mandato) tr.setAttribute('data-fecha-mandato', String(recibo.fecha_mandato));
+			if (recibo.concepto) tr.setAttribute('data-concepto', String(recibo.concepto));
+		} catch(e) {}
 
 		//Celda de iconos de operación
 		let td = document.createElement('td')
@@ -95,21 +123,25 @@ export class VistaQ19 extends Vista {
 		tr.append(td)
 		td.setAttribute('data-campo', 'titular')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.titular || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'iban')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.iban || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'referenciaUnicaMandato')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.referenciaUnicaMandato || recibo.referencia || ''
 
 		td = document.createElement('td')
 		tr.append(td)
 		td.setAttribute('data-campo', 'fechaFirmaMandato')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.fechaFirmaMandato || recibo.fecha_mandato || ''
 
 		td = document.createElement('td')
 		tr.append(td)
@@ -125,21 +157,35 @@ export class VistaQ19 extends Vista {
 		recibo.referenciaAdeudo = `${(new Date()).getFullYear()}-${this.#mes}-${indice2}`
 		td.setAttribute('data-campo', 'referenciaAdeudo')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.referenciaAdeudo || ''
 
 		td = document.createElement('td')
 		tr.append(td)
-		let precio = this.#PRECIO_MENU[0]
-		if (/@fundacionloyola.es$/.test(recibo.correo))
-			precio = this.#PRECIO_MENU[1]
-		recibo.importe = recibo.dias * precio + this.#PRECIO_TUPPER * recibo.dias_tupper
+		// Preferir importe proporcionado por el servidor (si existe). Solo si no existe, calculamos localmente.
+		const dias = Number(recibo.dias) || 0
+		const diasTupper = Number(recibo.dias_tupper) || 0
+		if (recibo.importe === undefined || recibo.importe === null || recibo.importe === '') {
+			const menu = Array.isArray(this.#PRECIO_MENU) ? this.#PRECIO_MENU : [7.5, 6.5]
+			let precio = menu[0]
+			if (recibo.correo && /@fundacionloyola.es$/.test(recibo.correo)) precio = menu[1]
+			const tupper = Number(this.#PRECIO_TUPPER ?? 0.6)
+			// cálculo fallback y redondeo a 2 decimales
+			recibo.importe = Number((dias * precio + diasTupper * tupper).toFixed(2))
+		} else {
+			// asegurar tipo numérico
+			recibo.importe = Number(recibo.importe)
+		}
 		td.setAttribute('data-campo', 'importe')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = (typeof recibo.importe === 'number') ? recibo.importe.toFixed(2) : (recibo.importe || '')
 
 		td = document.createElement('td')
 		tr.append(td)
-		recibo.concepto = `Comedor EVG ${this.#MESES[this.#mes]}.`
+		// Preferir concepto que venga del servidor/controlador
+		if (!recibo.concepto) recibo.concepto = `Comedor EVG ${this.#MESES[this.#mes]}.`
 		td.setAttribute('data-campo', 'concepto')
 		this.datatable.activarCelda(td, null, this.actualizarCampo.bind(this, td), null)
+		td.textContent = recibo.concepto || ''
 
 		return tr
 	}
@@ -163,6 +209,7 @@ export class VistaQ19 extends Vista {
 			'dias': 0
 		}
 		const fila = this.crearFila(nuevoRecibo)
+		console.log('Añadiendo fila:', fila);
 		this.tbody.appendChild(fila)
 		fila.children.item(1).dispatchEvent(new Event('dblclick'))
 	}
@@ -203,5 +250,26 @@ export class VistaQ19 extends Vista {
 		return csv.join()
 	}
 
-}
+	async fetchPrecios() {
+       const resp = await fetch('php/api/controllers/precios.php')
+       const data = await resp.json().catch(()=>{ throw new Error(`HTTP ${resp.status}`) })
+       if (!resp.ok) {
+           const msg = (data && (data.message || data.error)) ? (data.message || data.error) : `HTTP ${resp.status}`
+           throw new Error(msg)
+       }
+       // Si llega lista [{idPrecio,nombreP,cantidad},...]
+       if (Array.isArray(data)) {
+           const get = id => {
+               const it = data.find(d => d.idPrecio === id)
+               return it ? parseFloat(it.cantidad) : null
+           }
+           const precio_tupper = get('precioTupper') ?? 0.6
+           const precio_diario = get('precioDiario') ?? get('precioMensual') ?? 7.5
+           const precio_profesor = get('precioDiaProfesor') ?? get('precioDiaHijoProfe') ?? precio_diario
+           return { precio_tupper, precio_menu: [precio_diario, precio_profesor] }
+       }
+       // Si el endpoint ya devuelve objeto {precio_tupper, precio_menu}
+       return data
+   }
 
+}

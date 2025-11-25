@@ -174,15 +174,36 @@ export class VistaGestionPadres extends Vista {
         this.mostrarOcultarCrud(false, true);
         console.log('Padre seleccionado:', padre);
         this.idUsuario = padre.id;
-        this.inputsModificar[0].value = padre.nombre;
-        this.inputsModificar[1].value = padre.apellidos;
-        this.inputsModificar[2].value = padre.correo;
-        this.inputsModificar[3].value = padre.telefono;
-        this.inputsModificar[4].value = padre.dni;
-        this.inputsModificar[5].value = padre.iban;
-        this.inputsModificar[6].value = padre.titular;
-        this.inputsModificar[7].value = padre.fechaFirmaMandato;
-        this.inputsModificar[8].value = padre.referenciaUnicaMandato;
+
+        const nombreEl = document.getElementById('nombre');
+        if (nombreEl) nombreEl.value = padre.nombre || '';
+
+        const apellidosEl = document.getElementById('apellidos');
+        if (apellidosEl) apellidosEl.value = padre.apellidos || '';
+
+        const correoEl = document.getElementById('correo');
+        if (correoEl) correoEl.value = padre.correo || '';
+
+        const telefonoEl = document.getElementById('telefono');
+        if (telefonoEl) telefonoEl.value = padre.telefono || '';
+
+        const dniEl = document.getElementById('dniModificacionPadres');
+        if (dniEl) dniEl.value = padre.dni || '';
+
+        const ibanEl = document.getElementById('iban');
+        if (ibanEl) ibanEl.value = padre.iban || '';
+
+        const titularEl = document.getElementById('titular');
+        if (titularEl) titularEl.value = padre.titular || '';
+
+        const fechaMandatoEl = document.getElementById('fechaMandato');
+        if (fechaMandatoEl) fechaMandatoEl.value = padre.fechaFirmaMandato || '';
+
+
+        // asignar id en hidden y en el controlador
+        const idHidden = document.getElementById('idPadre');
+        if (idHidden) idHidden.value = padre.id ?? padre.ID ?? '';
+
         // Cuando se selecciona un padre para editar:
         window.controladorSecretaria.padreActual = padre; // Guarda el objeto completo
     }
@@ -272,18 +293,21 @@ export class VistaGestionPadres extends Vista {
         this.formModificar.classList.add('was-validated');
 
         if (cont == total) {
+            // Envío sólo los campos básicos para evitar que el backend intente actualizar
+            // una columna que no existe (referenciaUnicaMandato).
             const datos = {
                 'id': this.idUsuario,
-                'nombre': this.inputsModificar[0].value,
-                'apellidos': this.inputsModificar[1].value,
-                'correo': this.inputsModificar[2].value,
-                'telefono': this.inputsModificar[3].value,
-                'dni': this.inputsModificar[4].value,
-                'iban': this.inputsModificar[5].value,
-                'titular': this.inputsModificar[6].value,
-                'fechaMandato': this.inputsModificar[7].value,
-                'mandatoUnico': this.inputsModificar[8].value
+                'nombre': getInputValue(this.formModificar, 'nombre'),
+                'apellidos': getInputValue(this.formModificar, 'apellidos'),
+                'correo': getInputValue(this.formModificar, 'correo'),
+                'telefono': getInputValue(this.formModificar, 'telefono'),
+                'dni': getInputValue(this.formModificar, 'dni'),
+                'iban': getInputValue(this.formModificar, 'iban'),
+                'titular': getInputValue(this.formModificar, 'titular'),
+                'fechaFirmaMandato': getInputValue(this.formModificar, 'fechaFirmaMandato')
+                
 
+                // NOTA: omito 'fechaMandato' y 'mandatoUnico' / 'referenciaUnicaMandato'
             };
 
             if (this.divErrorModificar.style.display == 'block')
@@ -308,5 +332,119 @@ export class VistaGestionPadres extends Vista {
 
         if (this.divErrorModificar.style.display == 'block')
             this.divErrorModificar.style.display = 'none';
+    }
+
+    // Añadir función utilitaria para formatear la fecha que viene de la BBDD
+    _formatearFechaBD(fecha) {
+        if (!fecha) return '';
+        // Si es número (timestamp unix)
+        if (typeof fecha === 'number') return new Date(fecha * 1000).toLocaleDateString('es-ES');
+        // Aceptar formatos "YYYY-MM-DD HH:MM:SS" y "YYYY-MM-DDTHH:MM:SS..."
+        let f = String(fecha).trim();
+        // si contiene espacio (mysql DATETIME) reemplazamos por T para parseo ISO
+        if (f.includes(' ') && !f.includes('T')) f = f.replace(' ', 'T');
+        const d = new Date(f);
+        if (!isNaN(d)) return d.toLocaleDateString('es-ES');
+        // fallback: si no se puede parsear devolver la parte fecha antes de espacio
+        if (String(fecha).includes(' ')) return String(fecha).split(' ')[0];
+        return String(fecha);
+    }
+
+    /**
+     * Crear fila de usuario en la tabla.
+     * @param {Object} usuario Objeto con los datos del usuario.
+     */
+    crearFilaUsuario(usuario) {
+        let tr = document.createElement('tr');
+        
+        // campo Nombre
+        let tdNombre = document.createElement('td');
+        tdNombre.classList.add('nombrePadre');
+        tdNombre.textContent = usuario.nombre + " " + usuario.apellidos;
+        
+        if (tdNombre.textContent.length > 40) {
+            tdNombre.textContent = usuario.nombre + "(...)";
+            tdNombre.setAttribute('title', usuario.nombre + " " + usuario.apellidos)
+        }
+
+        tdNombre.onclick = this.editar.bind(this, usuario)
+        tr.appendChild(tdNombre);
+        
+        // campo Email
+        let tdEmail = document.createElement('td');
+        tdEmail.textContent = usuario.correo;
+        // recortar email largo
+        if (tdEmail.textContent.length > 40) {
+            tdEmail.textContent = tdEmail.textContent.substring(0, 40) + "...";
+            tdEmail.setAttribute('title', usuario.correo);
+        }
+        tr.appendChild(tdEmail);
+        
+        // campo Teléfono
+        let tdTelefono = document.createElement('td');
+        tdTelefono.textContent = usuario.telefono;
+        tr.appendChild(tdTelefono);
+        
+        // campo hijos (nombres)
+        let tdHijos = document.createElement('td');
+        tdHijos.textContent = usuario.hijos;
+        tr.appendChild(tdHijos);
+        
+        // campo Fecha Mandato: usar la fecha que venga de la BBDD (soporta fecha con hora)
+        const tdFechaMandato = document.createElement('td');
+        // probar varias claves posibles que devuelva el servidor
+        const fechaBD = usuario.fechaMandato ?? usuario.fecha_mandato ?? usuario.fechaFirmaMandato ?? usuario.fecha_mandato_db;
+        tdFechaMandato.textContent = this._formatearFechaBD(fechaBD);
+        tr.appendChild(tdFechaMandato);
+        
+        this.tbody.appendChild(tr);
+    }
+}
+
+/**
+ * Devuelve el valor de un campo buscando por id, por name o en el form.
+ * Evita el error al leer .value cuando el elemento no existe.
+ */
+function getInputValue(form, name) {
+    const byId = document.getElementById(name);
+    if (byId) return byId.value;
+    const byName = document.querySelector(`input[name="${name}"], select[name="${name}"], textarea[name="${name}"]`);
+    if (byName) return byName.value;
+    if (form && form.elements && form.elements[name]) return form.elements[name].value;
+    return null;
+}
+
+VistaGestionPadres.prototype.validarFormulario = function(form){
+    let cont;
+    let total = this.inputsModificar.length;
+
+    for (cont=0; cont<total; cont++) {
+        if (!this.inputsModificar[cont].checkValidity()) break;
+    }
+
+    this.formModificar.classList.add('was-validated');
+
+    if (cont == total) {
+        // Envío sólo los campos básicos para evitar que el backend intente actualizar
+        // una columna que no existe (referenciaUnicaMandato).
+        const datos = {
+            'id': this.idUsuario,
+            'nombre': getInputValue(form, 'nombre'),
+            'apellidos': getInputValue(form, 'apellidos'),
+            'correo': getInputValue(form, 'correo'),
+            'telefono': getInputValue(form, 'telefono'),
+            'dni': getInputValue(form, 'dni'),
+            'iban': getInputValue(form, 'iban'),
+            'titular': getInputValue(form, 'titular'),
+            'fechaFirmaMandato': getInputValue(form, 'fechaFirmaMandato') // ← AÑADIR AQUÍ TAMBIÉN
+            // NOTA: omito 'fechaMandato' y 'mandatoUnico' / 'referenciaUnicaMandato'
+        };
+
+        if (this.divErrorModificar.style.display == 'block')
+            this.divErrorModificar.style.display = 'none';
+
+        this.bloquearBotones(true);
+        this.divCargandoModificar.style.display = 'block';
+        this.controlador.modificarPadre(datos);
     }
 }

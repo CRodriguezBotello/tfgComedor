@@ -69,6 +69,8 @@
                     <thead></thead>
                     <tbody></tbody>
                 </table>
+
+            
             </div>
         </div>
 
@@ -177,30 +179,30 @@
             <form method="post" class="needs-validation" novalidate>
                 <div class="formItem">
                     <label for="nombre">
-                        Nuevo nombre (*) <input type="text" class="form-control" name="nombre" maxlength="30" required/>
+                        Nuevo nombre (*) <input id="nombre" type="text" class="form-control" name="nombre" maxlength="30" required/>
                         <div class="invalid-feedback">Por favor, introduzca su nombre.</div>
                     </label>
                 </div>
                 <div class="formItem">
                     <label for="apellidos">
-                        Nuevos apellidos (*) <input type="text" class="form-control" name="apellidos" maxlength="90" required/>
+                        Nuevos apellidos (*) <input id="apellidos" type="text" class="form-control" name="apellidos" maxlength="90" required/>
                         <div class="invalid-feedback">Por favor, introduzca sus apellidos.</div>
                     </label>
                 </div>
                 <div class="formItem">
                     <label for="telefono">
-                        Nuevo teléfono (*) <input type="text" class="form-control" name="telefono" maxlength="9" pattern="^[0-9]{9}$" required/>
+                        Nuevo teléfono (*) <input id="telefono" type="text" class="form-control" name="telefono" maxlength="9" pattern="^[0-9]{9}$" required/>
                         <div class="invalid-feedback">Por favor, introduzca su nº de teléfono.</div>
                     </label>
                 </div>
                 <div class="formItem">
                     <label for="correo">
-                        Nuevo email (*) <input type="email" class="form-control" name="correo" maxlength="90" required/>
+                        Nuevo email (*) <input id="correo" type="email" class="form-control" name="correo" maxlength="90" required/>
                     </label>
                 </div>
                  <div class="formItem">
                     <label for="iban">
-                        Nuevo IBAN sin espacios (*) <input type="text" class="form-control" name="iban" maxlength="34" required/>
+                        Nuevo IBAN sin espacios (*) <input id="iban" type="text" class="form-control" name="iban" maxlength="34" required/>
                         <div class="invalid-feedback">Por favor, introduzca un IBAN válido.</div>
                     </label>
                 </div>
@@ -256,24 +258,29 @@
             </div>
             <br>
         </div>
-
-
-
-        <div id="gestionDiariaPadres" class="vista d-none">
-        </div>
-
         <div id="resumenMensual">
+
             <h1 class="text-center my-4">Resumen mensual</h1>
             <div class="contenedor">
+                <script>console.log("muestra el div")</script>
                 <button type="button" class="btn btn-info btn-prev">Mes anterior</button>
                 <span id="mes"></span>
                 <button type="button" class="btn btn-info btn-next">Mes siguiente</button>
             </div>
             <table id="tablaResumenMensual">
+
                 <thead></thead>
                 <tbody></tbody>
             </table>
         </div>
+
+
+
+        <div id="gestionDiariaPadres" class="vista d-none">
+            
+
+        </div>
+        <!--<div id="gestionDiariaPadres" style="display:none;"></div>-->
 
 
         <script type="module" src="./js/controllers/padres.js"></script>

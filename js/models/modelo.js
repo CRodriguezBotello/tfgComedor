@@ -6,7 +6,12 @@ import { Rest } from "../services/rest.js";
  * Utiliza el Servicio de Rest.
  */
 export class Modelo {
+    constructor() {
+        // ...existing code...
+    }
+
     /**
+     * 
      * Realiza el proceso de modificación de un padre.
      * @param {Object} datos Datos del padre.
      * @return {Promise} Devuelve la promesa asociada a la petición.
@@ -227,6 +232,12 @@ export class Modelo {
         queryParams.set('mes', mes);
         return Rest.get('secretaria', [], queryParams);
     }
+    obtenerUsuariosApuntadosMensual(mes) {
+        const queryParams = new Map();
+        queryParams.set('proceso', 'usuariosMes');
+        queryParams.set('mes', mes);
+        return Rest.get('secretaria', [], queryParams);
+    }
 
     /**
      * Llamada para obtener las incidencias de los usuarios del comedor de un mes.
@@ -239,38 +250,6 @@ export class Modelo {
         queryParams.set('mes', mes);
         return Rest.get('secretaria', [], queryParams);
     }
-
-    /**
-     * Llamada para obtener a los usuarios apuntados al comedor en un mes.
-     * @param {Number} mes Nº del mes.
-     * @param {Number} idPadre ID del padre (usuario que ha iniciado sesión).
-     * @returns {Promise} Devuelve la promesa asociada a la petición.
-     */
-    obtenerHijosPadreApuntadosMensual(mes, idPadre) {
-        console.log("Modelo: obtenerHijosPadreApuntadosMensual", mes, idPadre);
-        const queryParams = new Map();
-        queryParams.set('proceso', 'usuariosMes');
-        queryParams.set('mes', mes);
-        queryParams.set('idPadre', idPadre);
-        return Rest.get('secretaria', [], queryParams);
-    }
-
-
-    /**
-    * Llamada para obtener las incidencias de los hijos de un padre en un mes.
-    * @param {Number} mes Nº del mes.
-    * @param {Number} idPadre ID del padre (usuario que ha iniciado sesión).
-    * @returns {Promise} Devuelve la promesa asociada a la petición.
-    */
-    obtenerIncidenciasHijoMensual(mes, idPadre) {
-        console.log("Modelo: obtenerIncidenciasHijoMensual", mes, idPadre);
-        const queryParams = new Map();
-        queryParams.set('mes', mes);
-        queryParams.set('idPadre', idPadre); // Pasamos el ID del padre
-        return Rest.get('secretaria', [], queryParams);
-    }
-
-
 
     /**
      * Llamada para insertar o modificar incidencia.
@@ -324,6 +303,14 @@ export class Modelo {
         return Rest.get('secretaria', [], queryParams);
     }
 
+    obtenerQ19PorPersona(mes, idPersona) {
+        const queryParams = new Map();
+        queryParams.set('proceso', 'q19');
+        queryParams.set('mes', mes);
+        queryParams.set('idPersona', idPersona);
+        return Rest.get('secretaria', [], queryParams);
+    }
+
     /**
      * Obtiene la constante relacionada con los registros de tupperware.
      * @returns {Promise} Una promesa que se resolverá con la constante relacionada con los registros de tupperware.
@@ -357,5 +344,89 @@ export class Modelo {
         queryParams.set('anio', anio);
         queryParams.set('mes', mes);
         return Rest.get('calendario', [], queryParams);
+    }
+
+    /**
+     * Obtiene los precios desde la API y devuelve un objeto:
+     * { precioMensual: 150, precioDiario: 8.5, ... }
+     */
+    obtenerPrecios() {
+        // Usar el enrutador interno del servicio Rest (controlador 'precios')
+        const queryParams = new Map();
+        return Rest.get('precios', [], queryParams)
+            .then(res => {
+                // Si el backend devuelve un array de filas [{nombreP,cantidad}, ...] — convertir a objeto
+                if (Array.isArray(res)) {
+                    const out = {};
+                    res.forEach(row => {
+                        if (row && row.nombreP) out[row.nombreP] = parseFloat(row.cantidad);
+                    });
+                    return out;
+                }
+                // Si ya viene como objeto mapeado, devolver tal cual
+                return res;
+            })
+            .catch(err => {
+                console.error('Modelo.obtenerPrecios error:', err);
+                throw err;
+            });
+    }
+
+    async obtenerUsuariosAnual(anio) {
+        const queryParams = new Map();
+        queryParams.set('anio', anio);
+        queryParams.set('proceso', 'usuariosAnual'); 
+    
+        return Rest.get('secretaria', [], queryParams)
+            .then(data => {
+                // 🚨 LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
+                console.log('DEBUG 1: MODELO Certificados, datos recibidos. Longitud:', data ? data.length : 0); 
+                return data;
+            })
+            .catch(err => {
+                console.error('DEBUG ERROR MODELO Certificados:', err); 
+                return []; 
+            });
+    }
+
+    // ... dentro de la clase Modelo ...
+    // modelo.js
+// ... dentro de la clase Modelo ...
+
+    /**
+     * Llama a la API para generar el certificado PDF.
+     * @param {string|number} alumnoId 
+     * @param {number} anio 
+     * @returns {Promise<string>} Promesa que resuelve con la URL del PDF.
+     */
+    generarCertificadoPDF(alumnoId, anio) {
+        const datos = {
+            id: alumnoId,
+            anio: anio
+        };
+        
+        // Configuración del endpoint REST:
+        const queryParams = 'secretaria';
+        const pathParams = ['generarCertificado']; 
+
+        // Llamada al servicio Rest.post() con manejo de promesas
+        return Rest.post(queryParams, pathParams, datos) 
+            .then(response => {
+                // 🚨 LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
+                console.log('DEBUG 1: MODELO Certificado, respuesta recibida:', response); 
+
+                // Asumiendo que la respuesta es un objeto con la URL del archivo
+                if (response && response.url) {
+                    return response.url;
+                }
+                // Si el servidor no devolvió una URL, lanzamos un error que será capturado por el .catch()
+                throw new Error("Respuesta del servidor incompleta (falta URL o estructura incorrecta).");
+            })
+            .catch(err => {
+                // DEBUG ERROR MODELO: Captura cualquier error de red, parsing o el throw anterior.
+                console.error('DEBUG ERROR MODELO Certificado:', err); 
+                // Vuelve a lanzar el error para que sea capturado por el Controlador (secretaria.js)
+                throw err; 
+            });
     }
 }

@@ -46,12 +46,22 @@ class Registro {
         this.form.classList.add('was-validated');
 
         if (cont == total) {
+            // Validación de email adicional
+            this.inputs[2].setCustomValidity('');
+            const email = this.inputs[2].value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                this.inputs[2].setCustomValidity('Correo electrónico no válido.');
+                this.inputs[2].reportValidity();
+                return;
+            }
+
             // Check de contraseñas
             if (this.inputs[3].value === this.inputs[4].value) {
                 // Check de IBAN
-								this.inputs[7].value = this.inputs[7].value.toUpperCase().replaceAll(' ','')
+                this.inputs[7].value = this.inputs[7].value.toUpperCase().replaceAll(' ','')
                 if (this.inputs[7].value.match(/^ES\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|ES\d{22}$/) &&
-									this.isValidIBANNumber(this.inputs[7].value)) {
+                                    this.isValidIBANNumber(this.inputs[7].value)) {
                     this.divCargando.style.display = 'block';
                 
                     if (this.divError.style.display == 'block')
@@ -258,3 +268,88 @@ class Registro {
 }
 
 new Registro();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formRegistro');
+  const btnRegistro = document.getElementById('btnRegistro');
+  const btnCancelar = document.getElementById('btnCancelar');
+
+  const input = (name) => form.querySelector(`[name="${name}"]`);
+
+  const dniRegex = /^[0-9]{8}[A-Za-z]$/;
+  const ibanRegex = /^[A-Za-z]{2}[0-9]{22}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setInvalid(el, msg) {
+    el.classList.add('is-invalid');
+    const feedback = el.parentElement.querySelector('.invalid-feedback');
+    if (feedback && msg) feedback.textContent = msg;
+  }
+  function clearInvalid(el) {
+    el.classList.remove('is-invalid');
+  }
+
+  btnRegistro.addEventListener('click', () => {
+    // limpiar marcas anteriores
+    ['dni','iban','contrasenia','contrasenia2','correo'].forEach(n => {
+      const e = input(n);
+      if (e) clearInvalid(e);
+    });
+
+    // HTML5 validation básica
+    if (!form.checkValidity()) {
+      // permite que se muestren los mensajes nativos/invalid-feedback
+      form.classList.add('was-validated');
+      return;
+    }
+
+    // Validaciones extra
+    const correoEl = input('correo');
+    if (!emailRegex.test(correoEl.value.trim())) {
+      setInvalid(correoEl, 'Email inválido.');
+      correoEl.focus();
+      return;
+    }
+
+    const dniEl = input('dni');
+    if (!dniRegex.test(dniEl.value.trim())) {
+      setInvalid(dniEl, 'DNI inválido: debe tener 8 números y 1 letra (ej. 12345678A).');
+      dniEl.focus();
+      return;
+    }
+
+    const ibanEl = input('iban');
+    if (!ibanRegex.test(ibanEl.value.trim())) {
+      setInvalid(ibanEl, 'IBAN inválido: 2 letras + 22 números, sin espacios (ej. ES123456...)');
+      ibanEl.focus();
+      return;
+    }
+
+    const pass = input('contrasenia');
+    const pass2 = input('contrasenia2');
+    if (pass.value !== pass2.value) {
+      setInvalid(pass2, 'Las contraseñas no coinciden.');
+      pass2.focus();
+      return;
+    }
+
+    // Si llegamos aquí, todo válido. -> aquí puedes enviar el formulario vía fetch/XHR o form.submit()
+    // Ejemplo de envío por POST tradicional:
+    // form.submit();
+
+    // O mostrar loading y hacer fetch a tu API:
+    const loading = document.getElementById('loadingImg');
+    if (loading) loading.style.display = 'block';
+
+    // Placeholder: reemplaza con la lógica real de envío
+    console.log('Formulario válido. Preparado para enviar.');
+  });
+
+  btnCancelar.addEventListener('click', () => {
+    form.reset();
+    form.classList.remove('was-validated');
+    // ocultar loading si está visible
+    const loading = document.getElementById('loadingImg');
+    if (loading) loading.style.display = 'none';
+  });
+});

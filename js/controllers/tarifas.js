@@ -14,6 +14,14 @@ class ControladorTarifas {
             Rest.setAutorizacion(this.usuario.autorizacion);
         }
 
+        // Ocultar la zona de creación: ahora las tarifas son columnas fijas en BD
+        const nuevoNombre = document.getElementById('nuevoNombre');
+        const nuevoCantidad = document.getElementById('nuevoCantidad');
+        const crearBtn = document.getElementById('btnCrearTarifa');
+        if (nuevoNombre) nuevoNombre.style.display = 'none';
+        if (nuevoCantidad) nuevoCantidad.style.display = 'none';
+        if (crearBtn) crearBtn.style.display = 'none';
+
         // Mostrar vista al clicar su entrada de menú
         const li = document.querySelector('nav.topnav li[data-view="gestionTarifas"]');
         if (li) li.addEventListener('click', () => {
@@ -28,10 +36,6 @@ class ControladorTarifas {
                 if (view !== 'gestionTarifas') this.ocultarVista();
             });
         });
-
-        // Botón crear
-        const crearBtn = document.getElementById('btnCrearTarifa');
-        if (crearBtn) crearBtn.addEventListener('click', this._onCrear.bind(this));
 
         // Delegación sobre la tabla
         const tbody = document.querySelector('#tablaTarifas tbody');
@@ -49,12 +53,12 @@ class ControladorTarifas {
         tbody.innerHTML = '';
         list.forEach(p => {
             const tr = document.createElement('tr');
+            // p.idPrecio puede ser un nombre de columna (string) o id numérico
             tr.innerHTML = `
                 <td class="nombre">${p.nombreP}</td>
                 <td><input type="number" step="0.01" class="form-control cantidad" value="${Number(p.cantidad).toFixed(2)}" /></td>
                 <td>
                     <button class="btn btn-sm btn-primary btn-save">Guardar</button>
-                    <button class="btn btn-sm btn-danger btn-del">Borrar</button>
                 </td>
             `;
             tr.dataset.id = p.idPrecio;
@@ -73,17 +77,6 @@ class ControladorTarifas {
         }
     }
 
-    async crearTarifa(nombre, cantidad) {
-        const headers = this._getHeaders();
-        // normalizar coma -> punto y convertir a número
-        const cantidadNum = parseFloat(String(cantidad).replace(',', '.'));
-        const res = await fetch(this.api, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ nombreP: nombre, cantidad: isNaN(cantidadNum) ? 0 : cantidadNum })
-        });
-        return await res.json();
-    }
     
     async actualizarTarifa(id, cantidad) {
         const headers = this._getHeaders();
@@ -97,12 +90,6 @@ class ControladorTarifas {
         return await res.json();
     }
 
-    async borrarTarifa(id) {
-        const url = this.api + '&id=' + encodeURIComponent(id);
-        const headers = this._getHeaders();
-        const res = await fetch(url, { method: 'DELETE', headers });
-        return await res.json();
-    }
 
     mostrarVista() {
         document.querySelectorAll('body > div[id]').forEach(d => d.classList.add('d-none'));
@@ -127,25 +114,7 @@ class ControladorTarifas {
         return headers;
     }
 
-    async _onCrear() {
-        const nombre = document.querySelector('#nuevoNombre')?.value.trim() || '';
-        const cantidad = document.querySelector('#nuevoCantidad')?.value;
-        if (!nombre || cantidad === '') { this._setMsg('Nombre y cantidad obligatorios'); return; }
-        try {
-            const r = await this.crearTarifa(nombre, cantidad);
-            if (r.success) {
-                document.querySelector('#nuevoNombre').value = '';
-                document.querySelector('#nuevoCantidad').value = '';
-                this._setMsg('Creada');
-                await this.cargarTarifas();
-            } else {
-                this._setMsg(r.error || 'Error');
-            }
-        } catch (e) {
-            console.error(e);
-            this._setMsg('Error servidor');
-        }
-    }
+    
 
     async _onTablaClick(ev) {
         const btn = ev.target;
@@ -154,23 +123,16 @@ class ControladorTarifas {
         const id = tr.dataset.id;
         if (btn.classList.contains('btn-save')) {
             const val = tr.querySelector('.cantidad').value;
+            btn.disabled = true;
             try {
                 const r = await this.actualizarTarifa(id, val);
-                this._setMsg(r.success ? 'Guardado' : (r.error || 'Error al guardar'));
-                await this.cargarTarifas();
+                await this.cargarTarifas(); // recargar antes de mostrar el mensaje para que no se borre
+                this._setMsg(r.success ? 'Guardado' : (r.error || 'Guardado correctamente'));
             } catch (e) {
                 console.error(e);
                 this._setMsg('Error servidor');
-            }
-        } else if (btn.classList.contains('btn-del')) {
-            if (!confirm('Borrar tarifa?')) return;
-            try {
-                const r = await this.borrarTarifa(id);
-                this._setMsg((r.ok || r.success) ? 'Borrado' : (r.error || 'Error al borrar'));
-                await this.cargarTarifas();
-            } catch (e) {
-                console.error(e);
-                this._setMsg('Error servidor');
+            } finally {
+                btn.disabled = false;
             }
         }
     }

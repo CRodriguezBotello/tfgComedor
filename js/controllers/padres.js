@@ -5,7 +5,7 @@ import { VistaGestionHijos } from "../views/padres/vistagestionhijos.js";
 import { VistaModificarPadres } from "../views/padres/vistamodificar.js";
 import { VistaCalendario } from "../views/padres/vistacalendario.js";
 import { VistaGestionDiaria } from "../views/padres/vistagestiondiaria.js";
-import { VistaResumenMensual } from "../views/padres/vistaresumenmensual.js";
+import {VistaResumenMensual }  from "../views/padres/vistaresumenmensual.js";
 import { Rest } from "../services/rest.js";
 
 /**
@@ -41,11 +41,24 @@ class ControladorPadres {
         this.vistaGestionDiaria = new VistaGestionDiaria(this, document.getElementById('gestionDiariaPadres'));
         this.resumenMensual = new VistaResumenMensual(this, document.getElementById('resumenMensual'));
 
-
         this.vistaModificacion.actualizarCampos(this.#usuario);
         this.vistaGestionHijos.actualizar(this.#usuario);
         this.vistaInicio.obtenerPadre(this.#usuario);
-        
+
+        // Cargar precios desde la API y luego mostrar vista (si falla, se usan valores por defecto)
+        this.modelo.obtenerPrecios()
+            .then(precios => {
+                if (precios) {
+                    if (typeof precios.precioMensual !== 'undefined') PRICE_MONTH = parseFloat(precios.precioMensual);
+                    if (typeof precios.precioDiario !== 'undefined') PRICE_DAY = parseFloat(precios.precioDiario);
+                }
+                // actualizar precio inicial si ya hay calendario montado
+                if (window.updateComedorPrice) window.updateComedorPrice();
+            })
+            .catch(e => {
+                console.warn('No se pudo cargar precios desde la API, se usan valores por defecto.', e);
+            });
+
         this.verVistaInicio();
     }
 
@@ -131,9 +144,9 @@ class ControladorPadres {
         this.vistaGestionHijos.mostrar(false);
         this.vistaModificacion.mostrar(false);
         this.vistaCalendario.mostrar(false);
+        this.resumenMensual.mostrar(false);
 
         this.vistaGestionDiaria.mostrar(true);
-        this.resumenMensual.mostrar(false);
 
         // Cargar hijos y cursos y pasar mapa de id->nombre a la vista
         Promise.all([
@@ -149,38 +162,6 @@ class ControladorPadres {
             console.error('Error cargando hijos para gestión diaria:', e);
             this.vistaGestionDiaria.cargarListado([], new Map());
         });
-    }
-
-    verVistaResumenMensual() {
-        this.vistaInicio.mostrar(false);
-        this.vistaGestionHijos.mostrar(false);
-        this.vistaModificacion.mostrar(false);
-        this.vistaCalendario.mostrar(false);
-
-        this.vistaGestionDiaria.mostrar(false);
-        this.resumenMensual.mostrar(true);
-        
-    }
-
-    obtenerUsuariosMensual(mes) {
-        console.log(this.#usuario.id);
-        this.modelo.obtenerHijosPadreApuntadosMensual(mes, this.#usuario.id)
-        .then(usuarios => {
-            this.resumenMensual.cargarIncidencias(usuarios);
-        })
-        .catch(e => {
-            console.error(e);
-        })
-    }
-
-    obtenerIncidenciasMensual(mes) {
-        this.modelo.obtenerIncidenciasHijoMensual(mes, this.#usuario.id)
-         .then(incidencias => {
-             this.resumenMensual.cargarListado(incidencias);
-         })
-         .catch(e => {
-             console.error(e);
-         })
     }
 
 
@@ -418,7 +399,8 @@ class ControladorPadres {
                           .catch(e => { console.error('tupper ERROR', e); throw e; })
                     );
                 }
-                if (ent.incidencia && ent.incidencia !== '') {
+                // Enviar incidencia incluso si es cadena vacía (para permitir borrado de incidencia)
+                if (typeof ent.incidencia !== 'undefined') {
                     ops.push(
                         this.modelo.insertarIncidencia({
                             dia: ent.dia,
@@ -438,7 +420,7 @@ class ControladorPadres {
                 if (typeof ent.tupper !== 'undefined') {
                     ops.push(this.modelo.insertarTupper({ dia: ent.dia, idPersona: ent.idPersona, tupper: ent.tupper }));
                 }
-                if (ent.incidencia && ent.incidencia !== '') {
+                if (typeof ent.incidencia !== 'undefined') {
                     ops.push(this.modelo.insertarIncidencia({ dia: ent.dia, idPersona: ent.idPersona, incidencia: ent.incidencia }));
                 }
                 return Promise.all(ops);
@@ -447,6 +429,44 @@ class ControladorPadres {
 
         // Devolver promesa global y propagar cualquier error para que la vista lo muestre
         return Promise.all(promesas);
+    }
+
+    verVistaResumenMensual() {
+        this.vistaInicio.mostrar(false);
+        this.vistaGestionHijos.mostrar(false);
+        this.vistaModificacion.mostrar(false);
+        this.vistaCalendario.mostrar(false);
+        this.vistaGestionDiaria.mostrar(false);
+        this.resumenMensual.mostrar(true);
+    }
+
+    obtenerUsuariosMensual(mes) {
+        // Obtener primero los hijos del padre y luego solicitar los usuarios del mes,
+        // filtrando para que solo queden los usuarios que son hijos de este padre.
+        this.modelo.dameHijos(this.#usuario.id)
+        .then(hijos => {
+            const idsHijos = new Set((hijos || []).map(h => h.id));
+            return this.modelo.obtenerUsuariosApuntadosMensual(mes)
+                .then(usuarios => {
+                    const usuariosFiltrados = (usuarios || []).filter(u => idsHijos.has(u.id));
+                    this.resumenMensual.cargarIncidencias(usuariosFiltrados);
+                });
+        })
+        .catch(e => {
+            console.error('Error cargando usuarios mensuales filtrados por hijos:', e);
+            // En caso de error, pasar array vacío para que la vista muestre "No existen registros"
+            this.resumenMensual.cargarIncidencias([]);
+        });
+    }
+    
+    obtenerIncidenciasMensual(mes) {
+        this.modelo.obtenerIncidenciasMensual(mes)
+         .then(incidencias => {
+             this.resumenMensual.cargarListado(incidencias);
+         })
+         .catch(e => {
+             console.error(e);
+         })
     }
 
     /**
@@ -470,28 +490,3 @@ class ControladorPadres {
 
 new ControladorPadres();
 
-{ 
-    // función añadida: borrar un hijo definitivamente
-    async function borrarHijo(idHijo) {
-        try {
-            // Ajusta la URL si tu router añade "api/index.php" de otra forma
-            const url = `/php/api/index.php/hijos/eliminarHijo/${idHijo}`;
-            await Rest.delete(url);
-            // Actualiza la vista que muestra los hijos (ajusta según tu implementación)
-            // por ejemplo: this.verVistaGestionHijos(); o recarga la lista
-            if (typeof controladorPadres !== 'undefined' && controladorPadres.obtenerHijos) {
-                controladorPadres.obtenerHijos(); // o la función que refresca la lista
-            } else {
-                window.location.reload();
-            }
-        } catch (err) {
-            console.error('Error borrando hijo:', err);
-            // mostrar mensaje al usuario (ajusta según tu UI)
-            const divError = document.getElementById('divError');
-            if (divError) divError.textContent = `Error al eliminar: ${err.message || err}`;
-        }
-    }
-
-    // Ejemplo: exportar o exponer la función para usar en handlers de botones
-    window.borrarHijo = borrarHijo;
-}

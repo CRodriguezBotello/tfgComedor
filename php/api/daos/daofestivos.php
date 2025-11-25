@@ -9,50 +9,61 @@
          * @return array|boolean Array de los festivos, o false si no existen.
          */
         public static function obtenerFestivos($fechaInicio, $fechaFinal) {
-            $sql = 'SELECT diaFestivo FROM Festivo';
+            $sql = 'SELECT diaFestivo, definicion FROM Festivo';
             $sql .= ' WHERE diaFestivo BETWEEN :inicio AND :final';
             $params = array(
                 'inicio' => $fechaInicio,
                 'final' => $fechaFinal
             );
-            
             $resultado = BD::seleccionar($sql, $params);
-            return self::procesarFestivos($resultado);
+            return $resultado ? $resultado : array();
         }
 
-        /**
-         * Procesa los elementos del listado para convertirlos a un formato adecuado (de objeto a string).
-         * @param array $listaFestivos Listado de días festivos.
-         * @return array|boolean Array de festivos o False si no se pudo crear.
-         */
-        public static function procesarFestivos($listaFestivos) {
-            $festivos = array();
-            
-            if (count($listaFestivos) > 0) {
-                for ($i=0; $i<count($listaFestivos); $i++) {
-                    $festivos[] = $listaFestivos[$i]['diaFestivo'];
-                }
+        // Si quieres mantener procesarFestivos para compatibilidad, podrías convertir aquí,
+        // pero ahora devolvemos arrays con ['diaFestivo','definicion'] para que el frontend los use.
 
-                return $festivos;
+        // Crear festivo: acepta definición
+        public static function crearFestivo(string $fecha, string $definicion = '') {
+            $sql = 'INSERT INTO Festivo (diaFestivo, definicion) VALUES (:f, :d)';
+            $params = array('f' => $fecha, 'd' => $definicion);
+            return BD::actualizar($sql, $params);
+        }
+
+        // Actualizar festivo: devuelve número de filas afectadas
+        public static function actualizarFestivo(string $oldFecha, string $newFecha, ?string $definicion = null) {
+            // Si definicion es NULL solo actualizamos la fecha; si viene (aunque sea cadena vacía) actualizamos también la definición.
+            if ($definicion === null) {
+                $sql = 'UPDATE Festivo SET diaFestivo = :n WHERE diaFestivo = :o';
+                $params = array('n' => $newFecha, 'o' => $oldFecha);
+            } else {
+                $sql = 'UPDATE Festivo SET diaFestivo = :n, definicion = :d WHERE diaFestivo = :o';
+                $params = array('n' => $newFecha, 'd' => $definicion, 'o' => $oldFecha);
             }
-            else {
+            return BD::actualizar($sql, $params);
+        }
+
+        // Borrar un festivo: devuelve número de filas afectadas
+        public static function borrarFestivo(string $fecha) {
+            $sql = 'DELETE FROM Festivo WHERE diaFestivo = :f';
+            $params = array('f' => $fecha);
+            return BD::actualizar($sql, $params);
+        }
+
+        // Borrar todos los festivos: devuelve número de filas afectadas
+        public static function borrarTodosFestivos() {
+            $sql = 'DELETE FROM Festivo';
+            return BD::actualizar($sql, array());
+        }
+
+        // Verifica si una fecha es festiva
+        public static function esFestivo(string $fecha): bool
+        {
+            $sql = 'SELECT COUNT(*) AS cnt FROM Festivo WHERE diaFestivo = :f';
+            $resultado = BD::seleccionar($sql, array('f' => $fecha));
+            if (!$resultado) {
                 return false;
             }
+            $cnt = isset($resultado[0]['cnt']) ? (int)$resultado[0]['cnt'] : 0;
+            return $cnt > 0;
         }
-
-				/**
-					Comprueba si una fecha en formato ISO es día festivo.
-					@param string $fecha Fecha en formato ISO YYYY-MM-DD
-					@return boolean. True si es festivo.
-				**/
-        public static function esFestivo($fecha) {
-            $sql = 'SELECT COUNT(*) AS dias FROM Festivo';
-            $sql .= ' WHERE diaFestivo = :fecha';
-            $params = array(
-                'fecha' => $fecha
-            );
-            
-            $resultado = BD::seleccionar($sql, $params);
-            return $resultado[0]['dias'];
-			}
     }

@@ -51,6 +51,30 @@
             }
         }
 
+        public static function actualizarFechaMandato($idPersona, $fecha) {
+            if (!BD::iniciarTransaccion()) {
+                throw new Exception('No se pudo iniciar la transacción.');
+            }
+
+            $sql = "UPDATE Persona SET fechaFirmaMandato = :fecha WHERE id = :id";
+            $params = [
+                'fecha' => $fecha,
+                'id' => $idPersona
+            ];
+
+            try {
+                BD::actualizar($sql, $params); // usa tu método de actualización
+                if (!BD::commit()) {
+                    throw new Exception('No se pudo confirmar la transacción.');
+                }
+            } catch (Exception $e) {
+                BD::rollback();
+                throw $e; // relanza la excepción para controlarla fuera
+            }
+        }
+
+
+
         public static function desactivarPadre(int $idPersona) {
             $sql = "
                 UPDATE Persona p
@@ -85,7 +109,6 @@
             
             BD::actualizar($sql, ['idPadre' => $idPersona]);
         }
-
         
         /**
          * Obtener las incidencias de una fecha.
@@ -117,72 +140,6 @@
         }
 
         /**
-        * Obtiene las incidencias de los hijos de un padre en un mes determinado.
-        *
-        * @param PDO $pdo Conexión PDO a la base de datos.
-        * @param int $mes Número del mes (1-12).
-        * @param int $idPadre ID del padre.
-        * @return array Array de resultados con idPersona e incidencias.
-        */
-        function obtenerIncidenciasHijoMensual(PDO $pdo, int $mes, int $idPadre): array {
-            echo "entra en dao usuario";
-            $sql = 'SELECT d.idPersona, 
-                        GROUP_CONCAT(CONCAT(DATE_FORMAT(d.dia, "%d/%m/%Y"), " - ", d.incidencia) SEPARATOR "\n ") AS incidencias
-                    FROM Dias d
-                    INNER JOIN Hijo_Padre hp ON d.idPersona = hp.idHijo
-                    WHERE MONTH(d.dia) = :mes
-                    AND hp.idPadre = :idPadre
-                    AND hp.activo = 1
-                    GROUP BY d.idPersona';
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':mes', $mes, PDO::PARAM_INT);
-            $stmt->bindValue(':idPadre', $idPadre, PDO::PARAM_INT);
-            var_dump($stmt);
-            $stmt->execute();
-
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        /**
-        * Obtener los datos de las personas que van al comedor en 'x' mes,
-        * filtrando solo los hijos del padre que ha iniciado sesión.
-        *
-        * @param Integer $mes Mes.
-        * @param Integer $idPadre ID del padre que ha iniciado sesión.
-        * @return array Array con los usuarios y sus datos de comedor.
-        */
-        public static function obtenerHijosPadreApuntadosMensual($mes, $idPadre) {
-            echo "entra en dao hijo apuntados mensual";
-            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
-                        COUNT(Dias.idPersona) AS numeroMenus,
-                        SUM(Dias.tupper) AS tupper,
-                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
-                        GROUP_CONCAT(
-                            CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
-                            ORDER BY Dias.dia ASC
-                            SEPARATOR ", "
-                        ) AS diasTupper
-                    FROM Persona
-                    JOIN Dias ON Persona.id = Dias.idPersona
-                    INNER JOIN Hijo_Padre hp ON Persona.id = hp.idHijo
-                    WHERE MONTH(Dias.dia) = :mes
-                    AND hp.idPadre = :idPadre
-                    AND hp.activo = 1
-                    GROUP BY Persona.id
-                    ORDER BY Persona.apellidos';
-
-            $params = array(
-                'mes' => $mes,
-                'idPadre' => $idPadre
-            );
-
-            $usuarios = BD::seleccionar($sql, $params);
-            
-            return $usuarios;
-        }
-
-        /**
          * Inserta/modifica incidencia de un día de un usuario en concreto.
          * @param object $datos Datos de la incidencia.
          */
@@ -200,6 +157,20 @@
             );
 
             BD::actualizar($sql, $params);
+        }
+
+        /**
+         * Eliminar padre.
+         * @param int $id ID de la persona padre.
+         * @return boolean True si se hizo el proceso, false si no.
+         */
+        public static function desactivaPadre($idPersona) {
+        	$sql  = 'UPDATE Persona ';
+					$sql .= 'SET activo = 0 ';
+        	$sql .= 'WHERE id = ( ';
+					$sql .= 'SELECT id FROM Padre WHERE id = :idPersona) ';
+          $params = array('idPersona' => $idPersona);
+          BD::actualizar($sql, $params);
         }
 
         /**
@@ -343,10 +314,9 @@
          * Obtener los datos de las personas que van al comedor en 'x' mes.
          * @param Integer $mes Mes.
          */
-
-        
         public static function obtenerUsuariosPorMes($mes) {
-            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo,
+            // Añadimos cálculo del importe por usuario usando la fila de Precios
+            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, Persona.dni AS dni, Persona.fechaFirmaMandato AS fechaFirmaMandato,
                         COUNT(Dias.idPersona) AS numeroMenus,
                         SUM(Dias.tupper) AS tupper,
                         GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
@@ -354,16 +324,19 @@
                             CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
                             ORDER BY Dias.dia ASC
                             SEPARATOR ", "
-                        ) AS diasTupper
+                        ) AS diasTupper,
+                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
+                        GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, " ", COALESCE(p2.apellidos, "")) SEPARATOR "; ") AS hijos
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
+                        LEFT JOIN Hijo_Padre hp ON hp.idPadre = Persona.id
+                        LEFT JOIN Persona p2 ON p2.id = hp.idHijo
+                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
                         WHERE MONTH(Dias.dia) = :mes
-                        AND Persona.activo = 1
-                        GROUP BY Persona.id
+                        GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo
                         ORDER BY Persona.apellidos';
             $params = array('mes' => $mes);
             $usuarios = BD::seleccionar($sql, $params);
-            
             return $usuarios;
         }
 
@@ -949,8 +922,7 @@
 
             $padres = BD::seleccionar($sql, $params);
             return $padres;
-        }
-
+    }
 
         /**
          * Modificar datos padre.
@@ -958,24 +930,24 @@
          */
         public static function modificarPadreSecretaria($datos) {
             $sql = 'UPDATE Persona';
-            $sql .= ' SET nombre=:nombre, apellidos=:apellidos, correo=:correo, telefono=:telefono, dni=:dni, iban=:iban, titular=:titular';
-            $sql .= ' , fechaFirmaMandato=:fechaMandato, referenciaUnicaMandato=:mandatoUnico WHERE id=:id';
-          
+            $sql .= ' SET nombre=:nombre, apellidos=:apellidos, correo=:correo, telefono=:telefono, dni=:dni, iban=:iban, titular=:titular, fechaFirmaMandato=:fechaFirmaMandato';
+            $sql .= ' WHERE id=:id';
+
             $params = array(
-                'nombre' => $datos->nombre,
-                'apellidos' => $datos->apellidos,
-                'correo' => $datos->correo,
-                'telefono' => $datos->telefono,
-                'id' => $datos->id,
-                'dni' => $datos->dni,
-                'iban' => $datos->iban,
-                'titular' => $datos->titular,
-                'fechaMandato' => $datos->fechaMandato,
-                'mandatoUnico' => $datos->mandatoUnico
+                'nombre' => $datos->nombre ?? null,
+                'apellidos' => $datos->apellidos ?? null,
+                'correo' => $datos->correo ?? null,
+               'telefono' => $datos->telefono ?? null,
+                'dni' => $datos->dni ?? null,
+                'iban' => $datos->iban ?? null,
+                'titular' => $datos->titular ?? null,
+                // si viene cadena vacía la guardamos como NULL
+                'fechaFirmaMandato' => (isset($datos->fechaFirmaMandato) && $datos->fechaFirmaMandato !== '') ? $datos->fechaFirmaMandato : null,
+                'id' => $datos->id
             );
 
             BD::actualizar($sql, $params);
-        }
+         }
 
         /**
          * Obtener datos para remesa Q19 de un mes.
@@ -983,14 +955,44 @@
          * @return array Devuelve los registros de la remesa. 
          */
         public static function obtenerQ19($mes) {
-            $sql  = 'SELECT Persona.titular, Persona.correo, Persona.iban, Persona.referenciaUnicaMandato, Persona.fechaFirmaMandato, COUNT(Dias.dia) AS dias, SUM(Dias.tupper) AS dias_tupper ';
-			$sql .= 'FROM Persona ';
-			$sql .= 'JOIN Dias ON Dias.idPadre = Persona.id ';
-            $sql .= 'WHERE MONTH(Dias.dia) = :mes ';
-            $sql .= 'GROUP BY Persona.id ';
+            // Usar tablas derivadas separadas: 'sub' con totales por hijo y 'h' con lista de hijos
+            // para evitar combinaciones que generen múltiples filas por padre.
+            $sql  = "SELECT p.id AS id, p.titular AS titular, p.correo AS correo, p.iban AS iban, p.dni AS dni, p.fechaFirmaMandato AS fechaFirmaMandato, ";
+            $sql .= "COALESCE(SUM(sub.dias_hijo), 0) AS dias, COALESCE(SUM(sub.tupper_hijo), 0) AS dias_tupper, ";
+            $sql .= "COALESCE(SUM((sub.dias_hijo * (CASE WHEN p.correo LIKE '%@fundacionloyola.es' THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END)) + (COALESCE(sub.tupper_hijo,0) * COALESCE(pr.precioTupper,0))), 0) AS importe, ";
+            $sql .= "COALESCE(h.hijos, '') AS hijos ";
+            // Aseguramos que sólo se devuelvan personas que están registradas como 'Padre'
+            $sql .= "FROM Persona p INNER JOIN Padre pa ON pa.id = p.id ";
+            $sql .= "LEFT JOIN (SELECT idPadre, idPersona AS idHijo, COUNT(*) AS dias_hijo, SUM(tupper) AS tupper_hijo FROM Dias WHERE MONTH(dia) = :mes GROUP BY idPadre, idPersona) AS sub ON sub.idPadre = p.id ";
+            $sql .= "LEFT JOIN (SELECT hp.idPadre, GROUP_CONCAT(CONCAT(per.nombre, ' ', COALESCE(per.apellidos, '')) SEPARATOR '; ') AS hijos FROM Hijo_Padre hp JOIN Persona per ON per.id = hp.idHijo WHERE hp.activo = 1 GROUP BY hp.idPadre) AS h ON h.idPadre = p.id ";
+            $sql .= "CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr ";
+            $sql .= "GROUP BY p.id, p.dni, p.fechaFirmaMandato, p.titular, p.correo, p.iban ";
             $params = array('mes' => $mes);
 
             return BD::seleccionar($sql, $params);
+        }
+
+        /**
+         * Obtener datos Q19 de un único hijo (individual).
+         * Devuelve una fila con datos del hijo y su padre, el importe calculado para ese hijo.
+         * @param int $mes
+         * @param int $idHijo
+         */
+        public static function obtenerQ19PorHijo($mes, $idHijo) {
+            $sql = "SELECT pPadre.id AS idPadre, pPadre.titular AS titularPadre, pPadre.correo AS correoPadre, pPadre.iban AS ibanPadre, pPadre.dni AS dniPadre, pPadre.fechaFirmaMandato AS fechaFirmaMandato, ";
+            $sql .= "h.id AS idHijo, CONCAT(h.nombre, ' ', COALESCE(h.apellidos, '')) AS nombreHijo, ";
+            $sql .= "COALESCE(c.dias_hijo, 0) AS dias, COALESCE(c.tupper_hijo, 0) AS dias_tupper, ";
+            $sql .= "COALESCE((c.dias_hijo * (CASE WHEN h.correo LIKE '%@fundacionloyola.es' THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END)) + (COALESCE(c.tupper_hijo,0) * COALESCE(pr.precioTupper,0)), 0) AS importe ";
+            $sql .= "FROM Persona h ";
+            $sql .= "LEFT JOIN Hijo_Padre hp ON hp.idHijo = h.id ";
+            $sql .= "LEFT JOIN Persona pPadre ON pPadre.id = hp.idPadre ";
+            $sql .= "LEFT JOIN (SELECT idPersona, idPadre, COUNT(*) AS dias_hijo, SUM(tupper) AS tupper_hijo FROM Dias WHERE MONTH(dia) = :mes GROUP BY idPersona, idPadre) AS c ON c.idPersona = h.id AND c.idPadre = pPadre.id ";
+            $sql .= "CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr ";
+            $sql .= "WHERE h.id = :idHijo ";
+            $params = array('mes' => $mes, 'idHijo' => $idHijo);
+
+            $res = BD::seleccionar($sql, $params);
+            return $res;
         }
         
         // Funciones para la gestión de tuppers
@@ -1045,7 +1047,7 @@
                         // Reasignar idPadreAlta al primer padre encontrado
                         $nuevoPadre = (int)$otros[0]['idPadre'];
                         $sqlUpd = 'UPDATE Hijo SET idPadreAlta = :nuevoPadre WHERE id = :idHijo';
-                        BD::modificar($sqlUpd, array('nuevoPadre' => $nuevoPadre, 'idHijo' => $idHijo));
+                        BD::actualizar($sqlUpd, array('nuevoPadre' => $nuevoPadre, 'idHijo' => $idHijo));
                     } else {
                         // No hay otros padres: eliminar hijo totalmente
                         BD::borrar('DELETE FROM Hijo_Padre WHERE idHijo = :idHijo', array('idHijo' => $idHijo));
@@ -1073,5 +1075,55 @@
                 throw $e;
             }
         }
+
+        public static function obtenerUsuariosPorAnio($anio) {
+            $sql = "SELECT 
+                        p.id, 
+                        p.nombre, 
+                        p.apellidos,
+                        COUNT(d.dia) AS numeroMenus  /* 👈 Añadimos COUNT y le damos alias */
+                    FROM Persona p
+                    JOIN Dias d ON p.id = d.idPersona
+                    WHERE YEAR(d.dia) = :anio
+                    GROUP BY p.id, p.nombre, p.apellidos /* 👈 Agrupamos por usuario */
+                    ORDER BY p.apellidos, p.nombre";
+        
+            $params = array('anio' => $anio);
+            
+            // Asumiendo que BD::seleccionar devuelve un array de objetos/arrays
+            return BD::seleccionar($sql, $params); 
+        }
+
+        // DAOUsuario.php
+// ...
+
+        /**
+         * Obtiene las fechas de asistencia de un alumno para un año, organizado por mes.
+         * También obtiene el nombre y apellidos.
+         * @param {string|number} id ID de la persona.
+         * @param {number} anio Año a consultar.
+         * @return {Array<Object>} Lista de fechas de asistencia y datos del alumno.
+         */
+        public static function obtenerDetalleAsistenciaAnual($id, $anio) {
+            $sql = "SELECT 
+                        p.nombre, 
+                        p.apellidos,
+                        d.dia AS fecha,
+                        MONTH(d.dia) AS mes
+                    FROM Persona p
+                    JOIN Dias d ON p.id = d.idPersona
+                    WHERE p.id = :id AND YEAR(d.dia) = :anio
+                    ORDER BY d.dia";
+
+            $params = array(
+                'id' => $id,
+                'anio' => $anio
+            );
+            
+            return BD::seleccionar($sql, $params);
+        }
+
+
+        
     }
 ?>

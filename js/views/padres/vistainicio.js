@@ -134,6 +134,9 @@ export class VistaInicioPadres extends Vista {
                     if (esDelMes) {
                         td.textContent = diaMes;
 
+                        // añadir atributo data-dia para que la detección de días funcione
+                        td.setAttribute('data-dia', fechaString);
+
                         const ahora = new Date();
                         const manana = new Date(ahora);
                         manana.setDate(ahora.getDate() + 1);
@@ -158,6 +161,8 @@ export class VistaInicioPadres extends Vista {
                                 const yaMarcado = td.classList.contains('marcado');
                                 td.classList.toggle('marcado');
                                 this.marcarDesmarcarDia(!yaMarcado, hijo.id, this.idPadre, false, fechaString);
+                                // actualizar precio tras el toggle
+                                if (window.updateComedorPrice) window.updateComedorPrice();
                             });
                         }
                     } else {
@@ -185,6 +190,8 @@ export class VistaInicioPadres extends Vista {
                         }
                     });
                     botonSemana.textContent = marcar ? 'Desmarcar semana' : 'Marcar semana';
+                    // actualizar precio al terminar la operación
+                    if (window.updateComedorPrice) window.updateComedorPrice();
                 });
                 tdBotonSemana.appendChild(botonSemana);
                 tr.appendChild(tdBotonSemana);
@@ -212,11 +219,23 @@ export class VistaInicioPadres extends Vista {
                     }
                 });
                 botonMes.textContent = marcar ? 'Desmarcar mes' : 'Marcar mes';
+
+                // Si se ha marcado el mes, indicar explícitamente "mes completo" en el contenedor
+                if (marcar) {
+                    contenedorHijo.setAttribute('data-mes-completo', '1');
+                } else {
+                    contenedorHijo.removeAttribute('data-mes-completo');
+                }
+
+                // actualizar precio tras marcar/desmarcar mes
+                if (window.updateComedorPrice) window.updateComedorPrice();
             });
             contenedorHijo.appendChild(botonMes);
 
             this.tabla.appendChild(contenedorHijo);
         }
+        // actualizar precio después de montar todos los calendarios
+        if (window.updateComedorPrice) window.updateComedorPrice();
     }
 
     formatearStringFecha(fecha) {

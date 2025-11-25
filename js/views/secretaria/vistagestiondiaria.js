@@ -51,9 +51,20 @@ export class VistaGestionDiaria extends Vista {
      * Refrescar/iniciar listado.
      */
     inicializar() {
-        this.controlador.obtenerUsuarios(this.fechaActual)
-        .then( () => this.obtenerTuppers())
-        .then( () => this.iniciarTabla())
+        // limpiar datos previos para evitar mostrar información de otra fecha
+        this.incidencias = null;
+        this.tupper = null;
+
+        // Obtener usuarios, tuppers e incidencias en cadena y solo entonces iniciar la tabla
+        return this.controlador.obtenerUsuarios(this.fechaActual)
+            .then(() => this.obtenerTuppers())
+            .then(() => this.controlador.obtenerIncidencias(this.fechaActual))
+            .then(() => this.iniciarTabla())
+            .catch((err) => {
+                console.error('Error inicializando vista de gestión diaria:', err);
+                // Aún así intentar iniciar la tabla para mostrar usuarios si están disponibles
+                this.iniciarTabla();
+            });
     }
 
     /**
@@ -61,9 +72,8 @@ export class VistaGestionDiaria extends Vista {
      * @param {Array} usuarios Array con los apuntados del día actual.
      */
     cargarIncidencias(usuarios) {
+        // Solo almacenar usuarios; la obtención de incidencias la coordina inicializar()
         this.usuarios = usuarios;
-        if (this.usuarios) this.controlador.obtenerIncidencias(this.fechaActual);
-        else this.iniciarTabla();
     }
 
     /**

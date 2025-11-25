@@ -15,11 +15,35 @@
          * @param array $queryParams Array de IDs.
          * @param object $usuario Usuario que realiza el proceso.
          */
-        function get($pathParams, $queryParams, $usuario) {
-            // Si no existe $usuario, es porque la autorización ha fallado.
-            if (!$usuario) {
-                header('HTTP/1.1 401 Unauthorized');
-                die();
+        public function get($pathParams, $queryParams, $body, $usuario = null) {
+            // Ejemplo de manejo de action=list para devolver los días (ajusta si tu router usa otro método/nombre)
+            if (isset($queryParams['action']) && $queryParams['action'] === 'list') {
+                $fecha = $queryParams['fecha'] ?? null;
+                if (!$fecha) {
+                    echo json_encode(['ok' => false, 'error' => 'Parámetro fecha no indicado']);
+                    return;
+                }
+
+                // Normalizar fecha a YYYY-MM-DD
+                $ts = strtotime($fecha);
+                if ($ts === false) {
+                    echo json_encode(['ok' => false, 'error' => 'Formato de fecha inválido']);
+                    return;
+                }
+                $fechaSql = date('Y-m-d', $ts);
+
+                try {
+                    // Usar la columna correcta 'dia'
+                    $sql = 'SELECT * FROM Dias WHERE dia = :fecha';
+                    $params = array('fecha' => $fechaSql);
+                    $result = BD::seleccionar($sql, $params);
+
+                    echo json_encode(['ok' => true, 'dias' => $result]);
+                    return;
+                } catch (Exception $e) {
+                    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+                    return;
+                }
             }
 
             if (count($queryParams)) {

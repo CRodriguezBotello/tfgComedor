@@ -198,9 +198,14 @@ export class VistaGestionDiaria {
                 if (checkbox) {
                     checkbox.checked = marcado;
                     if (marcado) totalLocal++;
+                    // Guardar estado original para detectar cambios posteriores
+                    tr.dataset.origTupper = marcado ? '1' : '0';
                 }
                 if (textarea) {
-                    textarea.value = imap.has(idPersona) ? imap.get(idPersona) : '';
+                    const valorInc = imap.has(idPersona) ? imap.get(idPersona) : '';
+                    textarea.value = valorInc;
+                    // Guardar incidencia original (cadena vacía si no existe)
+                    tr.dataset.origIncidencia = valorInc;
                 }
 
                 // actualizar contador al cambiar si editable
@@ -344,9 +349,12 @@ export class VistaGestionDiaria {
                     const marcado = tmap.has(idPersona) ? (tmap.get(idPersona) === 1) : false;
                     checkbox.checked = marcado;
                     if (marcado) total++;
+                    tr.dataset.origTupper = marcado ? '1' : '0';
                 }
                 if (textarea) {
-                    textarea.value = imap.has(idPersona) ? imap.get(idPersona) : '';
+                    const valorInc = imap.has(idPersona) ? imap.get(idPersona) : '';
+                    textarea.value = valorInc;
+                    tr.dataset.origIncidencia = valorInc;
                 }
             });
 
@@ -402,7 +410,12 @@ export class VistaGestionDiaria {
             const tupper = checkbox && checkbox.checked ? 1 : 0;
             const incidencia = textarea ? textarea.value.trim() : '';
 
-            if (tupper === 0 && incidencia === '') return; // nada que enviar para este hijo
+            // Recuperar valores originales guardados al cargar la tabla
+            const origTupper = tr.dataset.origTupper ? Number(tr.dataset.origTupper) : 0;
+            const origIncidencia = tr.dataset.origIncidencia ? tr.dataset.origIncidencia : '';
+
+            // Si no hay cambios respecto al estado original, omitir
+            if (tupper === origTupper && incidencia === origIncidencia) return;
 
             entradas.push({
                 dia: fecha,
@@ -431,5 +444,55 @@ export class VistaGestionDiaria {
                 if (mensajeDiv) mensajeDiv.textContent = msg;
                 alert(msg);
             });
+    }
+
+    /**
+     * Carga las incidencias recibidas desde el controlador.
+     * Normaliza distintos formatos para garantizar que this.incidencias sea siempre un Array.
+     * @param {Array|Object|string} incidencias
+     */
+    cargarIncidencias(incidencias) {
+        let lista = [];
+        try {
+            if (Array.isArray(incidencias)) {
+                lista = incidencias;
+            } else if (incidencias && Array.isArray(incidencias.dias)) {
+                lista = incidencias.dias;
+            } else if (incidencias && Array.isArray(incidencias.result)) {
+                lista = incidencias.result;
+            } else if (typeof incidencias === 'string' && incidencias.trim().length) {
+                try {
+                    const parsed = JSON.parse(incidencias);
+                    if (Array.isArray(parsed)) lista = parsed;
+                    else if (parsed && Array.isArray(parsed.dias)) lista = parsed.dias;
+                } catch (e) {
+                    lista = [];
+                }
+            } else {
+                // Formato inesperado -> registrar para depuración
+                console.warn('Padres.vista.cargarIncidencias: formato inesperado', incidencias);
+                lista = [];
+            }
+        } catch (e) {
+            console.error('Error normalizando incidencias (padres):', e, incidencias);
+            lista = [];
+        }
+
+        this.incidencias = lista;
+        this.iniciarTabla();
+    }
+
+    // Asegura que cualquier iteración use un array
+    crearCuerpo() {
+        const items = Array.isArray(this.incidencias) ? this.incidencias : [];
+        let html = '';
+        for (const inc of items) {
+            html += `<tr>
+                        <td>${inc.idPersona ?? ''}</td>
+                        <td>${inc.incidencia ?? ''}</td>
+                        <td>${inc.tupper ? 'Sí' : 'No'}</td>
+                     </tr>`;
+        }
+        return html;
     }
 }

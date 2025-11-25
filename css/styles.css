@@ -12,6 +12,7 @@ body {
     font-family: 'Open Sans';
 }
 
+
 /* ----- Contenedor vertical ----- */
 #contenedorBusquedaVertical {
   display: flex;
@@ -48,11 +49,6 @@ body {
   margin: 0;
   line-height: 1;
 }
-
-
-
-
-
 
 /* ----- FORMULARIOS ----- */
 form div.formItem {

@@ -19,7 +19,7 @@
         <title>Comedor EVG</title>
     </head>
     <body>
-        <form method="post" class="needs-validation" autocomplete="off" novalidate>
+            <form id="formRegistro" method="post" class="needs-validation" autocomplete="off" novalidate>
             <div class="formItem">
                 <label for="nombre">
                     Nombre padre/madre (*) <input type="text" class="form-control" name="nombre" maxlength="30" required/>
@@ -58,14 +58,14 @@
             </div>
             <div class="formItem">
                 <label for="dni">
-                    DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" maxlength="9" required/>
-                    <div class="invalid-feedback">Por favor, introduzca un DNI válido.</div>
+                    DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" id="dni" maxlength="9" pattern="^[0-9]{8}[A-Za-z]$" title="8 dígitos y 1 letra (ej. 12345678A)" required/>
+                    <div class="invalid-feedback">Por favor, introduzca un DNI válido (8 números y 1 letra).</div>
                 </label>
             </div>
             <div class="formItem">
                 <label for="iban">
-                    IBAN sin espacios (*) <input type="text" class="form-control" name="iban" maxlength="24" required />
-                    <div class="invalid-feedback">Por favor, indique su IBAN.</div>
+                    IBAN sin espacios (*) <input type="text" class="form-control" name="iban" id="iban" maxlength="24" pattern="^[A-Za-z]{2}[0-9]{22}$" title="2 letras y 22 dígitos sin espacios (ej. ES1234567890123456789012)" required />
+                    <div class="invalid-feedback">Por favor, indique su IBAN (2 letras + 22 números).</div>
                 </label>
             </div>
             <div class="formItem">
@@ -87,8 +87,8 @@
                 <img src="./img/loading.gif"/>
             </div>
             <div class="formItem">
-				<button type="button" class="btn btn-danger">Cancelar</button>
-                <button type="button" class="btn btn-success">Registrarse</button>
+                <button type="button" class="btn btn-danger" id="btnCancelar">Cancelar</button>
+                <button type="button" class="btn btn-success" id="btnRegistro">Registrarse</button>
             </div>
         </form>
         <div id="divExito" class="w-75 p-1 container alert alert-success text-center rounded my-2">

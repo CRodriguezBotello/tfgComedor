@@ -2,7 +2,6 @@ export class VistaMenuPadres {
     constructor(controlador, nav) {
         this.controlador = controlador;
         this.nav = nav;
-
         this.liHamburger = this.nav.getElementsByTagName('li')[0];
         this.liInicio = this.nav.getElementsByTagName('li')[1];
         this.liGestionHijos = this.nav.getElementsByTagName('li')[2];
@@ -11,7 +10,6 @@ export class VistaMenuPadres {
         this.liCerrarSesion = this.nav.getElementsByTagName('li')[5];
         this.liGestionDiaria = this.nav.getElementsByTagName('li')[6];
         this.liResumenMensual = this.nav.getElementsByTagName('li')[7];
-        
         this.liHamburger.onclick = this.toggleMenu.bind(this);
         this.liInicio.onclick = this.inicio.bind(this);
         this.liGestionHijos.onclick = this.gestionHijos.bind(this);
@@ -21,13 +19,11 @@ export class VistaMenuPadres {
         this.liGestionDiaria.onclick = this.gestionDiaria.bind(this);
         this.liResumenMensual.onclick = this.resumenMensual.bind(this);
     }
-
     /**
      * Atención al evento de mostrar vista inicio.
      */
     inicio() {
         this.controlador.verVistaInicio();
-
         this.liInicio.classList.add('active');
         this.liGestionHijos.classList.remove('active');
         this.liGestionCalendario.classList.remove('active');
@@ -35,22 +31,17 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.remove('active');
         this.liResumenMensual.classList.remove('active');
     }
-
-    
-
     /**
      * Muestra/oculta menú de navegación.
      */
     toggleMenu() {
         this.nav.classList.toggle('responsive');
     }
-
     /**
      * Atención al evento de mostrar vista gestión de hijos.
      */
     gestionHijos() {
         this.controlador.verVistaGestionHijos();
-
         this.liInicio.classList.remove('active');
         this.liGestionHijos.classList.add('active');
         this.liGestionCalendario.classList.remove('active');
@@ -58,10 +49,8 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.remove('active');
         this.liResumenMensual.classList.remove('active');
     }
-
     gestionDiaria(){
         this.controlador.verVistaGestionDiaria();
-
         this.liInicio.classList.remove('active');
         this.liGestionHijos.classList.remove('active');
         this.liModificacion.classList.remove('active');
@@ -69,10 +58,8 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.add('active');
         this.liResumenMensual.classList.remove('active');
     }
-
     resumenMensual(){
         this.controlador.verVistaResumenMensual();
-
         this.liInicio.classList.remove('active');
         this.liGestionHijos.classList.remove('active');
         this.liModificacion.classList.remove('active');
@@ -80,13 +67,11 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.remove('active');
         this.liResumenMensual.classList.add('active');
     }
-
     /**
      * Atención al evento de mostrar vista modificación de datos.
      */
     modificacion() {
         this.controlador.verVistaModificacion();
-
         this.liInicio.classList.remove('active');
         this.liGestionHijos.classList.remove('active');
         this.liGestionCalendario.classList.remove('active');
@@ -94,10 +79,8 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.remove('active');
         this.liResumenMensual.classList.remove('active');
     }
-
     gestionCalendario() {
         this.controlador.verVistaCalendario();
-
         this.liInicio.classList.remove('active');
         this.liGestionHijos.classList.remove('active');
         this.liModificacion.classList.remove('active');
@@ -105,7 +88,6 @@ export class VistaMenuPadres {
         this.liGestionDiaria.classList.remove('active');
         this.liResumenMensual.classList.remove('active');
     }
-
     /**
      * Atención al evento de cerrar sesión.
      */

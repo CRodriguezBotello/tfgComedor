@@ -243,21 +243,17 @@ div#divErrorBorrado {
 #resumenMensual {
     display: none;
 }
-
 .contenedor {
     text-align: center;
     margin-top: 20px;
 }
-
 .contenedor .btn {
     display: inline-block;
     cursor: pointer;
 }
-
 .contenedor .btn-prev {
     margin-right: 10px;
 }
-
 .contenedor .btn-next {
     margin-left: 10px;
 }
