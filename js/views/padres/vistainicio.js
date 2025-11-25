@@ -215,6 +215,16 @@ export class VistaInicioPadres extends Vista {
             // Botón marcar/desmarcar mes
             const botonMes = document.createElement('button');
             botonMes.textContent = 'Marcar mes';
+
+            // Desactivar botón si hoy es día ≥ 3 y el mes mostrado es el mes actual
+            const hoy = new Date();
+            const mesActual = hoy.getMonth();
+            const diaActual = hoy.getDate();
+            if (this.mes === mesActual && diaActual >= 3) {
+                botonMes.disabled = true;
+                botonMes.style.cursor = 'not-allowed';
+                botonMes.style.opacity = '0.6';
+            }
             botonMes.addEventListener('click', () => {
                 const marcar = botonMes.textContent.startsWith('Marcar');
                 tablaHijo.querySelectorAll('td.clicable').forEach(tdDia => {
