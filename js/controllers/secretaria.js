@@ -82,9 +82,6 @@ class ControladorSecretaria {
             });
         }
 
-
-        
-
         // Selecciona el LI de "Gestión de usuarios"
         const liGestionPadres = document.querySelector('li[data-view="gestionPadres"]');
         if (liGestionPadres) {

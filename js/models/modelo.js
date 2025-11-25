@@ -128,6 +128,13 @@ export class Modelo {
         }
     }
 
+    async reactivarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/reactivarPadre', [], body);
+        console.log("Padre desactivado:", respuesta);
+        return respuesta;
+    }
+
 
     /**
      * Eliminar fila de las tablas: Persona, Hijo e Hijo_Padre.
