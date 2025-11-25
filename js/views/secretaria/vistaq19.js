@@ -63,17 +63,19 @@ export class VistaQ19 extends Vista {
 		 @param mes {Number} Número del mes.
      */
     iniciar(q19, mes) {
-		// Muestra el div al quitar la clase "d-none"
-		const divQ19 = document.getElementById('divQ19');
-		divQ19.classList.remove('d-none');
+        // Muestra el div al quitar la clase "d-none"
+        const divQ19 = document.getElementById('divQ19');
+        divQ19.classList.remove('d-none');
 
-		console.log(q19, mes);  // Agregar este log para ver si los datos son los esperados
-		this.#mes = mes;
-		this.limpiar();
-		q19.forEach((recibo, indice) => {
-			this.tbody.append(this.crearFila(recibo, indice));
-		});
-	}
+        console.log(q19, mes);  // Agregar este log para ver si los datos son los esperados
+        this.#mes = mes;
+        this.limpiar();
+        q19.forEach((recibo, indice) => {
+            this.tbody.append(this.crearFila(recibo, indice));
+        });
+        // recalcular numeración secuencial tras poblar la tabla
+        this.actualizarContadorRefAdeudo();
+    }
 
 	
 
@@ -115,8 +117,11 @@ export class VistaQ19 extends Vista {
 		img1.src = './img/icons/delete.svg'
 		img1.title = 'eliminar recibo'
 		img1.onclick = (evento) => {
-			if (confirm('¿Seguro que quiere eliminar este recibo?'))
+			if (confirm('¿Seguro que quiere eliminar este recibo?')) {
 				evento.target.closest('tr').remove()
+				// actualizar numeración REF.ADEUDO tras borrar
+				this.actualizarContadorRefAdeudo()
+			}
 		}
 
 		td = document.createElement('td')
@@ -191,6 +196,22 @@ export class VistaQ19 extends Vista {
 	}
 
 	/**
+     * Actualiza la columna REF.ADEUDO para que sea un contador 1..N
+     * y sincroniza entidad.referenciaAdeudo en cada fila.
+     */
+    actualizarContadorRefAdeudo() {
+        if (!this.tbody) return;
+        const filas = Array.from(this.tbody.querySelectorAll('tr'));
+        filas.forEach((tr, i) => {
+            const contador = String(i + 1);
+            tr.entidad = tr.entidad || {};
+            tr.entidad.referenciaAdeudo = contador;
+            const td = tr.children[6]; // columna 6 = REF.ADEUDO según crearFila
+            if (td) td.textContent = contador;
+        });
+    }
+
+	/**
 		Borra los registros.
 	**/
 	limpiar(){
@@ -212,6 +233,8 @@ export class VistaQ19 extends Vista {
 		console.log('Añadiendo fila:', fila);
 		this.tbody.appendChild(fila)
 		fila.children.item(1).dispatchEvent(new Event('dblclick'))
+		// recalcular contador cuando se añade una fila
+		this.actualizarContadorRefAdeudo();
 	}
 
 	/**
