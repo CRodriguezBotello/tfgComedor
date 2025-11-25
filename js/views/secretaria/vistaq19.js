@@ -226,29 +226,147 @@ export class VistaQ19 extends Vista {
 	}
 	
 	descargar(){
-		const recibos = []
-		let importeTotal = 0
-    this.tbody.querySelectorAll('tr').forEach( tr => {
-			recibos.push(this.verCSV(tr.entidad))
-			importeTotal += tr.entidad.importe
-		} )
-		//TODO: Incluir datos de cabecera, incluyendo importe total
-		const csv = recibos.join("\r\n")
-		const aOculto = document.createElement('a')
-  	aOculto.href = 'data:attachment/csv,' + encodeURI(csv)
-  	aOculto.target = '_blank'
-  	aOculto.download = `Q19_${this.#MESES[this.#mes]}_${(new Date()).getFullYear()}.csv`
-  	aOculto.click()
-	}
+        // Recolectar filas y total
+        const filas = []
+        let importeTotal = 0
+        this.tbody.querySelectorAll('tr').forEach(tr => {
+            const e = tr.entidad || {}
+            const importe = Number((typeof e.importe === 'number') ? e.importe : (e.importe || 0))
+            filas.push({
+                titular: this._safe(e.titular),
+                iban: this._safe(e.iban),
+                mandato: this._safe(e.referenciaUnicaMandato || e.referencia || ''),
+                fechaMandato: this._formatDate(e.fechaFirmaMandato || e.fecha_mandato || ''),
+                secuencia: this._safe(e.secuenciaAdeudo || 'RCUR'),
+                refAdeudo: this._safe(e.referenciaAdeudo || ''),
+                importe: importe,
+                concepto: this._safe(e.concepto || '')
+            })
+            importeTotal += importe
+        })
 
-	verCSV(recibo){
-		const comillas = '"'
-		const csv = []
-		for (const campo in recibo) {
-			csv.push(`${comillas}${recibo[campo]}${comillas}`)
-		}
-		return csv.join()
-	}
+        // Estilos inline para que Excel los aprecie al abrir el HTML
+        const style = `
+            <style>
+                table { border-collapse:collapse; font-family: Arial, Helvetica, sans-serif; font-size:11pt; }
+                td, th { border:1px solid #999; padding:6px; vertical-align:middle; }
+                .header-gray { background: #d3d3d3; font-weight:700; text-align:left; }
+                .title { font-weight:700; background:#9aa0a6; color:#fff; padding:6px; }
+                .right { text-align:right; }
+            </style>
+        `
+
+        // Cabecera superior (Datos generales) y tabla de cobros
+        let html = '<html><head><meta charset="utf-8" />' + style + '</head><body>'
+        // Bloque "Datos generales"
+        html += '<table><tr><td class="title" colspan="9">DATOS GENERALES</td></tr>'
+        html += '<tr class="header-gray">'
+        html += '<td>IDENTIFICADOR DEL PRESENTADOR</td>'
+        html += '<td>NOMBRE DEL PRESENTADOR</td>'
+        html += '<td>OFICINA BBVA RECEPTORA</td>'
+        html += '<td>IDENTIFICADOR DEL ACREEDOR</td>'
+        html += '<td>FECHA DE COBRO ORIGINAL (dd/mm/aaaa)</td>'
+        html += '<td>NOMBRE DEL ACREEDOR</td>'
+        html += '<td>CUENTA DEL ACREEDOR</td>'
+        html += '<td>IMPORTE TOTAL ADEUDOS</td>'
+        html += '<td>DIVISA</td>'
+        html += '</tr>'
+        // fila de valores (vacíos salvo total/divisa)
+        html += '<tr>'
+        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>'
+        html += `<td class="right">${this._formatAmount(importeTotal)}</td><td>EUR</td>`
+        html += '</tr></table><br/>'
+
+        // Bloque "Datos del cobro"
+        html += '<table>'
+        html += '<tr><td class="title" colspan="8">DATOS DEL COBRO</td></tr>'
+        html += '<tr class="header-gray">'
+        html += '<td>NOMBRE DEL DEUDOR</td>'
+        html += '<td>CUENTA DEL DEUDOR</td>'
+        html += '<td>REFERENCIA ÚNICA DEL MANDATO</td>'
+        html += '<td>FECHA FIRMA MANDATO (dd/mm/aaaa)</td>'
+        html += '<td>SECUENCIA DEL ADEUDO</td>'
+        html += '<td>REFERENCIA DEL ADEUDO</td>'
+        html += '<td>IMPORTE DEL ADEUDO</td>'
+        html += '<td>CONCEPTO</td>'
+        html += '</tr>'
+
+        // Filas de deudores
+        for (const r of filas) {
+            html += '<tr>'
+            html += `<td>${r.titular}</td>`
+            html += `<td>${r.iban}</td>`
+            html += `<td>${r.mandato}</td>`
+            html += `<td>${r.fechaMandato}</td>`
+            html += `<td>${r.secuencia}</td>`
+            html += `<td>${r.refAdeudo}</td>`
+            html += `<td class="right">${this._formatAmount(r.importe)}</td>`
+            html += `<td>${r.concepto}</td>`
+            html += '</tr>'
+        }
+
+        // Total final
+        html += '<tr><td colspan="5"></td><td class="header-gray">IMPORTE_TOTAL</td>'
+        html += `<td class="right">${this._formatAmount(importeTotal)}</td><td></td></tr>`
+
+        html += '</table></body></html>'
+
+        // Añadir BOM para evitar problemas con acentos en Excel
+        const blob = new Blob(['\uFEFF', html], { type: 'application/vnd.ms-excel;charset=utf-8;' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `Q19_${this.#MESES[this.#mes] || 'mes'}_${(new Date()).getFullYear()}.xls`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        URL.revokeObjectURL(url)
+    }
+
+    // Helper: convierte objeto recibo a CSV (puede ser usado por otras funciones)
+    verCSV(recibo){
+        // Mantener compatibilidad: devuelve array ordenado de campos (no usado directamente en descargar ahora)
+        return [
+            this._safe(recibo.titular),
+            this._safe(recibo.iban),
+            this._safe(recibo.referenciaUnicaMandato || recibo.referencia || ''),
+            this._formatDate(recibo.fechaFirmaMandato || recibo.fecha_mandato || ''),
+            this._safe(recibo.secuenciaAdeudo || 'RCUR'),
+            this._safe(recibo.referenciaAdeudo || ''),
+            this._formatAmount(recibo.importe),
+            this._safe(recibo.concepto || '')
+        ].join(';')
+    }
+
+    // Utilidades locales
+    _safe(v){ return (v === null || v === undefined) ? '' : String(v).replace(/"/g,'""') }
+    _formatDate(s){
+        if(!s) return ''
+        // Acepta YYYY-MM-DD o DD/MM/YYYY o variantes; devuelve DD/MM/YYYY
+        const iso = /^(\d{4})-(\d{2})-(\d{2})/
+        const dmy = /^(\d{2})\/(\d{2})\/(\d{4})/
+        if(iso.test(s)){
+            const m = s.match(iso)
+            return `${m[3]}/${m[2]}/${m[1]}`
+        } else if(dmy.test(s)){
+            return s.match(dmy).slice(1).reverse().join('/') // no necesario, pero dejamos entrada valida
+        } else {
+            // intentar Date parse
+            const dt = new Date(s)
+            if(!isNaN(dt.getTime())){
+                const dd = String(dt.getDate()).padStart(2,'0')
+                const mm = String(dt.getMonth()+1).padStart(2,'0')
+                const yy = dt.getFullYear()
+                return `${dd}/${mm}/${yy}`
+            }
+            return s
+        }
+    }
+    _formatAmount(v){
+        const n = Number(v || 0)
+        // formatear con 2 decimales y coma decimal
+        return n.toFixed(2).replace('.',',')
+    }
 
 	async fetchPrecios() {
        const resp = await fetch('php/api/controllers/precios.php')
