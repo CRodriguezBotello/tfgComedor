@@ -82,6 +82,9 @@ class ControladorSecretaria {
             });
         }
 
+
+        
+
         // Selecciona el LI de "Gestión de usuarios"
         const liGestionPadres = document.querySelector('li[data-view="gestionPadres"]');
         if (liGestionPadres) {
@@ -104,6 +107,25 @@ class ControladorSecretaria {
             this.vistaGestionPadres.iniciarTabla(padres);
         } catch (e) {
             console.error('Error mostrando padres desactivados:', e);
+        }
+    }
+
+    async reactivarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a reactivar:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.reactivarPadreSecretaria(datos);
+            console.log("Padre reactivado:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} reactivado correctamente`);
+        } catch (error) {
+            console.error("Fallo al reactivar padre:", error);
+            alert("Error al reactivar padre, revisa la consola");
         }
     }
 

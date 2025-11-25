@@ -12,14 +12,23 @@ if ($menusDir === false) {
 
 // --- Nuevo: calcular URL pública de la carpeta "menus" a partir de DOCUMENT_ROOT ---
 $documentRoot = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
-$menusUrlBase = '/menus/'; // fallback
+$menusUrlBase = '/menus/'; // fallback si algo falla
 if ($documentRoot && strpos($menusDir, $documentRoot) === 0) {
-    // obtener la parte de ruta relativa a DOCUMENT_ROOT y normalizar slashes
+    // obtener la parte de ruta relativa a DOCUMENT_ROOT y normalizar separadores
     $relative = str_replace('\\', '/', substr($menusDir, strlen($documentRoot)));
     if ($relative === '' || $relative === false) {
-        $menusUrlBase = '/menus/';
+        $relative = '/menus';
     } else {
         if ($relative[0] !== '/') $relative = '/' . $relative;
+    }
+
+    // construir URL absoluta con esquema y host para que el cliente reciba siempre rutas completas
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+    if ($host !== '') {
+        $menusUrlBase = rtrim($scheme . '://' . $host . $relative, '/') . '/';
+    } else {
+        // fallback a ruta raíz si no es posible determinar host
         $menusUrlBase = rtrim($relative, '/') . '/';
     }
 }

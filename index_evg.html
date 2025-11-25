@@ -319,30 +319,19 @@
 
         <div id="gestionFestivos" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
             <h1 class="text-center my-3">Gestión de festivos</h1>
-            <!-- Formulario inline para añadir / editar festivos -->
-            <form id="formFestivo" class="form-inline mb-2">
-                <input id="festivoFecha" type="date" class="form-control mr-2" required />
-                <input id="festivoDescripcion" type="text" class="form-control mr-2" placeholder="Descripción"  />
-                <input type="hidden" id="festivoId" /><br><br><br></br>
-                <button id="btnGuardarFestivo" type="submit" class="btn btn-success mr-2">Guardar</button>
-                <button id="btnCancelarEdicion" type="button" class="btn btn-secondary mr-2 d-none">Cancelar</button>
-                <button id="btnMostrarConfirmBorrarTodos" type="button" class="btn btn-danger">Borrar todos</button>
-            </form>
-            <!-- Confirmación en página para borrar todos (sustituye alert/confirm) -->
-            <div id="confirmBorrarTodos" class="d-none mb-2">
-                <div class="alert alert-warning p-2 d-inline-block">
-                    <span>¿Borrar todos los festivos?</span>
-                    <button id="btnConfirmBorrarTodosSi" class="btn btn-danger btn-sm ml-2">Sí</button>
-                    <button id="btnConfirmBorrarTodosNo" class="btn btn-secondary btn-sm ml-1">No</button>
-                </div>
+            <div class="mb-2 d-flex align-items-center">
+                <input id="nuevoFestivo" type="date" class="form-control w-auto" />
+                <input id="nuevoFestivoDescripcion" type="text" class="form-control ml-2" placeholder="Descripción " />
+                <button id="btnCrearFestivo" class="btn btn-success ml-2">Añadir festivo</button>
+                <button id="btnBorrarTodosFestivos" class="btn btn-danger ml-3">Borrar todos los festivos</button>
             </div>
-             <div id="festivosMsg" class="my-2"></div>
-             <table id="tablaFestivos" class="table table-striped">
-                 <thead>
-                     <tr><th>Fecha</th><th>Descripción</th><th>Acciones</th></tr>
-                 </thead>
-                  <tbody></tbody>
-              </table>
+            <div id="festivosMsg" class="my-2"></div>
+            <table id="tablaFestivos" class="table table-striped">
+                <thead>
+                    <tr><th>Fecha</th><th>Descripción</th><th>Acciones</th></tr>
+                </thead>
+                 <tbody></tbody>
+             </table>
          </div>
          
          <div id="gestionCertificados" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
