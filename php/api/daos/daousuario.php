@@ -325,7 +325,7 @@
                             ORDER BY Dias.dia ASC
                             SEPARATOR ", "
                         ) AS diasTupper,
-                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(pr.precioTupper,0)) AS importe,
+                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
                         GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, " ", COALESCE(p2.apellidos, "")) SEPARATOR "; ") AS hijos
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
@@ -972,28 +972,7 @@
             return BD::seleccionar($sql, $params);
         }
 
-        /**
-         * Obtener datos Q19 de un único hijo (individual).
-         * Devuelve una fila con datos del hijo y su padre, el importe calculado para ese hijo.
-         * @param int $mes
-         * @param int $idHijo
-         */
-        public static function obtenerQ19PorHijo($mes, $idHijo) {
-            $sql = "SELECT pPadre.id AS idPadre, pPadre.titular AS titularPadre, pPadre.correo AS correoPadre, pPadre.iban AS ibanPadre, pPadre.dni AS dniPadre, pPadre.fechaFirmaMandato AS fechaFirmaMandato, ";
-            $sql .= "h.id AS idHijo, CONCAT(h.nombre, ' ', COALESCE(h.apellidos, '')) AS nombreHijo, ";
-            $sql .= "COALESCE(c.dias_hijo, 0) AS dias, COALESCE(c.tupper_hijo, 0) AS dias_tupper, ";
-            $sql .= "COALESCE((c.dias_hijo * (CASE WHEN h.correo LIKE '%@fundacionloyola.es' THEN COALESCE(pr.precioDiaProfesor, pr.precioDiario, pr.precioMensual, 0) ELSE COALESCE(pr.precioDiario, pr.precioMensual, 0) END)) + (COALESCE(c.tupper_hijo,0) * COALESCE(pr.precioTupper,0)), 0) AS importe ";
-            $sql .= "FROM Persona h ";
-            $sql .= "LEFT JOIN Hijo_Padre hp ON hp.idHijo = h.id ";
-            $sql .= "LEFT JOIN Persona pPadre ON pPadre.id = hp.idPadre ";
-            $sql .= "LEFT JOIN (SELECT idPersona, idPadre, COUNT(*) AS dias_hijo, SUM(tupper) AS tupper_hijo FROM Dias WHERE MONTH(dia) = :mes GROUP BY idPersona, idPadre) AS c ON c.idPersona = h.id AND c.idPadre = pPadre.id ";
-            $sql .= "CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr ";
-            $sql .= "WHERE h.id = :idHijo ";
-            $params = array('mes' => $mes, 'idHijo' => $idHijo);
-
-            $res = BD::seleccionar($sql, $params);
-            return $res;
-        }
+        
         
         // Funciones para la gestión de tuppers
         public static function obtenerTupper($fecha) {

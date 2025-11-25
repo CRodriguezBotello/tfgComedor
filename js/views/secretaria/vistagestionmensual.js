@@ -112,8 +112,6 @@ export class VistaGestionMensual extends Vista {
             thDias.textContent = 'Días';
             let thIncidencias = document.createElement('th');
             thIncidencias.textContent = 'Incidencias';
-            let thQ19Hijo = document.createElement('th');
-            thQ19Hijo.textContent = 'Q19 hijo';
             let thtotal = document.createElement('th');
             thtotal.textContent = 'Importe total';
             trInfo.appendChild(thUsuarios);
@@ -122,7 +120,6 @@ export class VistaGestionMensual extends Vista {
             trInfo.appendChild(thNumeroTuppers);
             trInfo.appendChild(thDias);
             trInfo.appendChild(thIncidencias);
-            trInfo.appendChild(thQ19Hijo);
             trInfo.appendChild(thtotal);
             this.thead.appendChild(trInfo);
         }
@@ -236,19 +233,6 @@ export class VistaGestionMensual extends Vista {
                 tr.appendChild(tdNumeroTuppers);
                 tr.appendChild(tdDias);
                 tr.appendChild(tdIncidencia);
-                // Columna Q19 por hijo: botón para generar remesa individual
-                let tdQ19 = document.createElement('td');
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-sm btn-outline-primary';
-                btn.textContent = 'Q19';
-                btn.title = 'Generar Q19 individual para este hijo';
-                btn.addEventListener('click', (ev) => {
-                    try {
-                        this.controlador.verQ19Individual(usuario.id, this.mesActual);
-                    } catch (e) { console.error(e); }
-                });
-                tdQ19.appendChild(btn);
-                tr.appendChild(tdQ19);
                 tr.appendChild(tdtotal);
                 this.tbody.appendChild(tr);
             }
@@ -256,7 +240,7 @@ export class VistaGestionMensual extends Vista {
         else {
             let tr = document.createElement('tr');
             let tdSinUsuarios = document.createElement('td');
-            tdSinUsuarios.setAttribute('colspan', '4')
+            tdSinUsuarios.setAttribute('colspan', '7')
             tdSinUsuarios.textContent = "No existen registros";
             tr.appendChild(tdSinUsuarios);
             this.tbody.appendChild(tr)
