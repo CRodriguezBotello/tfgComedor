@@ -430,63 +430,84 @@ class ControladorSecretaria {
                     }
                 }
 
-                    if (item.importe !== undefined && item.importe !== null) item.importe = Number(item.importe);
+                if (item.importe !== undefined && item.importe !== null) item.importe = Number(item.importe);
 
-                    // --- Enriquecer campos para Q19: concepto, referencia (DNI) y fecha_mandato ---
-                    try {
-                        const year = (new Date()).getFullYear();
-                        const mesNum = (typeof mes === 'number' && mes >= 1 && mes <= 12) ? mes : (new Date().getMonth() + 1);
+                // --- Enriquecer campos para Q19: concepto, referencia (DNI) y fecha_mandato ---
+                try {
+                    const year = (new Date()).getFullYear();
+                    const mesNum = (typeof mes === 'number' && mes >= 1 && mes <= 12) ? mes : (new Date().getMonth() + 1);
 
-                        // Nombre del hijo: probar varios campos
-                        let nombreHijo = '';
-                        if (item.hijos) {
-                            // puede venir como 'Juan Pérez, Ana ...' → tomar primer valor
-                            nombreHijo = String(item.hijos).split(',')[0].trim();
+                    // Nombre del hijo/alumno: priorizar campos del hijo (no usar titular)
+                    const firstNonEmpty = (...vals) => {
+                        for (const v of vals) {
+                            if (v === undefined || v === null) continue;
+                            const s = String(v).trim();
+                            if (s !== '') return s;
                         }
-                        if (!nombreHijo) nombreHijo = String(item.nombre || item.nombre_hijo || item.alumno || item.nombreAlumno || item.titular || '').trim();
+                        return '';
+                    };
 
-                        // Construir concepto: COMEDOR/MES/AÑO/NOMBRE ALUMNO (mayúsculas)
-                        const safeNombre = nombreHijo ? String(nombreHijo).trim().toUpperCase() : '';
-                        item.concepto = `COMEDOR/${mesNum}/${year}/${safeNombre}`;
-
-                        // Obtener DNI/ref. soportando distintos nombres de campo
-                        const dniKeys = ['dni', 'nif', 'dni_padre', 'dniTitular', 'dniPadre', 'dniTitular'];
-                        let dni = null;
-                        for (const k of dniKeys) {
-                            if (item[k]) { dni = item[k]; break; }
-                            if (matched && matched[k]) { dni = matched[k]; break; }
-                        }
-                        if (dni) {
-                            const s = String(dni).trim();
-                            item.referencia = s;
-                            // también rellenar referenciaUnicaMandato para que la vista la muestre como ref. mandato
-                            item.referenciaUnicaMandato = s;
-                        }
-
-                        // Fecha del mandato: buscar en varios campos y normalizar a YYYY-MM-DD
-                        const fechaKeys = ['fechaFirmaMandato', 'fecha_mandato', 'fechaMandato', 'fecha'];
-                        let fecha = null;
-                        for (const k of fechaKeys) {
-                            if (item[k]) { fecha = item[k]; break; }
-                            if (matched && matched[k]) { fecha = matched[k]; break; }
-                        }
-                        if (fecha) {
-                            // normalizar: aceptar DD/MM/YYYY o YYYY-MM-DD
-                            const f = String(fecha).trim();
-                            const ddmmyyyy = /^([0-3]?\d)\/(0?[1-9]|1[0-2])\/(\d{4})$/; // 01/11/2025
-                            const iso = /^(\d{4})-(\d{2})-(\d{2})/; // 2025-11-01
-                            let normalized = f;
-                            if (ddmmyyyy.test(f)) {
-                                const m = f.match(ddmmyyyy);
-                                normalized = `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
-                            } else if (iso.test(f)) {
-                                normalized = f.match(iso)[0];
-                            }
-                            item.fecha_mandato = normalized;
-                        }
-                    } catch (e) {
-                        // no bloquear la generación si hay problemas con nombres
+                    let nombreHijo = '';
+                    // Si viene una cadena concatenada de hijos (separadores posibles: ',' o ';')
+                    if (item.hijos) {
+                        const raw = String(item.hijos);
+                        const parts = raw.split(/\s*[,;]\s*/).filter(p => p && p.trim() !== '');
+                        if (parts.length) nombreHijo = parts[0].trim();
                     }
+                    if (!nombreHijo) {
+                        // campos esperados que contienen el nombre del hijo/en alumno
+                        nombreHijo = firstNonEmpty(
+                            item.hijoNombre,   // alias usado en la consulta Q19
+                            item.nombreHijo,
+                            item.nombreAlumno,
+                            item.alumno,
+                            item.nombre,       // Solo como último recurso (puede ser padre en algunos formatos)
+                            item.nombre_alumno
+                        );
+                    }
+ 
+                    // Construir concepto: COMEDOR/mes/año/NOMBRE ALUMNO (mayúsculas)
+                    const safeNombre = nombreHijo ? String(nombreHijo).trim().toUpperCase() : '';
+                    item.concepto = `COMEDOR/${mesNum}/${year}/${safeNombre}`;
+ 
+                    // Obtener DNI/ref. soportando distintos nombres de campo
+                    const dniKeys = ['dni', 'nif', 'dni_padre', 'dniTitular', 'dniPadre', 'dniTitular'];
+                    let dni = null;
+                    for (const k of dniKeys) {
+                        if (item[k]) { dni = item[k]; break; }
+                        if (matched && matched[k]) { dni = matched[k]; break; }
+                    }
+                    if (dni) {
+                        const s = String(dni).trim();
+                        item.referencia = s;
+                        // también rellenar referenciaUnicaMandato para que la vista la muestre como ref. mandato
+                        item.referenciaUnicaMandato = s;
+                    }
+
+                    // Fecha del mandato: buscar en varios campos y normalizar a YYYY-MM-DD
+                    const fechaKeys = ['fechaFirmaMandato', 'fecha_mandato', 'fechaMandato', 'fecha'];
+                    let fecha = null;
+                    for (const k of fechaKeys) {
+                        if (item[k]) { fecha = item[k]; break; }
+                        if (matched && matched[k]) { fecha = matched[k]; break; }
+                    }
+                    if (fecha) {
+                        // normalizar: aceptar DD/MM/YYYY o YYYY-MM-DD
+                        const f = String(fecha).trim();
+                        const ddmmyyyy = /^([0-3]?\d)\/(0?[1-9]|1[0-2])\/(\d{4})$/; // 01/11/2025
+                        const iso = /^(\d{4})-(\d{2})-(\d{2})/; // 2025-11-01
+                        let normalized = f;
+                        if (ddmmyyyy.test(f)) {
+                            const m = f.match(ddmmyyyy);
+                            normalized = `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+                        } else if (iso.test(f)) {
+                            normalized = f.match(iso)[0];
+                        }
+                        item.fecha_mandato = normalized;
+                    }
+                } catch (e) {
+                    // no bloquear la generación si hay problemas con nombres
+                }
             });
 
             this.verVistaQ19();
@@ -522,8 +543,9 @@ class ControladorSecretaria {
             try {
                 const year = (new Date()).getFullYear();
                 const mesNum = (typeof mes === 'number' && mes >= 1 && mes <= 12) ? mes : (new Date().getMonth() + 1);
-                const nombreHijo = item.nombreHijo || item.nombre || '';
-
+                // Priorizar nombre del hijo
+                const nombreHijo = (item.hijoNombre || item.nombreHijo || item.nombreAlumno || item.alumno || item.nombre || '').trim();
+ 
                 // Construir recibo: mostrar datos del PADRE pero importe del hijo
                 const recibo = {
                     titular: item.titularPadre || item.titular || '',

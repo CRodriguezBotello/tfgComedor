@@ -44,18 +44,17 @@
         }
 
        // ----------------------------------------------------
-        // LÓGICA DE GENERACIÓN DEL PDF (CORREGIDA Y COMPROBADA)
+        // LÓGICA DE GENERACIÓN DEL PDF (NUEVA Y ADAPTADA AL PRECIO MENSUAL)
         // ----------------------------------------------------
         private function generarCertificado($id, $anio) {
-            
-            // ⚠️ 1. Desactivar la visualización de errores y warnings para evitar la corrupción del PDF
+
             ini_set('display_errors', 0);
-            error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING); 
+            error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
             try {
-                // 1. Obtener datos del DAO
+                // 1. Obtener datos del DAO (formato nuevo: 1 fila por mes)
                 $detalle = DAOUsuario::obtenerDetalleAsistenciaAnual($id, $anio);
-                
+
                 if (empty($detalle)) {
                     header('Content-Type: application/json');
                     header('HTTP/1.1 404 Not Found');
@@ -63,116 +62,139 @@
                     die();
                 }
 
-                // 2. Procesar datos
-                // 💡 CORRECCIÓN: Aseguramos que la variable del nombre contenga los datos
-                $nombreAlumno = $detalle[0]->nombre . ' ' . $detalle[0]->apellidos;
-                $asistenciasPorMes = [];
+                // Primer registro para sacar nombre del alumno
+                $primer = $detalle[0];
+                $nombreAlumno = is_array($primer) ? $primer['nombreAlumno'] : $primer->nombreAlumno;
+                $apellidosAlumno = is_array($primer) ? $primer['apellidosAlumno'] : $primer->apellidosAlumno;
+                $nombreCompleto = trim($nombreAlumno . " " . $apellidosAlumno);
 
-                foreach ($detalle as $registro) {
-                    $mes = (int)$registro->mes;
-                    if (!isset($asistenciasPorMes[$mes])) {
-                        $asistenciasPorMes[$mes] = [
-                            'dias' => 0,
-                            'fechas' => []
-                        ];
+                // Intento de carga de TCPDF si no está disponible (ayuda en entornos sin autoload)
+                if (!class_exists('TCPDF')) {
+                    $possible = [
+                        dirname(__DIR__, 3) . '/vendor/tecnickcom/tcpdf/tcpdf.php',
+                        dirname(__DIR__, 2) . '/lib/tcpdf/tcpdf.php',
+                        dirname(__DIR__) . '/../lib/tcpdf/tcpdf.php',
+                        __DIR__ . '/../../lib/tcpdf/tcpdf.php'
+                    ];
+                    foreach ($possible as $p) {
+                        if (file_exists($p)) {
+                            @require_once $p;
+                            if (class_exists('TCPDF')) break;
+                        }
                     }
-                    $asistenciasPorMes[$mes]['dias']++;
-                    $asistenciasPorMes[$mes]['fechas'][] = $registro->fecha;
+                }
+
+                if (!class_exists('TCPDF')) {
+                    throw new Exception('Clase TCPDF no encontrada.');
                 }
 
                 // --- INICIO TCPDF ---
-                // 3. Generar el PDF
-
-                // Asegurarnos de que la librería TCPDF está cargada
-                $tcpdfPath = __DIR__ . '/../../../vendor/tecnickcom/tcpdf/tcpdf.php';
-                if (file_exists($tcpdfPath)) {
-                    require_once $tcpdfPath;
-                }
-                if (!class_exists('TCPDF')) {
-                    throw new Exception('Clase TCPDF no encontrada. Comprueba que la dependencia está instalada en vendor/tecnickcom/tcpdf.');
-                }
-
-                // Instancia de TCPDF
                 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
                 $pdf->SetAutoPageBreak(TRUE, 10);
                 $pdf->AddPage();
-                
-                // Contenido del PDF
                 $pdf->SetFont('helvetica', 'B', 16);
                 $pdf->Cell(0, 10, utf8_decode('CERTIFICADO ANUAL DE ASISTENCIA'), 0, 1, 'C');
-                
+
                 $pdf->SetFont('helvetica', '', 12);
-                
-                // 💡 CORRECCIÓN 1 (Nombre): Se usa la concatenación para asegurar que el nombre se decodifique e imprima correctamente.
-                $pdf->Cell(0, 10, utf8_decode("Se certifica que el alumno: ") . utf8_decode($nombreAlumno), 0, 1);
+                $pdf->Cell(0, 8, utf8_decode("Se certifica que el alumno/a: ") . utf8_decode($nombreCompleto), 0, 1);
                 $pdf->Cell(0, 10, utf8_decode("Asistencia al comedor durante el año: $anio"), 0, 1);
+
                 $pdf->Ln(5);
 
+                // TABLA CON MESES, DÍAS Y COSTE
                 $pdf->SetFont('helvetica', 'B', 12);
-                $pdf->Cell(40, 7, 'Mes', 1);
-                $pdf->Cell(20, 7, 'Dias', 1);
-                $pdf->Cell(0, 7, 'Fechas de Asistencia', 1, 1);
-                
-                $pdf->SetFont('helvetica', '', 10);
-                
-                $nombresMeses = [1 => 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                $pdf->Cell(60, 7, 'Mes', 1, 0, 'C');
+                $pdf->Cell(40, 7, 'Días asistidos', 1, 0, 'C');
+                $pdf->Cell(50, 7, 'Precio diario (€)', 1, 0, 'C');
+                $pdf->Cell(40, 7, 'Coste mensual (€)', 1, 1, 'C');
 
-                foreach ($asistenciasPorMes as $mesNum => $data) {
-                    $nombreMes = $nombresMeses[$mesNum];
-                    
-                    $fechasStr = implode(', ', array_map(function($f) {
-                        // 💡 CORRECCIÓN 2 (Fechas): Usamos 'd/m' para mostrar Día/Mes (ej: 26/11)
-                        return date('d/m', strtotime($f)); 
-                    }, $data['fechas']));
-                    
-                    $pdf->Cell(40, 7, utf8_decode($nombreMes), 1);
-                    $pdf->Cell(20, 7, $data['dias'], 1);
-                    
-                    // Usamos MultiCell para que las fechas largas no desborden la celda
-                    $pdf->MultiCell(0, 7, $fechasStr, 1, 'L', false);
+                $pdf->SetFont('helvetica', '', 10);
+
+                $totalAnual = 0;
+
+                foreach ($detalle as $r) {
+
+                    $mes = is_array($r) ? $r['mes'] : $r->mes;
+                    $dias = is_array($r) ? $r['diasAsistidos'] : $r->diasAsistidos;
+                    $precioDiario = is_array($r) ? $r['precioDiario'] : $r->precioDiario;
+                    $totalMes = is_array($r) ? $r['totalMes'] : $r->totalMes;
+
+                    $totalAnual += $totalMes;
+
+                    $nombreMes = $this->getNombreMes((int)$mes);
+
+                    $pdf->Cell(60, 7, utf8_decode($nombreMes), 1, 0, 'L');
+                    $pdf->Cell(40, 7, $dias, 1, 0, 'C');
+                    $pdf->Cell(50, 7, number_format($precioDiario, 2), 1, 0, 'C');
+                    $pdf->Cell(40, 7, number_format($totalMes, 2), 1, 1, 'C');
                 }
-                
+
+                // TOTAL ANUAL
+                $pdf->Ln(5);
+                $pdf->SetFont('helvetica', 'B', 12);
+                $pdf->Cell(0, 10, "TOTAL ANUAL: " . number_format($totalAnual, 2) . " €", 0, 1, 'R');
+
                 // --- FIN TCPDF ---
 
-                // 4. Configurar la ruta de guardado (RUTA FÍSICA)
-                $filename = "Certificado-{$id}-{$anio}.pdf";
+                // Crear nombre del archivo
+                $cleanName = preg_replace('/[^a-zA-Z0-9\s-]/', '', $nombreCompleto);
+                $cleanName = trim(str_replace(' ', '-', $cleanName));
+                if ($cleanName === '') $cleanName = "Alumno-$id";
 
-                // Calculamos la carpeta php/ desde el controlador ubicado en php/api/controllers/
-                $phpDir = dirname(dirname(__DIR__)); // .../php
-                $certDir = $phpDir . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'certificates';
+                $filename = "Certificado-{$cleanName}-{$anio}.pdf";
+                $filepath = dirname(__DIR__) . "/public/certificates/" . $filename;
 
-                // Crear el directorio si no existe
-                if (!is_dir($certDir)) {
-                    mkdir($certDir, 0775, true);
+                if (!is_dir(dirname($filepath))) {
+                    mkdir(dirname($filepath), 0775, true);
                 }
 
-                $filepath = $certDir . DIRECTORY_SEPARATOR . $filename;
+                $pdf->Output($filepath, 'F');
 
-                // 5. GUARDAR EL ARCHIVO DIRECTAMENTE con 'F' (File)
-                $pdf->Output($filepath, 'F'); 
-
-                // 6. COMPROBACIÓN de ÉXITO
-                if (!file_exists($filepath) || filesize($filepath) < 100) { 
-                    throw new Exception("El archivo PDF se generó, pero parece estar vacío o dañado en el disco.");
+                if (!file_exists($filepath) || filesize($filepath) < 100) {
+                    throw new Exception("El archivo PDF se generó, pero parece estar vacío o dañado.");
                 }
 
-                // 7. Devolver la URL pública como JSON (RUTA WEB)
-                // Construimos la URL relativa basada en el SCRIPT_NAME para no hardcodear el nombre del proyecto
-                $scriptDir = dirname(dirname($_SERVER['SCRIPT_NAME'])); // por ejemplo: /Comedor20-11-2025/php
-                $publicUrl = rtrim($scriptDir, '/') . '/public/certificates/' . $filename;
+                // Construir URL pública absoluta basada en el host/protocolo y la ruta del script
+                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                // dirname($_SERVER['SCRIPT_NAME']) normalmente apunta a /.../php/api
+                $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+                $publicUrl = $scheme . '://' . $host . $scriptDir . '/public/certificates/' . $filename;
+                error_log("Certificado guardado: $filepath => $publicUrl");
 
                 header('Content-Type: application/json');
-                header('HTTP/1.1 200 OK');
                 echo json_encode(['ok' => true, 'url' => $publicUrl]);
 
             } catch (Throwable $e) {
-                // Manejo de errores de PDF o archivo
                 error_log("Error generando certificado PDF: " . $e->getMessage());
                 header('Content-Type: application/json');
                 header('HTTP/1.1 500 Internal Server Error');
                 echo json_encode(['ok' => false, 'error' => 'Error interno al generar el PDF: ' . $e->getMessage()]);
             }
-            die(); // Detener la ejecución
+            die();
+        }
+
+        /**
+         * Devuelve el nombre del mes en español a partir de su número (1-12).
+         * @param int $mes Número de mes (1-12).
+         * @return string Nombre del mes en español.
+         */
+        private function getNombreMes(int $mes) {
+            $meses = [
+                1 => 'Enero',
+                2 => 'Febrero',
+                3 => 'Marzo',
+                4 => 'Abril',
+                5 => 'Mayo',
+                6 => 'Junio',
+                7 => 'Julio',
+                8 => 'Agosto',
+                9 => 'Septiembre',
+                10 => 'Octubre',
+                11 => 'Noviembre',
+                12 => 'Diciembre'
+            ];
+            return $meses[$mes] ?? 'Mes desconocido';
         }
 
         /**
