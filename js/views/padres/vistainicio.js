@@ -168,7 +168,7 @@ export class VistaInicioPadres extends Vista {
                     } else {
                         td.classList.add('fueraMes');
                     }
-
+                    // console.log(fecha);
                     tr.appendChild(td);
                     fechaActual.setDate(fechaActual.getDate() + 1);
                 }
@@ -206,6 +206,14 @@ export class VistaInicioPadres extends Vista {
             // Botón marcar/desmarcar mes
             const botonMes = document.createElement('button');
             botonMes.textContent = 'Marcar mes';
+
+            const ahora = new Date();   // <--- ¡ESTO FALTABA!
+            if (ahora.getDate() >= 3) {
+                botonMes.disabled = true;                 // desactiva el botón
+                botonMes.style.cursor = 'not-allowed';    // cursor de prohibido
+                botonMes.style.opacity = '0.6';           // opcional, aspecto desactivado
+            }
+
             botonMes.addEventListener('click', () => {
                 const marcar = botonMes.textContent.startsWith('Marcar');
                 tablaHijo.querySelectorAll('td.clicable').forEach(tdDia => {
@@ -234,6 +242,7 @@ export class VistaInicioPadres extends Vista {
 
             this.tabla.appendChild(contenedorHijo);
         }
+        
         // actualizar precio después de montar todos los calendarios
         if (window.updateComedorPrice) window.updateComedorPrice();
     }
