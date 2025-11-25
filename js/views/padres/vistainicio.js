@@ -207,12 +207,17 @@ export class VistaInicioPadres extends Vista {
             const botonMes = document.createElement('button');
             botonMes.textContent = 'Marcar mes';
 
-            const ahora = new Date();   // <--- ¡ESTO FALTABA!
-            if (ahora.getDate() >= 3) {
-                botonMes.disabled = true;                 // desactiva el botón
-                botonMes.style.cursor = 'not-allowed';    // cursor de prohibido
-                botonMes.style.opacity = '0.6';           // opcional, aspecto desactivado
+            // Desactivar botón si hoy es día ≥ 3 y el mes mostrado es el mes actual
+            const hoy = new Date();
+            const mesActual = hoy.getMonth();
+            const diaActual = hoy.getDate();
+
+            if (this.mes === mesActual && diaActual >= 3) {
+                botonMes.disabled = true;
+                botonMes.style.cursor = 'not-allowed';
+                botonMes.style.opacity = '0.6';
             }
+
 
             botonMes.addEventListener('click', () => {
                 const marcar = botonMes.textContent.startsWith('Marcar');
