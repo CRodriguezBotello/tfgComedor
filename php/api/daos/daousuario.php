@@ -385,7 +385,7 @@
          * @return Usuario|boolean Devuelve los datos del usuario o false si no existe el usuario.
          */
         public static function autenticarEmail($email) {
-            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular FROM Persona';
+            $sql = 'SELECT id, nombre, apellidos, correo, clave, activo, telefono, dni, iban, titular, tipo  FROM Persona';
             $sql .= ' WHERE correo = :email';
 
             $params = array('email' => $email);
@@ -489,8 +489,8 @@
          */
         public static function altaPersona($datos)
         {
-            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, clave, telefono, dni, iban, titular)';
-            $sql .= ' VALUES(:nombre, :apellidos, :correo, :clave, :telefono, :dni, :iban, :titular)';
+            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, clave, telefono, dni, iban, titular, tipo)';
+            $sql .= ' VALUES(:nombre, :apellidos, :correo, :clave, :telefono, :dni, :iban, :titular, :tipo)';
 
             if ($datos->clave != null) {
                 $clave = password_hash($datos->clave, PASSWORD_DEFAULT, ['cost' => 15]);
@@ -506,10 +506,12 @@
                 'telefono' => $datos->telefono,
                 'dni' => $datos->dni,
                 'iban' => $datos->iban,
-                'titular' => $datos->titular
+                'titular' => $datos->titular,
+                'tipo' => $datos->tipo
             );
-        
-            if (strpos($datos->correo, '@fundacionloyola.es') !== false || strpos($datos->correo, '@alumnado.fundacionloyola.net') !== false) {
+
+            // strpos($datos->correo, '@fundacionloyola.es') !== false ||
+            if (strpos($datos->correo, '@alumnado.fundacionloyola.net') !== false) {
         
             return self::insertarPersonal($sql,$params);
         

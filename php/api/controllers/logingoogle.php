@@ -54,18 +54,27 @@
                 header('HTTP/1.1 401 Unauthorized');
                 die();
             }
-            // Verificar el tipo de usuario que hace login
-            $tipo = $this->obtenerTipo($payload['email']);
-            if ($tipo == null) {
-                header('HTTP/1.1 401 Unauthorized');
-                die();
+
+            // Asignación de tipo según el correo
+            if (in_array($payload['email'], self::$secretaria)) {
+                // 1) Correos definidos como secretaría
+                $tipo = 'A';
+
+            } elseif (str_ends_with($payload['email'], '@fundacionloyola.es')) {
+                // 2) Personal con dominio fundacionloyola.es
+                $tipo = 'E';
+
+            } else {
+                // 3) Cualquier otro usuario
+                $tipo = 'U';
             }
+
             // Completamos los datos del usuario
             $usuario->nombre = $payload['given_name'];
             $usuario->apellidos = $payload['family_name'];
             $usuario->correo = $payload['email'];
             $usuario->autorizacion = openssl_encrypt(json_encode($usuario), self::$algoritmo_encriptacion, self::$clave, 0, self::$iv);
-            $usuario->rol = $tipo == 'secretaria' ? 'S' : 'G';  // Asignar rol dependiendo del tipo de usuario.
+            $usuario->tipo = $tipo;
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');
             echo json_encode($usuario);
