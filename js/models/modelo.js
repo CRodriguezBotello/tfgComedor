@@ -74,9 +74,10 @@ export class Modelo {
      * @returns {Promise} Devuelve la promesa asociada a la petición.
      */
     obtenerFestivos(inicioMes, finMes) {
+        const pad = (n) => String(n).padStart(2, '0');
         const queryParams = new Map();
-        queryParams.set('inicio', inicioMes.getDate() + '-' + (inicioMes.getMonth()+1) + '-' + inicioMes.getFullYear());
-        queryParams.set('final', finMes.getDate() + '-' + (finMes.getMonth()+1) + '-' + finMes.getFullYear());
+        queryParams.set('inicio', `${inicioMes.getFullYear()}-${pad(inicioMes.getMonth()+1)}-${pad(inicioMes.getDate())}`);
+        queryParams.set('final', `${finMes.getFullYear()}-${pad(finMes.getMonth()+1)}-${pad(finMes.getDate())}`);
         return Rest.get('festivos', [], queryParams);
     }
 
@@ -126,6 +127,13 @@ export class Modelo {
             console.error('Error obteniendo hijos diaria:', e);
             throw e;
         }
+    }
+
+    async reactivarPadreSecretaria(padre) {
+        const body = { id: padre.id }; // ¡Ojo! solo el id
+        const respuesta = await Rest.put('secretaria/reactivarPadre', [], body);
+        console.log("Padre desactivado:", respuesta);
+        return respuesta;
     }
 
 

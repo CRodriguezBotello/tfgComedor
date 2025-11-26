@@ -24,22 +24,12 @@ async function loadMenus() {
     const normalize = (val) => {
       if (!val) return null;
       val = String(val).trim();
-      // si es URL absoluta o empieza con /, devolver tal cual
-      if (/^(https?:)?\/\//.test(val) || val.startsWith('/')) {
-        // si contiene "/menus/" y es absoluta, recortar hasta /menus/ y rehacer con base detectada
-        const mIdx = val.indexOf('/menus/');
-        if (mIdx >= 0) {
-          const filename = val.substring(mIdx + 7);
-          return base + encodeURIComponent(filename);
-        }
-        return val;
-      }
-      // si contiene "menus/" o "/menus/" quitar prefijo y tomar nombre de archivo
-      let filename = val;
-      const menusPos = val.indexOf('menus/');
-      if (menusPos >= 0) filename = val.substring(menusPos + 6);
-      // si venía "ruta/archivo.pdf" tomar último segmento
-      filename = filename.split('/').pop();
+      // Si ya es URL absoluta (http(s) o protocolo relativo //), devolver tal cual
+      if (/^(https?:)?\/\//.test(val)) return val;
+      // Si empieza por "/" es ruta absoluta respecto al host actual
+      if (val.startsWith('/')) return window.location.origin + val;
+      // Si es una ruta relativa o solo nombre de fichero, tomar el último segmento y construir con base detectada
+      let filename = val.split('/').pop();
       return base + encodeURIComponent(filename);
     };
 

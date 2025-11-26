@@ -67,6 +67,13 @@ h2{
   color: #ccc;
 }
 
+.tablaMes td.festivo {
+  background-color: #df8619; /* naranja */
+  color: white;
+  cursor: not-allowed;
+  pointer-events: none; /* evita clicks */
+}
+
 .controlesMes {
   display: flex;
   justify-content: center;
