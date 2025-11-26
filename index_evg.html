@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Cache-Control" content="no-store" />
+
+				<!-- Evitamos que se carguen contenidos de otros dominios
+				ACTIVAR EN PRODUCCIÓN
+				<meta http-equiv='Content-Security-Policy' content="default-src 'self';" />
+				-->
+				<!-- Obligamos al navegador a acceder solo por HTTPS -->
+				<meta http-equiv='Strict-Transport-Security' content=': max-age=2592000' />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="./css/styles.css"/>
+        <link rel="stylesheet" href="./css/dashboardsecretaria.css"/>
+        <link rel="stylesheet" href="./css/dashboardpadres.css"/>
+        <link rel="stylesheet" href="./css/datatable.css"/>
+        <title>Comedor EVG</title>
+    </head>
+    
+    <body>
+        <nav id="menuSecretaria" class="topnav">
+            <ul>
+                <li class="icon">
+                    <img src="./img/icons/menu.svg" alt="Menú"/>
+                </li>
+                <li class="active" data-view="gestionDiaria">
+                    <img src="./img/icons/today.svg" alt="Gestión diaria"/>
+                    &nbsp;Gestión diaria
+                </li>
+                <li data-view="gestionMensual">
+                    <img src="./img/icons/calendar_month.svg" alt="Gestión mensual"/>
+                    &nbsp;Gestión mensual
+                </li>
+                <li data-view="gestionPadres">
+                    <img src="./img/icons/person.svg" alt="Gestión de usuarios"/>
+                    &nbsp;Gestión de usuarios
+                </li>
+                <li id="liCerrarSesion" data-action="logout">
+                    <img src="./img/icons/logout.svg" alt="Cerrar sesión"/>
+                    &nbsp;Cerrar sesión
+                </li>
+                <li style="float: right;" data-view="acercade">
+                    <img style="width: 24px; height: 24px;" src="./img/icons/pregunta.svg" alt="Acerca de"/>
+                    &nbsp;Acerca de
+                </li>
+                <li data-view="gestionMenus">
+                    <img src="./img/icons/menus.svg" alt="Gestión de menús" />
+                    &nbsp;Gestión de menús
+                </li>
+                <li data-view="gestionTarifas">
+                    <img src="./img/icons/tarifas.svg" alt="Gestión de tarifas" />
+                    &nbsp;Gestión tarifas
+                </li>
+                <li data-view="gestionFestivos">
+                    <img src="./img/icons/festivos.svg" alt="Gestión de festivos" style="width:24px;height:24px;"/>
+                    &nbsp;Gestión de festivos
+                </li>
+                <li data-view="gestionCertificados">
+                    <img src="./img/icons/certificados.svg" alt="Gestión de certificados" style="width:24px;height:24px;"/>
+                    &nbsp;Gestión de certificados
+                </li>
+
+            </ul>
+        </nav>
+       
+        <div id="gestionTarifas" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de tarifas</h1>
+            <div class="mb-2">
+                
+            </div>
+            <table id="tablaTarifas" class="table table-striped">
+                <thead>
+                    <tr><th>Nombre</th><th>Cantidad</th><th>Acciones</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="tarifasMsg" class="my-2"></div>
+        </div>
+
+        <div id="gestionDiaria">
+            <h1 class="text-center my-4">Gestión diaria</h1>
+            <div id="horaGestionDiaria"></div>
+            <div class="container">
+                <button type="button" class="btn btn-info btn-prev">Día anterior</button>
+                <button type="button" class="btn btn-info btn-next">Día siguiente</button>
+                <button type="button" class="btn btn-danger btn-prev ml-3">Imprimir</button>
+            </div>
+            <table id="tablaGestionDiaria">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="gestionMensual">
+            <h1 class="text-center my-4">Gestión mensual</h1>
+            <div class="container">
+                <button type="button" class="btn btn-info btn-prev">Mes anterior</button>
+                <span id="mes"></span>
+                <button type="button" class="btn btn-info btn-next">Mes siguiente</button>
+                <button type="button" class="btn btn-warning" onclick="mostrarQ19()">Q19</button>
+            </div>
+            <table id="tablaGestionMensual">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+				<div id='divQ19' class="d-none">
+					<h2>Datos de Cabecera</h2>
+					<div>
+						<div>
+							<label>Oficina BBVA receptora: <br /><input value="5566" /></label><br />
+							<label>Identificador del Acreedor: <br /><input value="ES83500G41908021" /></label><br />
+						</div>
+						<div>
+							<label>Fecha de Cobro Original: <br /><input type="date" /></label><br />
+							<label>Nombre del Acreedor: <br /><input value="Escuela Virgen de Guadalupe" /></label><br />
+						</div>
+						<div>
+							<label>Cuenta del Acreedor: <br /><input value="ES7301825566740201521854" /></label><br />
+							<label>Divisa: <br /><input value="EUR" /></label><br />
+						</div>
+					</div>
+					<hr />
+					<h2>Recibos</h2>
+					<img src='./img/icons/add2.svg' title='nuevo registro' />
+					<img src='./img/icons/download.svg' title='descargar registros' />
+					<table class="dinamica">
+						<thead>
+							<tr>
+								<th data-type='text-short'>&nbsp;</th>
+								<th data-type='text-short' title='Nombre del Deudor'>TITULAR </th>
+								<th data-type='text-short' title='Cuenta del Deudor'>IBAN </th>
+								<th data-type='text-short' title='Referencia Única del Mandato'>REF.MANDATO </th>
+								<th data-type='text-short' title='Fecha de Firma del Mandato'>FEC.MANDATO </th>
+								<th data-type='text-short' title='Secuencia de Adeudo'>SEC.ADEUDO </th>
+								<th data-type='text-short' title='Referencia del Adeudo'>REF.ADEUDO </th>
+								<th data-type='numeric' title='Importe del Adeudo'>IMPORTE </th>
+								<th data-type='text-long' title='Concepto del Adeudo'>CONCEPTO </th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+
+        <div id="gestionPadres">
+            <h1 class="text-center my-4">Gestión Padres</h1>
+            <div id="divListadoPadres">
+                <div id="contenedorBusquedaVertical">
+                    <div id="buscador">
+                        <input name="busqueda" type="text" placeholder="Buscar por nombre, apellidos o correo electrónico">
+                        <button>Buscar</button>
+                    </div>
+                    <div id="filtrar">
+                        <input type="checkbox" id="checkDesactivados" name="desactivados" value="1">
+                        <label for="checkDesactivados">Desactivados</label>
+                    </div>
+                </div>
+
+                <div id="divExitoModificacion" class="w-50 p-1 container alert alert-success text-center rounded">
+                    <p>Los datos han sido actualizados.</p>
+                </div>
+
+
+                <table id="tablaGestionPadres">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="divModificacionPadres">
+                <form method="POST" id="formModificacionPadres" class="needs-validation" novalidate>
+                    <div class="formItem">
+                        <label for="nombre">
+                            Nombre padre/madre (*) <input id="nombre" type="text" class="form-control" name="nombre" maxlength="30" required/>
+                            <div class="invalid-feedback">Por favor, introduzca su nombre.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="apellidos">
+                            Apellidos padre/madre (*) <input id="apellidos" type="text" class="form-control" name="apellidos" maxlength="90" required/>
+                            <div class="invalid-feedback">Por favor, introduzca sus apellidos.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="correo">
+                            Dirección de email (*) <input id="correo" type="email" class="form-control" name="correo" minlength="8" maxlength="90" required/>
+                            <div class="invalid-feedback">Por favor, introduzca su email.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="telefono">
+                            Nº de teléfono (*) <input id="telefono" type="text" class="form-control" name="telefono" maxlength="9" pattern="^[0-9]{9}$" required/>
+                            <div class="invalid-feedback">Por favor, introduzca su nº de teléfono.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="dni">
+                            DNI/NIE/Pasaporte (*) <input type="text" class="form-control" name="dni" id="dniModificacionPadres" maxlength="9" pattern="^[0-9]{8}[A-Za-z]$" title="DNI: 8 números y letra final" required/>
+                            <div class="invalid-feedback">Por favor, introduzca un DNI válido (8 números y letra final).</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="iban">
+                            IBAN (*) <input id="iban" type="text" class="form-control" name="iban" maxlength="24" pattern="ES\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|ES\d{22}" required />
+                            <div class="invalid-feedback">Por favor, indique su IBAN.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="titular">
+                            Titular de la cuenta (*) <input id="titular" type="text" class="form-control" name="titular" maxlength="120" required/>
+                            <div class="invalid-feedback">Por favor, indique el titular de la cuenta.</div>
+                        </label>
+                    </div>
+                    <div class="formItem">
+                        <label for="fechaMandato">
+                            Fecha del mandato<input id="fechaMandato" type="date" class="form-control" name="fechaFirmaMandato"/>
+
+                            <div class="invalid-feedback">Por favor, indique fecha de mandato.</div>
+                        </label>
+                    </div>
+                    <div class="formItem" id="loadingImgModificacion">
+                        <img src="./img/loading.gif"/>
+                    </div>
+                    <div class="formItem">
+                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="button" class="btn btn-success">Actualizar</button>
+                    </div>
+                    <!-- Hidden ID para el padre seleccionado -->                   
+                    <input type="hidden" id="idPadre" name="id">
+
+
+                </form>
+                
+                <div id="desactivarPadre" class="w-75 p-1 container alert alert-warning text-center rounded my-2">
+                    <p>¿Desea desactivar este padre/madre? Esta acción desactivará también a todos sus hijos/as y no podrá ser revertida.</p>
+                    <button type="button" class="btn btn-secondary" onclick="window.controladorSecretaria.cancelar()">Cancelar</button><br><br>
+                    <button type="button" class="btn btn-danger" onclick="window.controladorSecretaria.desactivarPadre(window.controladorSecretaria.padreActual)">Desactivar padre/madre</button>
+                </div>
+                <div id="reactivarPadre" class="w-75 p-1 container alert alert-warning text-center rounded my-2">
+                    <p>¿Desea reactivar o eliminar definitivamente este padre/madre? Eliminar al padre también eliminará a todos sus hijos/as y no podrá ser revertida.</p>
+                    <button type="button" class="btn btn-secondary" onclick="window.controladorSecretaria.eliminarPadre(window.controladorSecretaria.padreActual)">Eliminar  padre/madre</button><br><br>
+                    <button type="button" class="btn btn-danger" onclick="window.controladorSecretaria.reactivarPadre(window.controladorSecretaria.padreActual)">Reactivar padre/madre</button>
+                </div>
+
+                <div id="divErrorModificacion" class="w-75 p-1 container alert alert-danger text-center rounded my-2"></div>
+            </div>
+        </div>
+        
+        <div id="acercade" style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <h1 style="color: #2c3e50; font-size: 2em; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px;">Acerca de AppComedor 2.0</h1>
+            
+            <p style="margin: 10px 0;"><strong>Descripción:</strong> AppComedor es una herramienta innovadora diseñada para optimizar la gestión del comedor de la Escuela, facilitando tanto a los administradores como a los usuarios una experiencia eficiente y organizada.</p>
+            <p style="margin: 10px 0;"><strong>Versión:</strong> 2.0</p>
+            <h2 style="font-size: 1.5em; margin-top: 30px; color: #2c3e50;">Equipo del Proyecto</h2>
+            <p style="margin: 10px 0;"><strong>Directora del Proyecto:</strong> Pilar Villalón Plá</p>
+   
+            
+            <h3 style="font-size: 1.2em; margin-top: 20px; color: #2c3e50;">Programación:</h3>
+            <ul style="list-style-type: disc; padding-left: 20px;">
+                <li>Hugo Sánchez Gallardo</li>
+        <li>Pablo Caldito Gómez</li>
+        <li>Carlos Rodríguez Botello</li>
+            </ul>
+            
+            <p style="margin: 10px 0;"><strong>Fecha de Publicación:</strong> Diciembre 2025</p>
+            
+            <p style="margin: 10px 0;"><strong>Licencia:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text" style="color: #2980b9; text-decoration: none;">GPL v3</a></p>
+        </div>
+
+        <div id="gestionMenus" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de menús</h1>
+
+            <div class="form-row align-items-end">
+                <div class="form-group col-md-4">
+                    <label for="menusMes">Mes</label>
+                    <select id="menusMes" class="form-control">
+                        <option value="">-- Selecciona mes --</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="menusFile">PDF Menú</label>
+                    <input id="menusFile" class="form-control-file" type="file" accept="application/pdf"/>
+                </div>
+
+                <div class="form-group col-md-2 text-right">
+                    <button id="btnUploadMenu" type="button" class="btn btn-success">Subir</button>
+                </div>
+            </div>
+
+            <div id="menusFeedback" class="my-2"></div>
+
+            <hr/>
+
+            <h5>Menús actuales</h5>
+            <div id="listaMenus" class="list-group">
+                <!-- listado cargado vía JS: cada item muestra mes, enlace al PDF y botón borrar -->
+            </div>
+        </div>
+
+        <div id="gestionFestivos" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de festivos</h1>
+            <div class="mb-2 d-flex align-items-center">
+                <input id="nuevoFestivo" type="date" class="form-control w-auto" />
+                <input id="nuevoFestivoDescripcion" type="text" class="form-control ml-2" placeholder="Descripción " />
+                <button id="btnCrearFestivo" class="btn btn-success ml-2">Añadir festivo</button>
+                <button id="btnBorrarTodosFestivos" class="btn btn-danger ml-3">Borrar todos los festivos</button>
+            </div>
+            <div id="festivosMsg" class="my-2"></div>
+            <table id="tablaFestivos" class="table table-striped">
+                <thead>
+                    <tr><th>Fecha</th><th>Descripción</th><th>Acciones</th></tr>
+                </thead>
+                 <tbody></tbody>
+             </table>
+         </div>
+         
+         <div id="gestionCertificados" class="d-none" style="max-width:1000px;margin:20px auto;padding:16px;background:#fff;border-radius:6px;">
+            <h1 class="text-center my-3">Gestión de certificados</h1>
+            <table id="tablaCertificados" class="table">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <script type="module" src="./js/controllers/festivos.js"></script>
+         <script type="module" src="./js/controllers/tarifas.js"></script>
+         <script type="module" src="./js/controllers/secretaria.js"></script>
+     </body>
+ </html>

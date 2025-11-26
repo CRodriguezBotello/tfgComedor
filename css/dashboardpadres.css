@@ -1,0 +1,259 @@
+/*tabla lista de hijos*/
+.fa-solid{
+	cursor:pointer;
+}
+#tablaHijos{
+    border:1px #014179 solid;
+    border-collapse: collapse;
+    margin:auto;  
+	margin-top:20px;
+	width:30%;
+    min-width: 250px;
+}
+#tablaHijos thead tr td{
+    text-align: center;
+    font-size:40px;
+    background-color:#014179;
+    color:white;
+    padding:10px;
+    
+}
+
+#tablaHijos tbody tr td{
+	padding: 20px 0;
+    text-align: center;
+}
+
+td.tdOperaciones img {
+	padding: 0 5px !important;
+    cursor: pointer;
+}
+
+#añadir {
+    text-align:center;
+	background-color:white;
+    border-top:1px #014179 solid;
+	padding:10px 0 !important;
+    
+}
+#tablaHijos tbody tr:nth-child(odd){
+    background-color:rgb(219, 219, 219);
+}
+#tablaHijos tr#trInfo td {
+    background-color:#006EA4;
+    color:white;
+    font-size: initial;
+    padding:10px;
+}
+
+span.spanPin:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Al iniciar los div de las vistas no se verán durante la carga de DOM */
+div#inicioPadres,
+div#gestionHijosPadres,
+div#modificacionPadres,
+div#divExitoAlta,
+div#divExitoAltaPin,
+div#divErrorAltaPin,
+div#divExitoModificacion,
+div#divErrorModificacion,
+div#loadingImgAlta,
+div#loadingImgModificacion,
+div#calendarioGestion,
+div#loadingImgPin {
+    display: none;
+}
+
+#loadingImgAlta img,
+#loadingImgModificacion img,
+#loadingImgPin img {
+    width: 32px;
+    height: 32px;
+}
+
+/* ----- CALENDARIO HIJOS ----- */
+img#btnAnadir {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+table#menuHijos {
+	margin: 50px auto;
+	width: 60%;
+    max-width: 1000px;
+    min-width: 320px;
+	border-collapse: collapse;
+	border: 1px black solid;
+	font-size: 18px;
+	font-weight: bold;
+    text-align: center;
+}
+
+#menuHijos thead {
+    background-color: #014179;
+    color: white;
+}
+
+#menuHijos thead th {
+    width: 11.4%;
+    border-right: 1px solid black;
+    padding: 10px;
+}
+
+#menuHijos #thMes {
+    width: 20%;
+    font-size: 0.85em;
+}
+
+#menuHijos .semanaEntera,
+#menuHijos .mesEntero {
+    font-size: 0.8em;
+}
+
+#menuHijos .mesEntero {
+    border: 0;
+}
+
+#menuHijos td {
+    border-bottom: 1px solid black;
+}
+
+#menuHijos .tdHijos {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    word-break: break-all;
+    padding: 0 5px;
+}
+
+#menuHijos td input[type="checkbox"] {
+    width: 30px;
+    height: 25px;
+    margin: 5px 0;
+}
+
+#menuHijos .tdBotones {
+    border-top: 1px solid black;
+}
+
+#menuHijos .diaSemana {
+    min-width: 15px;
+}
+
+#menuHijos button {
+    width: 100px;
+    height: 60px;
+    margin: 5px 10%;
+    border: 0;
+    border-radius: 5px;
+    background-color: #408CCE;
+}
+
+#menuHijos button i {
+    color: white;
+}
+
+#menuHijos button:active {
+    background-color: #459ce9;
+}
+
+
+/* MODIFICACIÓN PADRE */
+div#divEliminarPadre {
+    width: 25%;
+    min-width: 398px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+    padding: 10px;
+    text-align: center;
+    color: #014179;
+    background-color: aliceblue;
+}
+
+h3.textoHeader {
+    text-align: center;
+    margin-top: 5rem;
+    margin-bottom: 1.5rem;
+}
+
+p.avisoPIN{
+    text-align: center;
+		max-width: 60%;
+		margin: auto;
+}
+
+div#divErrorBorrado {
+    display: none;
+}
+
+@media (max-width:576px) {
+    div#divEliminarPadre {
+        width: 82.8%;
+        padding: 3.4%;
+        min-width: 250px;
+        font-size: 0.9em;
+    }
+
+    #menuHijos th,
+    #menuHijos td {
+        font-size: 0.75em;
+    }
+
+    td.tdOperaciones {
+        padding: 20px 0px !important;
+    }
+
+    #tablaHijos {
+        font-size: 0.85em;
+    }
+}
+
+/* Estilos comunes para todas las notificaciones */
+#inicioPadres > #divNotificacion > div {
+    padding: 8px 12px;
+    color: white;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute; /* Cambiar de fixed a absolute */
+    width: 220px;
+    z-index: 9999;
+    transition: top 0.3s ease-out;
+    margin-bottom: 20px; /* Ajustar el margen inferior según sea necesario */
+    top: 50%; /* Centrar verticalmente */
+    transform: translateY(-50%); /* Centrar verticalmente */
+    right: 20px; /* Ajustar la distancia desde el borde derecho */
+}
+
+/* Estilos específicos para notificaciones de marcado */
+#inicioPadres > #divNotificacion > div.marcado {
+    background: linear-gradient(to right, #2C95FF, #53D7FF);
+}
+
+/* Estilos específicos para notificaciones de desmarcado */
+#inicioPadres > #divNotificacion > div.desmarcado {
+    background: linear-gradient(to right, #FFC3A0, #FF6F91);
+}
+
+#resumenMensual {
+    display: none;
+}
+.contenedor {
+    text-align: center;
+    margin-top: 20px;
+}
+.contenedor .btn {
+    display: inline-block;
+    cursor: pointer;
+}
+.contenedor .btn-prev {
+    margin-right: 10px;
+}
+.contenedor .btn-next {
+    margin-left: 10px;
+}

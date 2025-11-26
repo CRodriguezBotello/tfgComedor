@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" role="img" aria-labelledby="title desc" focusable="false">
+  <title id="title">Icono gestión de certificados</title>
+  <desc id="desc">Icono lineal que representa un certificado con cinta y sello</desc>
+
+  <!-- Documento -->
+  <rect x="3.5" y="2.5" width="13" height="19" rx="1.2" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Esquina doblada -->
+  <path d="M16.5 2.5v4.5h4" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Líneas de texto -->
+  <path d="M6.5 7.5h8" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+  <path d="M6.5 10h8" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+  <path d="M6.5 12.5h5" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Sello / medalla -->
+  <circle cx="9.5" cy="16.5" r="2" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9.5 18.5v2.5" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M9.5 18.5l-1.1 1.8" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M9.5 18.5l1.1 1.8" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Cinta decorativa a la derecha del sello -->
+  <path d="M11.8 16.5c0.6-0.4 1.2-0.9 1.8-1.4" fill="none" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>
+
+</svg>
