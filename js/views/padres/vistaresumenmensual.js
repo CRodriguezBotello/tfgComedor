@@ -155,10 +155,11 @@ export class VistaResumenMensual extends Vista {
                 // td para importe calculado
                 let tdtotal = document.createElement('td');
 
-                // calcular importe: prioridad al total devuelto por servidor si existe
+                // calcular importe: prioridad al total devuelto por servidor si existe (campo 'importe' o 'total_q19' o 'total')
                 let importe = null;
-                if (usuario.total !== undefined && usuario.total !== null && usuario.total !== '') {
-                    const v = Number(usuario.total);
+                const serverTotal = usuario.importe ?? usuario.total_q19 ?? usuario.total ?? usuario.totalMes ?? null;
+                if (serverTotal !== undefined && serverTotal !== null && serverTotal !== '') {
+                    const v = Number(serverTotal);
                     if (!isNaN(v)) importe = v;
                 }
 

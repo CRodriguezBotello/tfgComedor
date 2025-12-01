@@ -316,25 +316,25 @@
          */
         public static function obtenerUsuariosPorMes($mes) {
             // Añadimos cálculo del importe por usuario usando la fila de Precios
-            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, Persona.dni AS dni, Persona.fechaFirmaMandato AS fechaFirmaMandato,
+            $sql = "SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, Persona.dni AS dni, Persona.fechaFirmaMandato AS fechaFirmaMandato,
                         COUNT(Dias.idPersona) AS numeroMenus,
                         SUM(Dias.tupper) AS tupper,
-                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
+                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ', ') AS dias,
                         GROUP_CONCAT(
                             CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
                             ORDER BY Dias.dia ASC
-                            SEPARATOR ", "
+                            SEPARATOR ', '
                         ) AS diasTupper,
-                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
-                        GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, " ", COALESCE(p2.apellidos, "")) SEPARATOR "; ") AS hijos
+                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.tipo = 'E' THEN COALESCE(MAX(pr.precioDiaHijoProfe), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
+                        GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, ' ', COALESCE(p2.apellidos, '')) SEPARATOR '; ') AS hijos
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
                         LEFT JOIN Hijo_Padre hp ON hp.idPadre = Persona.id
                         LEFT JOIN Persona p2 ON p2.id = hp.idHijo
-                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
+                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaHijoProfe, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
                         WHERE MONTH(Dias.dia) = :mes
                         GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo
-                        ORDER BY Persona.apellidos';
+                        ORDER BY Persona.apellidos";
             $params = array('mes' => $mes);
             $usuarios = BD::seleccionar($sql, $params);
             return $usuarios;
@@ -489,13 +489,36 @@
          */
         public static function altaPersona($datos)
         {
-            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, clave, telefono, dni, iban, titular)';
-            $sql .= ' VALUES(:nombre, :apellidos, :correo, :clave, :telefono, :dni, :iban, :titular)';
+            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, clave, telefono, dni, iban, titular, tipo)';
+            $sql .= ' VALUES(:nombre, :apellidos, :correo, :clave, :telefono, :dni, :iban, :titular, :tipo)';
 
             if ($datos->clave != null) {
                 $clave = password_hash($datos->clave, PASSWORD_DEFAULT, ['cost' => 15]);
             } else {
                 $clave = NULL;
+            }
+
+            // Cargar configuración para comprobar lista de correos de secretaria
+            $config = require_once(dirname(dirname(__DIR__)) . '/config.php');
+
+            $correoLower = strtolower(trim($datos->correo));
+            $tipo = 'U';
+            if (isset($config['correo_secretaria']) && is_array($config['correo_secretaria'])) {
+                $secretarias = array_map('strtolower', $config['correo_secretaria']);
+                if (in_array($correoLower, $secretarias, true)) {
+                    $tipo = 'A';
+                }
+            }
+
+            if ($tipo !== 'A') {
+                if (strpos($correoLower, '@fundacionloyola.es') !== false) {
+                    $tipo = 'E';
+                } else if (strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+                    // Consideramos alumnado también como empleado/miembro educativo
+                    $tipo = 'E';
+                } else {
+                    $tipo = 'U';
+                }
             }
 
             $params = array(
@@ -506,13 +529,14 @@
                 'telefono' => $datos->telefono,
                 'dni' => $datos->dni,
                 'iban' => $datos->iban,
-                'titular' => $datos->titular
+                'titular' => $datos->titular,
+                'tipo' => $tipo
             );
         
-            if (strpos($datos->correo, '@fundacionloyola.es') !== false || strpos($datos->correo, '@alumnado.fundacionloyola.net') !== false) {
-        
+            if (strpos($correoLower, '@fundacionloyola.es') !== false || strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+
             return self::insertarPersonal($sql,$params);
-        
+
             }else{
                 return BD::insertar($sql, $params);
             } 
@@ -560,12 +584,33 @@
          * @return void
          */
         public static function altaUsuarioGoogle($datos) {
-            $sql = 'INSERT INTO Persona(nombre, apellidos, correo)';
-            $sql .= ' VALUES(:nombre, :apellidos, :correo)';
+            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, tipo)';
+            $sql .= ' VALUES(:nombre, :apellidos, :correo, :tipo)';
+
+            // Cargar configuración para comprobar lista de correos de secretaria
+            $config = require_once(dirname(dirname(__DIR__)) . '/config.php');
+            $correoLower = strtolower(trim($datos['email']));
+            $tipo = 'U';
+            if (isset($config['correo_secretaria']) && is_array($config['correo_secretaria'])) {
+                $secretarias = array_map('strtolower', $config['correo_secretaria']);
+                if (in_array($correoLower, $secretarias, true)) {
+                    $tipo = 'A';
+                }
+            }
+
+            if ($tipo !== 'A') {
+                if (strpos($correoLower, '@fundacionloyola.es') !== false || strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+                    $tipo = 'E';
+                } else {
+                    $tipo = 'U';
+                }
+            }
+
             $params = array(
                 'nombre' => $datos['given_name'],
                 'apellidos' => $datos['family_name'],
-                'correo' => $datos['email']
+                'correo' => $datos['email'],
+                'tipo' => $tipo
             );
 
             return BD::insertar($sql, $params);  
@@ -971,9 +1016,9 @@
                         (
                           COUNT(d.dia) * (
                             CASE
-                              WHEN p.correo LIKE '%@fundacionloyola.es'
+                              WHEN p.tipo = 'E'
                                 THEN COALESCE(
-                                  (SELECT precioDiaProfesor FROM Precios LIMIT 1),
+                                  (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
                                   (SELECT precioDiario FROM Precios LIMIT 1),
                                   (SELECT precioMensual FROM Precios LIMIT 1),
                                   0
@@ -1013,9 +1058,9 @@
                         (
                           COUNT(d.dia) * (
                             CASE
-                              WHEN p.correo LIKE '%@fundacionloyola.es'
+                              WHEN p.tipo = 'E'
                                 THEN COALESCE(
-                                  (SELECT precioDiaProfesor FROM Precios LIMIT 1),
+                                  (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
                                   (SELECT precioDiario FROM Precios LIMIT 1),
                                   (SELECT precioMensual FROM Precios LIMIT 1),
                                   0
