@@ -1143,35 +1143,33 @@
          * @param {number} anio Año a consultar.
          * @return {Array<Object>} Lista de fechas de asistencia y datos del alumno.
          */
-      public static function obtenerDetalleAsistenciaAnual($id, $anio) {
-            $sql = "
-                SELECT
+     public static function obtenerDetalleAsistenciaAnual($id, $anio) {
+            $sql = "SELECT 
                     p.nombre AS nombreAlumno,
                     p.apellidos AS apellidosAlumno,
                     MONTH(d.dia) AS mes,
                     COUNT(d.idPersona) AS diasAsistidos,
+                    SUM(COALESCE(d.tupper,0)) AS tupperMensual,
                     CASE
                         WHEN COALESCE(ANY_VALUE(padre.tipo), '') IN ('E','A') THEN MAX(pr.precioDiaHijoProfe)
                         ELSE MAX(pr.precioDiario)
                     END AS precioDiario,
-                    (COUNT(d.idPersona) * CASE
-                        WHEN COALESCE(ANY_VALUE(padre.tipo), '') IN ('E','A') THEN MAX(pr.precioDiaHijoProfe)
-                        ELSE MAX(pr.precioDiario)
-                    END) AS totalMes
+                    MAX(pr.precioTupper) AS precioTupper
                 FROM Persona p
                 JOIN Dias d ON p.id = d.idPersona
                 LEFT JOIN Hijo_Padre hp ON hp.idHijo = p.id AND hp.activo = 1
                 LEFT JOIN Persona padre ON padre.id = hp.idPadre
-                CROSS JOIN (SELECT precioDiario, precioDiaHijoProfe FROM Precios LIMIT 1) pr
+                CROSS JOIN (SELECT precioDiario, precioDiaHijoProfe, precioTupper FROM Precios LIMIT 1) pr
                 WHERE p.id = :id
                 AND YEAR(d.dia) = :anio
                 GROUP BY p.id, p.nombre, p.apellidos, mes
-                ORDER BY mes ASC
-            ";
+                ORDER BY mes ASC";
+        
             $params = array(
                 'id' => $id,
                 'anio' => $anio
             );
+        
             return BD::seleccionar($sql, $params);
         }
     }
