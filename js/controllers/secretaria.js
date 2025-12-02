@@ -32,8 +32,8 @@ class ControladorSecretaria {
         if (!this.#usuario)
             window.location.href = 'login_google.html';
 
-        // Comprobar rol de usuario secretaría
-        if (this.#usuario.rol != 'S')
+        // Comprobar rol de usuario secretaría (permitir admins con tipo 'A')
+        if (this.#usuario.rol != 'S' && this.#usuario.tipo !== 'A')
             window.location.href = 'login_google.html';
 
         Rest.setAutorizacion(this.#usuario.autorizacion);

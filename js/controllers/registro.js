@@ -140,7 +140,8 @@ class Registro {
             titular: this.inputs[8].value
         };
 
-        const correoFundacion = usuario.correo.includes('@fundacionloyola.es') || usuario.correo.includes('@alumnado.fundacionloyola.net');
+        // usuario.correo.includes('@fundacionloyola.es') ||
+        const correoFundacion = usuario.correo.includes('@alumnado.fundacionloyola.net');
 
         if (correoFundacion) {
             Rest.post('persona', [], usuario, true)

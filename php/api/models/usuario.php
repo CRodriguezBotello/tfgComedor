@@ -15,5 +15,6 @@
         public $rol = null;
         public $tsConexion = null; // Timestamp de conexión
         public $autorizacion = null;
+        public $tipo = null; // Añadido: tipo según tabla Persona (E, S, ...)
     }
 ?>

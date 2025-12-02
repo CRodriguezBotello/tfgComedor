@@ -33,10 +33,11 @@ class Login {
     comprobarCorreo() {
         const correo = this.email.value.trim().toLowerCase();
     
-        if (correo.endsWith('@fundacionloyola.es')) {
-            this.btnAceptar.disabled = true;
-            this.mostrarMensaje('El personal de la Escuela Virgen de Guadalupe debe acceder con su correo corporativo a través del login de Google', 'login_google.html');
-        } else if (correo.endsWith('@alumnado.fundacionloyola.net')) {
+        // if (correo.endsWith('@fundacionloyola.es')) {
+        //     this.btnAceptar.disabled = true;
+        //     this.mostrarMensaje('El personal de la Escuela Virgen de Guadalupe debe acceder con su correo corporativo a través del login de Google', 'login_google.html');
+        // } else 
+        if (correo.endsWith('@alumnado.fundacionloyola.net')) {
             this.btnAceptar.disabled = true;
             this.mostrarMensaje('Los alumnos de la Escuela Virgen de Guadalupe deben acceder con su correo corporativo a través del login de Google', 'login_google.html');
         }

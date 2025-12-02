@@ -50,12 +50,65 @@ class LoginGoogle {
         }
     }
 
-    redireccionar() {
+    async redireccionar() {
         let usuario = JSON.parse(sessionStorage.getItem('usuario'));
         if (!usuario) return;
 
-        if (usuario.rol == 'S') window.location.href = 'index_evg.html';
-        else if (usuario.rol == 'G' || usuario.rol == 'P') window.location.href = 'index.html';
+        // Si el usuario es secretaria ('S') pero además tiene tipo 'A' (admin),
+        // permitir a admins ('A') elegir a qué área ir (Secretaría o Padres) mediante modal.
+        if (usuario.rol == 'S') {
+            if (usuario.tipo === 'A') {
+                const irSecretaria = await this.askAdminChoice();
+                if (irSecretaria) {
+                    window.location.href = 'index_evg.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } else {
+                window.location.href = 'index_evg.html';
+            }
+        } else if (usuario.rol == 'G' || usuario.rol == 'P') {
+            window.location.href = 'index.html';
+        }
+    }
+
+    askAdminChoice() {
+        return new Promise((resolve) => {
+            const overlay = document.createElement('div');
+            overlay.id = 'adminChoiceOverlay';
+            Object.assign(overlay.style, {
+                position: 'fixed', top: '0', left: '0', right: '0', bottom: '0',
+                background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+            });
+
+            const box = document.createElement('div');
+            Object.assign(box.style, {
+                background: '#fff', padding: '18px', borderRadius: '8px', textAlign: 'center', minWidth: '300px', boxShadow: '0 6px 18px rgba(0,0,0,0.2)'
+            });
+
+            const msg = document.createElement('p');
+            msg.textContent = 'Has iniciado sesión como administrador. ¿A qué área quieres ir?';
+            Object.assign(msg.style, { marginBottom: '14px' });
+
+            const btnSec = document.createElement('button');
+            btnSec.textContent = 'Secretaría';
+            Object.assign(btnSec.style, { marginRight: '10px', padding: '8px 14px', cursor: 'pointer' });
+
+            const btnPad = document.createElement('button');
+            btnPad.textContent = 'Padres';
+            Object.assign(btnPad.style, { padding: '8px 14px', cursor: 'pointer' });
+
+            const cleanup = () => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); };
+
+            btnSec.addEventListener('click', () => { cleanup(); resolve(true); });
+            btnPad.addEventListener('click', () => { cleanup(); resolve(false); });
+
+            box.appendChild(msg);
+            box.appendChild(btnSec);
+            box.appendChild(btnPad);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+        });
     }
 
     error(e) {

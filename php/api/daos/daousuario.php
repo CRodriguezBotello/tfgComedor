@@ -325,15 +325,17 @@
                             ORDER BY Dias.dia ASC
                             SEPARATOR ', '
                         ) AS diasTupper,
-                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.tipo = 'E' THEN COALESCE(MAX(pr.precioDiaHijoProfe), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
+                            (COUNT(Dias.idPersona) * (CASE WHEN COALESCE(padre.tipo, Persona.tipo) IN ('E','A') THEN COALESCE(MAX(pr.precioDiaHijoProfe), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
+                        COALESCE(padre.tipo, NULL) AS tipoPadre,
                         GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, ' ', COALESCE(p2.apellidos, '')) SEPARATOR '; ') AS hijos
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
+                        LEFT JOIN Persona padre ON padre.id = Dias.idPadre
                         LEFT JOIN Hijo_Padre hp ON hp.idPadre = Persona.id
                         LEFT JOIN Persona p2 ON p2.id = hp.idHijo
                         CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaHijoProfe, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
                         WHERE MONTH(Dias.dia) = :mes
-                        GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo
+                        GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo, padre.tipo
                         ORDER BY Persona.apellidos";
             $params = array('mes' => $mes);
             $usuarios = BD::seleccionar($sql, $params);
@@ -385,7 +387,8 @@
          * @return Usuario|boolean Devuelve los datos del usuario o false si no existe el usuario.
          */
         public static function autenticarEmail($email) {
-            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular FROM Persona';
+            // Incluir la columna 'tipo' en la selección
+            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular, tipo FROM Persona';
             $sql .= ' WHERE correo = :email';
 
             $params = array('email' => $email);
@@ -395,7 +398,7 @@
         }
 
         /**
-         * Consulta la base de datos para ver si existe usuario con el correo electrónico pasado.
+         * Consulta la base de datos para ver si existe usuario with el correo electrónico pasado.
          * @param string $email Correo del usuario.
          * @return Usuario|boolean Devuelve los datos del usuario o false si no existe el usuario.
          */
@@ -533,13 +536,49 @@
                 'tipo' => $tipo
             );
         
-            if (strpos($correoLower, '@fundacionloyola.es') !== false || strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+            // Antes: se creaban automáticamente las entradas adicionales de 'Personal' (Padre/Hijo)
+            // cuando el tipo era 'E'. Cambiamos comportamiento: NO crear hijo/padre automáticamente
+            // para usuarios con correo de la fundación a menos que el cliente solicite explícitamente
+            // la creación (campo opcional $datos->crearPersonal = true).
+            $crearPersonal = isset($datos->crearPersonal) ? (bool)$datos->crearPersonal : false;
 
-            return self::insertarPersonal($sql,$params);
+            // Insertar la Persona
+            $id = BD::insertar($sql, $params);
 
-            }else{
-                return BD::insertar($sql, $params);
-            } 
+            // Si es admin/secretaria (tipo 'A') o empleado/alumnado (tipo 'E'), crear la fila en Padre
+            // para que puedan añadir hijos más tarde. No crear Hijo automáticamente para 'E'.
+            if ($tipo === 'A' || $tipo === 'E') {
+                try {
+                    self::altaPadre($id);
+                } catch (Throwable $e) {
+                    error_log('Error creando Padre para id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            // Si se indicó explícitamente crearPersonal y el tipo es 'E', crear también el registro
+            // en Hijo y la relación Hijo_Padre para el propio usuario (caso excepcional).
+            if ($crearPersonal && $tipo === 'E') {
+                try {
+                    // Insertar en Hijo usando el id ya creado
+                    $sqlH = 'INSERT INTO Hijo(id, idPadreAlta, idCurso, pin) VALUES(:id, :idPadreAlta, :idCurso, :pin)';
+                    $paramsH = array(
+                        'id' => $id,
+                        'idPadreAlta' => $id,
+                        'idCurso' => 1,
+                        'pin' => self::generarUID(4)
+                    );
+                    BD::insertar($sqlH, $paramsH);
+
+                    // Insertar relación en Hijo_Padre
+                    $sqlHP = 'INSERT INTO Hijo_Padre(idPadre, idHijo) VALUES(:idPadre, :idHijo)';
+                    $paramsHP = array('idPadre' => $id, 'idHijo' => $id);
+                    BD::insertar($sqlHP, $paramsHP);
+                } catch (Throwable $e) {
+                    error_log('Error creando Hijo/Hijo_Padre para id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            return $id;
         }
         
         public static function insertarPersonal($sql,$params)
@@ -613,7 +652,17 @@
                 'tipo' => $tipo
             );
 
-            return BD::insertar($sql, $params);  
+            $id = BD::insertar($sql, $params);
+            // Crear entrada en Padre para tipos 'A' y 'E' para permitir añadir hijos más tarde
+            if ($tipo === 'A' || $tipo === 'E') {
+                try {
+                    self::altaPadre($id);
+                } catch (Throwable $e) {
+                    error_log('Error creando Padre para usuario Google id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            return $id;
         }
 
         /**
@@ -891,9 +940,10 @@
                 $usuario->iban = $resultSet[0]['iban'];
                 $usuario->titular = $resultSet[0]['titular'];
                 $usuario->rol = null;
-								$usuario->clave = false;
-								if ($resultSet[0]['clave'])
-									$usuario->clave = true;
+                $usuario->tipo = isset($resultSet[0]['tipo']) ? $resultSet[0]['tipo'] : null; // Asignar tipo desde BBDD
+                $usuario->clave = false;
+                if ($resultSet[0]['clave'])
+                    $usuario->clave = true;
             }
             else {
                 $usuario = false;
@@ -1016,7 +1066,7 @@
                         (
                           COUNT(d.dia) * (
                             CASE
-                              WHEN p.tipo = 'E'
+                              WHEN p.tipo IN ('E','A')
                                 THEN COALESCE(
                                   (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
                                   (SELECT precioDiario FROM Precios LIMIT 1),
@@ -1058,7 +1108,7 @@
                         (
                           COUNT(d.dia) * (
                             CASE
-                              WHEN p.tipo = 'E'
+                              WHEN p.tipo IN ('E','A')
                                 THEN COALESCE(
                                   (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
                                   (SELECT precioDiario FROM Precios LIMIT 1),

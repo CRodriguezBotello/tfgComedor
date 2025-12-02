@@ -54,8 +54,30 @@
                 header('HTTP/1.1 401 Unauthorized');
                 die();
             }
-            // Verificar el tipo de usuario que hace login
-            $tipo = $this->obtenerTipo($payload['email']);
+
+            // Preferir el 'tipo' que está en la BBDD si existe (p. ej. 'E' para empleado)
+            $tipo = null;
+            if (!empty($usuario->tipo)) {
+                $dbtipo = strtoupper($usuario->tipo);
+                // Mapear tipos de la base de datos a las cadenas usadas aquí
+                if ($dbtipo === 'S') {
+                    $tipo = 'secretaria';
+                } else if ($dbtipo === 'E') {
+                    // Empleado -> tratar como personal
+                    $tipo = 'personal';
+                } else if ($dbtipo === 'A') {
+                    // Admin -> permitir como secretaria/admin si aplica
+                    $tipo = 'secretaria';
+                } else {
+                    $tipo = null;
+                }
+            }
+
+            // Si no hay tipo desde la BBDD, intentar deducir por email como antes
+            if ($tipo === null) {
+                $tipo = $this->obtenerTipo($payload['email']);
+            }
+
             if ($tipo == null) {
                 header('HTTP/1.1 401 Unauthorized');
                 die();
