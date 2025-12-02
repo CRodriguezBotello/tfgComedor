@@ -1108,6 +1108,10 @@
             }
         }
 
+        /**
+         * Obtiene los usuarios que han usado el comedor en un año determinado.
+         * @param {number} anio Año a consultar.
+         */
         public static function obtenerUsuariosPorAnio($anio) {
             $sql = "SELECT 
                         p.id, 
