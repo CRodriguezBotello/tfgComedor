@@ -85,7 +85,7 @@ private function generarCertificado($id, $anio, $anioSig)
         // TÍTULO
         // --------------------------------------------------------
         $pdf->SetFont('helvetica','B',20);
-        $pdf->SetXY(0, 15);
+        $pdf->SetXY(0, 25);
         $pdf->Cell(0, 35, "CERTIFICADO DE ASISTENCIA COMEDOR", 0, 1, 'C');
 
         $pdf->Ln(10);
@@ -161,7 +161,7 @@ private function generarCertificado($id, $anio, $anioSig)
         // --------------------------------------------------------
         $pdf->Ln(5);
         $pdf->SetFont('helvetica','B',12);
-        $pdf->Cell(0, 10, "TOTAL ANUAL: " . number_format($totalAnual, 2) . " €", 0, 1, 'R');
+        $pdf->Cell(165, 8, "TOTAL ANUAL: " . number_format($totalAnual, 2) . " €", 0, 1, 'R');
 
         // --------------------------------------------------------
         // FIRMA
