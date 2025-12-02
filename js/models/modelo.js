@@ -387,7 +387,7 @@ export class Modelo {
     
         return Rest.get('secretaria', [], queryParams)
             .then(data => {
-                // 🚨 LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
+                // LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
                 //console.log('DEBUG 1: MODELO Certificados, datos recibidos. Longitud:', data ? data.length : 0); 
                 return data;
             })
