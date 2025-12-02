@@ -12,7 +12,7 @@ export class VistaGestionCertificados extends Vista {
 
         this.controlador = controlador;
         this.div = divContenedor;
-        // ⭐ Busca el elemento de la tabla dentro del divContenedor
+        // Busca el elemento de la tabla dentro del divContenedor
         this.tabla = divContenedor.querySelector('#tablaCertificados');
         this.thead = null; 
         this.tbody = null;
@@ -20,7 +20,7 @@ export class VistaGestionCertificados extends Vista {
         if (this.tabla) {
             this.thead = this.tabla.querySelector('thead');
             this.tbody = this.tabla.querySelector('tbody');
-            console.log("DEBUG C: tbody encontrado:", !!this.tbody);
+            //console.log("DEBUG C: tbody encontrado:", !!this.tbody);
             this.inicializar();
         } else {
             console.error("Error: Elemento #tablaCertificados no encontrado en el contenedor.");
@@ -46,15 +46,13 @@ export class VistaGestionCertificados extends Vista {
             // Establecer encabezados de la tabla
             this.thead.innerHTML = `
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
-                    <th>Número de menús</th>
+                    <th>Curso</th>
                     <th>Acciones</th> 
                 </tr>
             `;
             
-            // Aquí se pueden añadir listeners globales si fuera necesario
         }
     }
 
@@ -85,10 +83,9 @@ export class VistaGestionCertificados extends Vista {
             tr.dataset.id = item.id;
             
             tr.innerHTML = `
-                <td>${item.id ?? '-'}</td>
                 <td>${item.nombre ?? '-'}</td>
                 <td>${item.apellidos ?? '-'}</td>
-                <td>${item.numeroMenus ?? '-'}</td>
+                <td>${item.nombreCurso ?? '-'}</td>
                 <td>
                     <button class="btn btn-sm btn-primary btn-certificado" data-id="${item.id}">Generar Certificado</button>
                 </td>
@@ -96,7 +93,7 @@ export class VistaGestionCertificados extends Vista {
             this.tbody.appendChild(tr);
         });
         
-        // ⭐ Ejecutar listeners DESPUÉS de pintar, si es necesario (ej: para los botones)
+        // Ejecutar listeners DESPUÉS de pintar, si es necesario (ej: para los botones)
         this.addListenersCertificados();
     }
     
@@ -115,7 +112,7 @@ export class VistaGestionCertificados extends Vista {
                 const alumnoId = e.currentTarget.dataset.id;
                 console.log(`DEBUG VISTA: Botón de certificado pulsado para ID: ${alumnoId}`);
                 // Aquí deberías llamar al controlador para iniciar la descarga del PDF
-                this.controlador.generarCertificado(alumnoId, new Date().getFullYear()); 
+                this.controlador.generarCertificado(alumnoId, new Date().getFullYear(), new Date().getFullYear() + 1); 
             });
         });
     }

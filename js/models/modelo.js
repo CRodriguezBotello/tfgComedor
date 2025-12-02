@@ -405,23 +405,44 @@ export class Modelo {
      * Llama a la API para generar el certificado PDF.
      * @param {string|number} alumnoId 
      * @param {number} anio 
+     * @param {number} anioSig
+     * @param {Object} precios Opcional: { precioMenu, precioTupper, precioDiario, precioDiaProfesor }
      * @returns {Promise<string>} Promesa que resuelve con la URL del PDF.
      */
-    generarCertificadoPDF(alumnoId, anio) {
+    generarCertificadoPDF(alumnoId, anio, anioSig, precios = {}) {
         const datos = {
             id: alumnoId,
-            anio: anio
+            anio: anio,
+            anioSig: anioSig
         };
-        
-        // Configuración del endpoint REST:
-        const queryParams = 'secretaria';
-        const pathParams = ['generarCertificado']; 
+
+        // Mapeo de precios a claves que el backend puede esperar
+        try {
+            if (precios) {
+                // precioMenu puede ser número o array [diario, profesor]
+                if (Array.isArray(precios.precioMenu)) {
+                    datos.precioDiario = Number(precios.precioMenu[0]) || undefined;
+                    datos.precioDiaProfesor = Number(precios.precioMenu[1]) || undefined;
+                } else if (precios.precioMenu !== undefined) {
+                    datos.precioDiario = Number(precios.precioMenu) || undefined;
+                }
+                if (precios.precioDiario !== undefined) datos.precioDiario = Number(precios.precioDiario);
+                if (precios.precioDiaProfesor !== undefined) datos.precioDiaProfesor = Number(precios.precioDiaProfesor);
+                if (precios.precioTupper !== undefined) datos.precioTupper = Number(precios.precioTupper);
+            }
+        } catch(e){ /* no bloquear si hay problemas al mapear precios */ }
+
+        console.log('DEBUG datosCertificado (enviando):', datos);
+         
+         // Configuración del endpoint REST:
+         const queryParams = 'secretaria';
+         const pathParams = ['generarCertificado']; 
 
         // Llamada al servicio Rest.post() con manejo de promesas
-        return Rest.post(queryParams, pathParams, datos) 
-            .then(response => {
-                // 🚨 LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
-                console.log('DEBUG 1: MODELO Certificado, respuesta recibida:', response); 
+         return Rest.post(queryParams, pathParams, datos) 
+             .then(response => {
+                 // 🚨 LOG CLAVE 1: Confirma que el Modelo recibe datos del servidor.
+                 console.log('DEBUG 1: MODELO Certificado, respuesta recibida:', response); 
 
                 // Asumiendo que la respuesta es un objeto con la URL del archivo
                 if (response && response.url) {

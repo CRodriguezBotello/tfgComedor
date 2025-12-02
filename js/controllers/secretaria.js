@@ -669,29 +669,38 @@ class ControladorSecretaria {
         const hideSpinner = () => { const e = document.getElementById('cert-spinner'); if (e) e.remove(); };
 
         showSpinner();
-        // El modelo se encargará de hacer la petición REST
-        this.modelo.generarCertificadoPDF(alumnoId, anio)
-            .then(url => {
-                hideSpinner();
-                console.log("Certificado generado. URL:", url);
-                if (!url) {
-                    alert('La API no devolvió una URL válida para el PDF. Revisa la consola.');
-                    return;
-                }
-                // Abrir el PDF en una nueva pestaña
-                try {
-                    window.open(url, '_blank');
-                } catch (e) {
-                    console.error('No se pudo abrir la URL del PDF:', e);
-                    alert('Se generó el PDF pero no se pudo abrir en una nueva pestaña. Copia la URL desde la consola.');
-                }
-            })
-            .catch(e => {
-                hideSpinner();
-                console.error("Error al generar el certificado:", e);
-                const msg = (e && e.message) ? e.message : (e && e.error) ? e.error : 'Hubo un error al generar el certificado.';
-                alert(msg);
-            });
+        // Asegurar anioSig y obtener precios; pasarlos al modelo
+        const anioSig = (typeof anio === 'number') ? (anio + 1) : (new Date().getFullYear() + 1);
+        // Obtener precios (si falla, continuamos sin precios)
+        this.obtenerConstantesPrecios()
+          .then(precios => {
+              return this.modelo.generarCertificadoPDF(alumnoId, anio, anioSig, precios);
+          })
+          .catch(() => {
+              // intentar sin precios
+              return this.modelo.generarCertificadoPDF(alumnoId, anio, anioSig, {});
+          })
+          .then(url => {
+                 hideSpinner();
+                 console.log("Certificado generado. URL:", url);
+                 if (!url) {
+                     alert('La API no devolvió una URL válida para el PDF. Revisa la consola.');
+                     return;
+                 }
+                 // Abrir el PDF en una nueva pestaña
+                 try {
+                     window.open(url, '_blank');
+                 } catch (e) {
+                     console.error('No se pudo abrir la URL del PDF:', e);
+                     alert('Se generó el PDF pero no se pudo abrir en una nueva pestaña. Copia la URL desde la consola.');
+                 }
+             })
+             .catch(e => {
+                 hideSpinner();
+                 console.error("Error al generar el certificado:", e);
+                 const msg = (e && e.message) ? e.message : (e && e.error) ? e.error : 'Hubo un error al generar el certificado.';
+                 alert(msg);
+             });
     }
 
     /**
