@@ -129,19 +129,6 @@ class Registro {
      * Llamada al servidor para añadir a persona a la BBDD.
      */
     insertarPersona() {
-
-        let tipo= null;
-        const correo = this.inputs[2].value.trim().toLowerCase();
-        console.log('Correo introducido: ' + correo);
-    
-        if (correo.endsWith('@fundacionloyola.es')) {
-            tipo = 'E';
-            
-        } else {
-            tipo = 'U';
-        }
-        console.log('Tipo de usuario: ' + tipo);
-
         const usuario = {
             nombre: this.inputs[0].value,
             apellidos: this.inputs[1].value,
@@ -150,12 +137,11 @@ class Registro {
             telefono: this.inputs[5].value,
             dni: this.inputs[6].value,
             iban: this.inputs[7].value,
-            titular: this.inputs[8].value,
-            tipo: tipo
+            titular: this.inputs[8].value
         };
+
         // usuario.correo.includes('@fundacionloyola.es') ||
         const correoFundacion = usuario.correo.includes('@alumnado.fundacionloyola.net');
-
 
         if (correoFundacion) {
             Rest.post('persona', [], usuario, true)
@@ -171,7 +157,6 @@ class Registro {
         } else {
             Rest.post('persona', [], usuario, true)
             .then(id => {
-                console.log('ID persona insertada: ' + id);
                 this.insertarPadre(id, usuario);
             })
             .catch(e => {
@@ -187,8 +172,6 @@ class Registro {
      * @param {Object} usuario Datos de la persona.
      */
     insertarPadre(id, usuario) {
-        console.log('Insertando padre con id persona: ' + id);
-        console.log(usuario);
         Rest.post('padres', [], id, false)
          .then(() => {
              this.divCargando.style.display = 'none';

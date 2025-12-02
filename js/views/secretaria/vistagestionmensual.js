@@ -170,29 +170,21 @@ export class VistaGestionMensual extends Vista {
                 textarea.setAttribute('rows', '1');
                 textarea.disabled = true;
                 let tdtotal = document.createElement('td');
-                // Preferir importe calculado en BBDD/Q19 (varias claves posibles)
-                let importeServidor = null;
-                if (usuario.importe !== undefined && usuario.importe !== null && usuario.importe !== '') importeServidor = parseFloat(usuario.importe);
-                else if (usuario.total !== undefined && usuario.total !== null && usuario.total !== '') importeServidor = parseFloat(usuario.total);
-                else if (usuario.total_q19 !== undefined && usuario.total_q19 !== null && usuario.total_q19 !== '') importeServidor = parseFloat(usuario.total_q19);
-
-
-                if (Number.isFinite(importeServidor)) {
-                    tdtotal.textContent = importeServidor.toFixed(2) + ' €';
+                // Priorizar importe calculado en servidor (varias claves posibles)
+                const serverTotal = usuario.importe ?? usuario.total_q19 ?? usuario.total ?? usuario.totalMes ?? null;
+                if (serverTotal !== null && serverTotal !== '') {
+                    const v = Number(serverTotal);
+                    if (!isNaN(v)) tdtotal.textContent = v.toFixed(2) + ' €';
+                    else tdtotal.textContent = '—';
                 } else {
-                    // Fallback: replicar cálculo del Q19 (usar constantes del controlador si existen)
-                    // Obtener precios prefiriendo los traídos desde la BBDD (this.precioMenu / this.precioTupper).
-                    // Si no están, intentar obtener desde funciones del controlador; si no hay nada, usar 0.
+                    // Recalcular localmente usando las mismas fuentes de precio que antes
                     const precioMenuCtrl = (this.controlador && typeof this.controlador.constanteMenu === 'function') ? this.controlador.constanteMenu() : null;
                     const precioTupperCtrl = (this.controlador && typeof this.controlador.constanteTupper === 'function') ? this.controlador.constanteTupper() : null;
 
-
-                    // precioTupper: prioridad -> this.precioTupper -> precioTupperCtrl -> 0
                     const precioTupper = (this.precioTupper !== null && Number.isFinite(Number(this.precioTupper)))
                         ? Number(this.precioTupper)
                         : (Number.isFinite(Number(precioTupperCtrl)) ? Number(precioTupperCtrl) : 0);
 
-                    // precioMenu: prioridad -> this.precioMenu -> precioMenuCtrl -> 0
                     let precioMenu = 0;
                     let precioMenuProfesor = null;
                     if (this.precioMenu !== null) {
@@ -209,9 +201,10 @@ export class VistaGestionMensual extends Vista {
                         precioMenu = Number(precioMenuCtrl) || 0;
                     }
 
-
-                    // Si hay precio específico para personal (profesor), usarlo
-                    if (usuario.correo && /@fundacionloyola\.es$/.test(usuario.correo) && Number.isFinite(precioMenuProfesor)) {
+                    // decidir si aplicar precio profesor: preferir tipoPadre si viene, sino por correo
+                    const padreEsPersonal = usuario && (usuario.tipoPadre === 'E' || usuario.tipoPadre === 'A');
+                    const usuarioEsPersonal = usuario && usuario.correo && /@fundacionloyola\.es$/.test(usuario.correo);
+                    if ((padreEsPersonal || usuarioEsPersonal) && Number.isFinite(precioMenuProfesor)) {
                         precioMenu = precioMenuProfesor;
                     }
 

@@ -55,26 +55,39 @@
                 die();
             }
 
-            // Asignación de tipo según el correo
-            if (in_array($payload['email'], self::$secretaria)) {
-                // 1) Correos definidos como secretaría
-                $tipo = 'A';
-
-            } elseif (str_ends_with($payload['email'], '@fundacionloyola.es')) {
-                // 2) Personal con dominio fundacionloyola.es
-                $tipo = 'E';
-
-            } else {
-                // 3) Cualquier otro usuario
-                $tipo = 'U';
+            // Preferir el 'tipo' que está en la BBDD si existe (p. ej. 'E' para empleado)
+            $tipo = null;
+            if (!empty($usuario->tipo)) {
+                $dbtipo = strtoupper($usuario->tipo);
+                // Mapear tipos de la base de datos a las cadenas usadas aquí
+                if ($dbtipo === 'S') {
+                    $tipo = 'secretaria';
+                } else if ($dbtipo === 'E') {
+                    // Empleado -> tratar como personal
+                    $tipo = 'personal';
+                } else if ($dbtipo === 'A') {
+                    // Admin -> permitir como secretaria/admin si aplica
+                    $tipo = 'secretaria';
+                } else {
+                    $tipo = null;
+                }
             }
 
+            // Si no hay tipo desde la BBDD, intentar deducir por email como antes
+            if ($tipo === null) {
+                $tipo = $this->obtenerTipo($payload['email']);
+            }
+
+            if ($tipo == null) {
+                header('HTTP/1.1 401 Unauthorized');
+                die();
+            }
             // Completamos los datos del usuario
             $usuario->nombre = $payload['given_name'];
             $usuario->apellidos = $payload['family_name'];
             $usuario->correo = $payload['email'];
             $usuario->autorizacion = openssl_encrypt(json_encode($usuario), self::$algoritmo_encriptacion, self::$clave, 0, self::$iv);
-            $usuario->tipo = $tipo;
+            $usuario->rol = $tipo == 'secretaria' ? 'S' : 'G';  // Asignar rol dependiendo del tipo de usuario.
             header('Content-type: application/json; charset=utf-8');
             header('HTTP/1.1 200 OK');
             echo json_encode($usuario);

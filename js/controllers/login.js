@@ -81,17 +81,6 @@ class Login {
      * Realiza el proceso de login.
      */
     login() {
-        let tipo = null;
-
-        const correo = this.email.value.trim().toLowerCase();
-    
-        if (correo.endsWith('@fundacionloyola.es')) {
-            tipo = 'E';
-        }else{
-            tipo = 'U';
-        }
-        console.log('Tipo de usuario: ' + tipo);
-
         this.divCargando.style.display = 'block';
 
         if (this.divError.style.display == 'block')

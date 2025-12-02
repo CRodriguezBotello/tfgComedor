@@ -155,10 +155,11 @@ export class VistaResumenMensual extends Vista {
                 // td para importe calculado
                 let tdtotal = document.createElement('td');
 
-                // calcular importe: prioridad al total devuelto por servidor si existe
+                // calcular importe: prioridad al total devuelto por servidor si existe (campo 'importe' o 'total_q19' o 'total')
                 let importe = null;
-                if (usuario.total !== undefined && usuario.total !== null && usuario.total !== '') {
-                    const v = Number(usuario.total);
+                const serverTotal = usuario.importe ?? usuario.total_q19 ?? usuario.total ?? usuario.totalMes ?? null;
+                if (serverTotal !== null && serverTotal !== '') {
+                    const v = Number(serverTotal);
                     if (!isNaN(v)) importe = v;
                 }
 
@@ -311,7 +312,11 @@ export class VistaResumenMensual extends Vista {
             }
         }
         // usar precio profesor si el correo indica personal y existe precioProfesor
-        if (usuario && usuario.correo && /@fundacionloyola\.es$/.test(usuario.correo) && Number.isFinite(precioMenuProfesor)) {
+        // Determinar si aplicar precio profesor:
+        // preferir tipoPadre (devuelto por servidor), si no existe, fallback por correo del usuario
+        const padreEsPersonal = usuario && (usuario.tipoPadre === 'E' || usuario.tipoPadre === 'A');
+        const usuarioEsPersonal = usuario && usuario.correo && /@fundacionloyola\.es$/.test(usuario.correo);
+        if ((padreEsPersonal || usuarioEsPersonal) && Number.isFinite(precioMenuProfesor)) {
             precioMenu = precioMenuProfesor;
         }
         const precioTupper = Number(this.precioTupper) || 0;

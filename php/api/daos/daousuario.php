@@ -316,25 +316,27 @@
          */
         public static function obtenerUsuariosPorMes($mes) {
             // Añadimos cálculo del importe por usuario usando la fila de Precios
-            $sql = 'SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, Persona.dni AS dni, Persona.fechaFirmaMandato AS fechaFirmaMandato,
+            $sql = "SELECT Persona.id, Persona.nombre, Persona.apellidos, Persona.correo, Persona.dni AS dni, Persona.fechaFirmaMandato AS fechaFirmaMandato,
                         COUNT(Dias.idPersona) AS numeroMenus,
                         SUM(Dias.tupper) AS tupper,
-                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ", ") AS dias,
+                        GROUP_CONCAT(DAYOFMONTH(Dias.dia) ORDER BY Dias.dia ASC SEPARATOR ', ') AS dias,
                         GROUP_CONCAT(
                             CASE WHEN Dias.tupper = 1 THEN DAYOFMONTH(Dias.dia) END
                             ORDER BY Dias.dia ASC
-                            SEPARATOR ", "
+                            SEPARATOR ', '
                         ) AS diasTupper,
-                        (COUNT(Dias.idPersona) * (CASE WHEN Persona.correo LIKE "%@fundacionloyola.es" THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
-                        GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, " ", COALESCE(p2.apellidos, "")) SEPARATOR "; ") AS hijos
+                            (COUNT(Dias.idPersona) * (CASE WHEN COALESCE(padre.tipo, Persona.tipo) IN ('E','A') THEN COALESCE(MAX(pr.precioDiaHijoProfe), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) END) + COALESCE(SUM(Dias.tupper),0) * COALESCE(MAX(pr.precioTupper),0)) AS importe,
+                        COALESCE(padre.tipo, NULL) AS tipoPadre,
+                        GROUP_CONCAT(DISTINCT CONCAT(p2.nombre, ' ', COALESCE(p2.apellidos, '')) SEPARATOR '; ') AS hijos
                         FROM Persona
                         JOIN Dias ON Persona.id = Dias.idPersona
+                        LEFT JOIN Persona padre ON padre.id = Dias.idPadre
                         LEFT JOIN Hijo_Padre hp ON hp.idPadre = Persona.id
                         LEFT JOIN Persona p2 ON p2.id = hp.idHijo
-                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
+                        CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaHijoProfe, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) AS pr
                         WHERE MONTH(Dias.dia) = :mes
-                        GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo
-                        ORDER BY Persona.apellidos';
+                        GROUP BY Persona.id, Persona.dni, Persona.fechaFirmaMandato, Persona.nombre, Persona.apellidos, Persona.correo, padre.tipo
+                        ORDER BY Persona.apellidos";
             $params = array('mes' => $mes);
             $usuarios = BD::seleccionar($sql, $params);
             return $usuarios;
@@ -385,7 +387,8 @@
          * @return Usuario|boolean Devuelve los datos del usuario o false si no existe el usuario.
          */
         public static function autenticarEmail($email) {
-            $sql = 'SELECT id, nombre, apellidos, correo, clave, activo, telefono, dni, iban, titular, tipo  FROM Persona';
+            // Incluir la columna 'tipo' en la selección
+            $sql = 'SELECT id, nombre, apellidos, correo, clave, telefono, dni, iban, titular, tipo FROM Persona';
             $sql .= ' WHERE correo = :email';
 
             $params = array('email' => $email);
@@ -395,7 +398,7 @@
         }
 
         /**
-         * Consulta la base de datos para ver si existe usuario con el correo electrónico pasado.
+         * Consulta la base de datos para ver si existe usuario with el correo electrónico pasado.
          * @param string $email Correo del usuario.
          * @return Usuario|boolean Devuelve los datos del usuario o false si no existe el usuario.
          */
@@ -498,6 +501,29 @@
                 $clave = NULL;
             }
 
+            // Cargar configuración para comprobar lista de correos de secretaria
+            $config = require_once(dirname(dirname(__DIR__)) . '/config.php');
+
+            $correoLower = strtolower(trim($datos->correo));
+            $tipo = 'U';
+            if (isset($config['correo_secretaria']) && is_array($config['correo_secretaria'])) {
+                $secretarias = array_map('strtolower', $config['correo_secretaria']);
+                if (in_array($correoLower, $secretarias, true)) {
+                    $tipo = 'A';
+                }
+            }
+
+            if ($tipo !== 'A') {
+                if (strpos($correoLower, '@fundacionloyola.es') !== false) {
+                    $tipo = 'E';
+                } else if (strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+                    // Consideramos alumnado también como empleado/miembro educativo
+                    $tipo = 'E';
+                } else {
+                    $tipo = 'U';
+                }
+            }
+
             $params = array(
                 'nombre' => $datos->nombre,
                 'apellidos' => $datos->apellidos,
@@ -507,17 +533,52 @@
                 'dni' => $datos->dni,
                 'iban' => $datos->iban,
                 'titular' => $datos->titular,
-                'tipo' => $datos->tipo
+                'tipo' => $tipo
             );
+        
+            // Antes: se creaban automáticamente las entradas adicionales de 'Personal' (Padre/Hijo)
+            // cuando el tipo era 'E'. Cambiamos comportamiento: NO crear hijo/padre automáticamente
+            // para usuarios con correo de la fundación a menos que el cliente solicite explícitamente
+            // la creación (campo opcional $datos->crearPersonal = true).
+            $crearPersonal = isset($datos->crearPersonal) ? (bool)$datos->crearPersonal : false;
 
-            // strpos($datos->correo, '@fundacionloyola.es') !== false ||
-            if (strpos($datos->correo, '@alumnado.fundacionloyola.net') !== false) {
-        
-            return self::insertarPersonal($sql,$params);
-        
-            }else{
-                return BD::insertar($sql, $params);
-            } 
+            // Insertar la Persona
+            $id = BD::insertar($sql, $params);
+
+            // Si es admin/secretaria (tipo 'A') o empleado/alumnado (tipo 'E'), crear la fila en Padre
+            // para que puedan añadir hijos más tarde. No crear Hijo automáticamente para 'E'.
+            if ($tipo === 'A' || $tipo === 'E') {
+                try {
+                    self::altaPadre($id);
+                } catch (Throwable $e) {
+                    error_log('Error creando Padre para id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            // Si se indicó explícitamente crearPersonal y el tipo es 'E', crear también el registro
+            // en Hijo y la relación Hijo_Padre para el propio usuario (caso excepcional).
+            if ($crearPersonal && $tipo === 'E') {
+                try {
+                    // Insertar en Hijo usando el id ya creado
+                    $sqlH = 'INSERT INTO Hijo(id, idPadreAlta, idCurso, pin) VALUES(:id, :idPadreAlta, :idCurso, :pin)';
+                    $paramsH = array(
+                        'id' => $id,
+                        'idPadreAlta' => $id,
+                        'idCurso' => 1,
+                        'pin' => self::generarUID(4)
+                    );
+                    BD::insertar($sqlH, $paramsH);
+
+                    // Insertar relación en Hijo_Padre
+                    $sqlHP = 'INSERT INTO Hijo_Padre(idPadre, idHijo) VALUES(:idPadre, :idHijo)';
+                    $paramsHP = array('idPadre' => $id, 'idHijo' => $id);
+                    BD::insertar($sqlHP, $paramsHP);
+                } catch (Throwable $e) {
+                    error_log('Error creando Hijo/Hijo_Padre para id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            return $id;
         }
         
         public static function insertarPersonal($sql,$params)
@@ -562,15 +623,46 @@
          * @return void
          */
         public static function altaUsuarioGoogle($datos) {
-            $sql = 'INSERT INTO Persona(nombre, apellidos, correo)';
-            $sql .= ' VALUES(:nombre, :apellidos, :correo)';
+            $sql = 'INSERT INTO Persona(nombre, apellidos, correo, tipo)';
+            $sql .= ' VALUES(:nombre, :apellidos, :correo, :tipo)';
+
+            // Cargar configuración para comprobar lista de correos de secretaria
+            $config = require_once(dirname(dirname(__DIR__)) . '/config.php');
+            $correoLower = strtolower(trim($datos['email']));
+            $tipo = 'U';
+            if (isset($config['correo_secretaria']) && is_array($config['correo_secretaria'])) {
+                $secretarias = array_map('strtolower', $config['correo_secretaria']);
+                if (in_array($correoLower, $secretarias, true)) {
+                    $tipo = 'A';
+                }
+            }
+
+            if ($tipo !== 'A') {
+                if (strpos($correoLower, '@fundacionloyola.es') !== false || strpos($correoLower, '@alumnado.fundacionloyola.net') !== false) {
+                    $tipo = 'E';
+                } else {
+                    $tipo = 'U';
+                }
+            }
+
             $params = array(
                 'nombre' => $datos['given_name'],
                 'apellidos' => $datos['family_name'],
-                'correo' => $datos['email']
+                'correo' => $datos['email'],
+                'tipo' => $tipo
             );
 
-            return BD::insertar($sql, $params);  
+            $id = BD::insertar($sql, $params);
+            // Crear entrada en Padre para tipos 'A' y 'E' para permitir añadir hijos más tarde
+            if ($tipo === 'A' || $tipo === 'E') {
+                try {
+                    self::altaPadre($id);
+                } catch (Throwable $e) {
+                    error_log('Error creando Padre para usuario Google id=' . $id . ': ' . $e->getMessage());
+                }
+            }
+
+            return $id;
         }
 
         /**
@@ -848,9 +940,10 @@
                 $usuario->iban = $resultSet[0]['iban'];
                 $usuario->titular = $resultSet[0]['titular'];
                 $usuario->rol = null;
-								$usuario->clave = false;
-								if ($resultSet[0]['clave'])
-									$usuario->clave = true;
+                $usuario->tipo = isset($resultSet[0]['tipo']) ? $resultSet[0]['tipo'] : null; // Asignar tipo desde BBDD
+                $usuario->clave = false;
+                if ($resultSet[0]['clave'])
+                    $usuario->clave = true;
             }
             else {
                 $usuario = false;
@@ -970,21 +1063,29 @@
                         CONCAT(per.nombre, ' ', COALESCE(per.apellidos, '')) AS hijoNombre,
                         COUNT(d.dia) AS dias,
                         COALESCE(SUM(d.tupper), 0) AS dias_tupper,
-                        ( 
+                        (
                           COUNT(d.dia) * (
-                            CASE 
-                              WHEN p.correo LIKE '%@fundacionloyola.es' 
-                                THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) 
-                              ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) 
+                            CASE
+                              WHEN p.tipo IN ('E','A')
+                                THEN COALESCE(
+                                  (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
+                                  (SELECT precioDiario FROM Precios LIMIT 1),
+                                  (SELECT precioMensual FROM Precios LIMIT 1),
+                                  0
+                                )
+                              ELSE COALESCE(
+                                  (SELECT precioDiario FROM Precios LIMIT 1),
+                                  (SELECT precioMensual FROM Precios LIMIT 1),
+                                  0
+                              )
                             END
                           )
-                          + COALESCE(SUM(d.tupper), 0) * COALESCE(MAX(pr.precioTupper), 0)
+                          + COALESCE(SUM(d.tupper), 0) * COALESCE((SELECT precioTupper FROM Precios LIMIT 1), 0)
                         ) AS importe
                      FROM Dias d
                      JOIN Persona per ON per.id = d.idPersona
                      JOIN Hijo_Padre hp ON hp.idHijo = per.id AND hp.activo = 1
                      JOIN Persona p ON p.id = hp.idPadre
-                     CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) pr
                      WHERE MONTH(d.dia) = :mes
                      GROUP BY hp.idPadre, per.id, p.titular, p.correo, p.iban, p.dni, p.fechaFirmaMandato, per.nombre, per.apellidos
                      ORDER BY p.apellidos, per.nombre, per.id";
@@ -1004,21 +1105,29 @@
                         CONCAT(per.nombre, ' ', COALESCE(per.apellidos, '')) AS hijoNombre,
                         COUNT(d.dia) AS dias,
                         COALESCE(SUM(d.tupper), 0) AS dias_tupper,
-                        ( 
+                        (
                           COUNT(d.dia) * (
-                            CASE 
-                              WHEN p.correo LIKE '%@fundacionloyola.es' 
-                                THEN COALESCE(MAX(pr.precioDiaProfesor), MAX(pr.precioDiario), MAX(pr.precioMensual), 0) 
-                              ELSE COALESCE(MAX(pr.precioDiario), MAX(pr.precioMensual), 0) 
+                            CASE
+                              WHEN p.tipo IN ('E','A')
+                                THEN COALESCE(
+                                  (SELECT precioDiaHijoProfe FROM Precios LIMIT 1),
+                                  (SELECT precioDiario FROM Precios LIMIT 1),
+                                  (SELECT precioMensual FROM Precios LIMIT 1),
+                                  0
+                                )
+                              ELSE COALESCE(
+                                  (SELECT precioDiario FROM Precios LIMIT 1),
+                                  (SELECT precioMensual FROM Precios LIMIT 1),
+                                  0
+                              )
                             END
                           )
-                          + COALESCE(SUM(d.tupper), 0) * COALESCE(MAX(pr.precioTupper), 0)
+                          + COALESCE(SUM(d.tupper), 0) * COALESCE((SELECT precioTupper FROM Precios LIMIT 1), 0)
                         ) AS importe
                      FROM Dias d
                      JOIN Persona per ON per.id = d.idPersona
                      JOIN Hijo_Padre hp ON hp.idHijo = per.id AND hp.activo = 1
                      JOIN Persona p ON p.id = hp.idPadre
-                     CROSS JOIN (SELECT precioMensual, precioDiario, precioDiaProfesor, precioTupper FROM Precios LIMIT 1) pr
                      WHERE MONTH(d.dia) = :mes
                        AND per.id = :idHijo
                      GROUP BY hp.idPadre, per.id, p.titular, p.correo, p.iban, p.dni, p.fechaFirmaMandato, per.nombre, per.apellidos
@@ -1115,11 +1224,11 @@
                         p.id, 
                         p.nombre, 
                         p.apellidos,
-                        COUNT(d.dia) AS numeroMenus  /* 👈 Añadimos COUNT y le damos alias */
+                        COUNT(d.dia) AS numeroMenus  
                     FROM Persona p
                     JOIN Dias d ON p.id = d.idPersona
                     WHERE YEAR(d.dia) = :anio
-                    GROUP BY p.id, p.nombre, p.apellidos /* 👈 Agrupamos por usuario */
+                    GROUP BY p.id, p.nombre, p.apellidos 
                     ORDER BY p.apellidos, p.nombre";
         
             $params = array('anio' => $anio);
