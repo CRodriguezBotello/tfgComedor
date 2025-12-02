@@ -1143,37 +1143,36 @@
          * @param {number} anio Año a consultar.
          * @return {Array<Object>} Lista de fechas de asistencia y datos del alumno.
          */
-      public static function obtenerDetalleAsistenciaAnual($id, $anio, $anioSig) {
+      public static function obtenerDetalleAsistenciaAnual($id, $anio) {
             $sql = "
-                SELECT 
+                SELECT
                     p.nombre AS nombreAlumno,
                     p.apellidos AS apellidosAlumno,
                     MONTH(d.dia) AS mes,
-                    YEAR(d.dia) AS anio,
                     COUNT(d.idPersona) AS diasAsistidos,
-                    pr.precioDiario
+                    CASE
+                        WHEN COALESCE(ANY_VALUE(padre.tipo), '') IN ('E','A') THEN MAX(pr.precioDiaHijoProfe)
+                        ELSE MAX(pr.precioDiario)
+                    END AS precioDiario,
+                    (COUNT(d.idPersona) * CASE
+                        WHEN COALESCE(ANY_VALUE(padre.tipo), '') IN ('E','A') THEN MAX(pr.precioDiaHijoProfe)
+                        ELSE MAX(pr.precioDiario)
+                    END) AS totalMes
                 FROM Persona p
                 JOIN Dias d ON p.id = d.idPersona
-                JOIN Precios pr ON pr.idPrecio = 2
+                LEFT JOIN Hijo_Padre hp ON hp.idHijo = p.id AND hp.activo = 1
+                LEFT JOIN Persona padre ON padre.id = hp.idPadre
+                CROSS JOIN (SELECT precioDiario, precioDiaHijoProfe FROM Precios LIMIT 1) pr
                 WHERE p.id = :id
-                AND (YEAR(d.dia) = :anio
-                OR YEAR(d.dia) = :anioSig)
-                GROUP BY mes, anio
-                ORDER BY anio ASC
+                AND YEAR(d.dia) = :anio
+                GROUP BY p.id, p.nombre, p.apellidos, mes
+                ORDER BY mes ASC
             ";
-
-            $params = [
+            $params = array(
                 'id' => $id,
-                'anio' => $anio,
-                'anioSig' => $anioSig
-            ];
-
+                'anio' => $anio
+            );
             return BD::seleccionar($sql, $params);
         }
-
-
-
-
-        
     }
 ?>
