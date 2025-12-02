@@ -695,7 +695,7 @@ class ControladorSecretaria {
     }
 
     /**
-     * Carga el listado de alumnos con menús anuales (para gestión de certificados).
+     * Carga el listado de alumnos con menús anuales y curso del alumno (para gestión de certificados).
      * @param {Number} anio Año a consultar.
      */
     cargarListadoAnual(anio) {
