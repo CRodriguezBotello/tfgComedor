@@ -12,7 +12,7 @@ export class VistaGestionCertificados extends Vista {
 
         this.controlador = controlador;
         this.div = divContenedor;
-        // ⭐ Busca el elemento de la tabla dentro del divContenedor
+        // Busca el elemento de la tabla dentro del divContenedor
         this.tabla = divContenedor.querySelector('#tablaCertificados');
         this.thead = null; 
         this.tbody = null;
@@ -93,7 +93,7 @@ export class VistaGestionCertificados extends Vista {
             this.tbody.appendChild(tr);
         });
         
-        // ⭐ Ejecutar listeners DESPUÉS de pintar, si es necesario (ej: para los botones)
+        // Ejecutar listeners DESPUÉS de pintar, si es necesario (ej: para los botones)
         this.addListenersCertificados();
     }
     
