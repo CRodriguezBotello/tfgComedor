@@ -141,18 +141,19 @@ private function generarCertificado($id, $anio, $anioSig)
         $totalAnual = 0;
 
         foreach ($detalle as $r) {
-            $mes = is_array($r) ? $r['mes'] : $r->mes;
-            $anio = is_array($r) ? $r['anio'] : $r->anio;
-            $dias = is_array($r) ? $r['diasAsistidos'] : $r->diasAsistidos;
-            $precio = (float)(is_array($r) ? $r['precioDiario'] : $r->precioDiario);
+            $mes = is_array($r) ? intval($r['mes']) : intval($r->mes);
+            $dias = is_array($r) ? intval($r['diasAsistidos']) : intval($r->diasAsistidos);
+            $precio = floatval(is_array($r) ? $r['precioDiario'] : $r->precioDiario);
+            $tuppers = intval(is_array($r) ? ($r['tupperMensual'] ?? 0) : ($r->tupperMensual ?? 0));
+            $precioTupper = floatval(is_array($r) ? ($r['precioTupper'] ?? 0) : ($r->precioTupper ?? 0));
 
-            $totalMes = $precio * (int)$dias;
+            // total mensual = precio diario * dias + precio tupper * nº tuppers
+            $totalMes = ($precio * $dias) + ($precioTupper * $tuppers);
             $totalAnual += $totalMes;
 
-            $nombreMes = $this->getNombreMes((int)$mes);
-
-            $pdf->Cell(70, 8, utf8_decode($nombreMes . " " . $anio), 1, 0, 'L');
-            $pdf->Cell(40, 8, $dias, 1, 0, 'C');
+            $nombreMes = $this->getNombreMes($mes);
+            $pdf->Cell(70, 8, utf8_decode($nombreMes . " " . intval($anio)), 1, 0, 'L');
+            $pdf->Cell(40, 8, $dias . ($tuppers ? " (t:$tuppers)" : ''), 1, 0, 'C');
             $pdf->Cell(60, 8, number_format($totalMes, 2), 1, 1, 'C');
         }
 
