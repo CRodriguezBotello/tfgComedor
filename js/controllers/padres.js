@@ -276,8 +276,43 @@ class ControladorPadres {
      * @param {Object} datos Datos del día a marcar.
        @param {HTMLElement} pConfirmacion párrafo para el texto de confirmación.
      */
-    marcarDiaComedor(datos) {
-        this.modelo.marcarDiaComedor(datos)
+    async marcarDiaComedor(datos, pConfirmacion = null) {
+        try {
+            // Crear Date a partir de datos.dia (acepta 'YYYY-MM-DD' o Date)
+            const fecha = (datos.dia instanceof Date) ? datos.dia : new Date(datos.dia);
+            const inicio = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+            const fin = new Date(inicio);
+
+            // Obtener festivos para el día
+            const festivos = await this.modelo.obtenerFestivos(inicio, fin);
+            const pad = (n) => String(n).padStart(2, '0');
+            const fechaStr = `${fecha.getFullYear()}-${pad(fecha.getMonth()+1)}-${pad(fecha.getDate())}`;
+
+            const esFestivo = (festivos || []).some(f => {
+                // soportar objetos con clave diaFestivo o formateos distintos
+                return (f.diaFestivo && f.diaFestivo === fechaStr) || (f.diaFestivo && f.diaFestivo === datos.dia);
+            });
+
+            if (esFestivo) {
+                const mensaje = 'Ese día es festivo. No se ha guardado.';
+                if (pConfirmacion && pConfirmacion instanceof HTMLElement) {
+                    pConfirmacion.textContent = mensaje;
+                } else if (this.vistaGestionDiaria && typeof this.vistaGestionDiaria.mostrarMensaje === 'function') {
+                    this.vistaGestionDiaria.mostrarMensaje(mensaje);
+                } else {
+                    // fallback visual mínimo
+                    alert(mensaje);
+                }
+                // devolver promesa resuelta para que llamadores no intenten procesar como éxito del guardado
+                return Promise.resolve({ error: 'festivo', mensaje });
+            }
+
+            // No es festivo: delegar al modelo para guardar
+            return this.modelo.marcarDiaComedor(datos);
+        } catch (e) {
+            console.error('Error en marcarDiaComedor:', e);
+            return Promise.reject(e);
+        }
     }
 
     /**
@@ -381,13 +416,19 @@ class ControladorPadres {
      */
     procesarGestionDiaria(entradas) {
         const promesas = entradas.map(ent => {
-            return this.modelo.marcarDiaComedor({
+            // Usar el método del controlador (que valida festivos) en lugar de llamar directamente al modelo
+            return this.marcarDiaComedor({
                 dia: ent.dia,
                 idPersona: ent.idPersona,
                 idPadre: ent.idPadre
             })
             .then(resAlta => {
                 console.log('Respuesta altaDia:', resAlta);
+                // Si resAlta indica que no se guardó por festivo, propagar como resolved para evitar operaciones secundarias
+                if (resAlta && resAlta.error === 'festivo') {
+                    // devolver array vacío (no hacer tupper/incidencia)
+                    return [];
+                }
                 const ops = [];
                 if (typeof ent.tupper !== 'undefined') {
                     ops.push(

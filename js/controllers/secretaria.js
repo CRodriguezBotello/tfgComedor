@@ -144,9 +144,8 @@ class ControladorSecretaria {
             alert("Error al eliminar definitivamente al padre, revisa la consola");
         }
     }
-
     cancelar() {
-        this.verVistaGestionPadres(); 
+        this.verVistaGestionPadres();
     }
 
     /**
