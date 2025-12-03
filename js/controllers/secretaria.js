@@ -1218,7 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.__menuSecretariaHandler = true;
 
   // Añadimos gestionFestivos (y gestionTarifas por si acaso) para que se oculten al cambiar pestaña
-  const VIEW_IDS = ['gestionDiaria','gestionMensual','gestionPadres','divQ19','acercade','gestionMenus','gestionFestivos','gestionTarifas'];
+  const VIEW_IDS = ['gestionDiaria','gestionMensual','gestionPadres','divQ19','acercade','gestionMenus','gestionFestivos','gestionTarifas','gestionCertificados'];
 
   function hideAllViews() {
     VIEW_IDS.forEach(id => {
