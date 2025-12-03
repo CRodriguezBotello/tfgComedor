@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/padres/vistacalendario.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/padres/vistacalendario.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Vista } from '../vista.js'; 
+
+export class VistaCalendario extends Vista {
+    constructor(controlador, div) {
+        super(controlador, div);
+        
+        this.loadingMessage = document.createElement('p');
+        this.loadingMessage.textContent = 'Cargando...';
+        
+        this.calendarContainer = document.getElementById('calendarGestion-container');
+        this.prevMonthBtn = document.getElementById('prevMonth');
+        this.nextMonthBtn = document.getElementById('nextMonth');
+        this.monthYearHeader = document.getElementById('monthYear');
+        let currentDate = new Date();
+        this.currentMonth = currentDate.getMonth();
+        this.idPadre = 0;
+        this.currentYear = currentDate.getFullYear();
+        this.diasComedor = null;
+        this.festivos = null;
+        this.hijos = null;
+      
+        this.prevMonthBtn.addEventListener('click', () => {
+            this.changeMonth(-1);
+            this.controlador.obtenerDatosCalendario(this.currentYear, this.currentMonth + 1); // Cambiado a this.currentYear y this.currentMonth
+        });
+        
+        this.nextMonthBtn.addEventListener('click', () => {
+            this.changeMonth(1);
+            this.controlador.obtenerDatosCalendario(this.currentYear, this.currentMonth + 1); // Cambiado a this.currentYear y this.currentMonth
+        });
+    }
+
+    /**
+     * changeMonth - Cambia el mes actual en función del cambio proporcionado.
+     * @param {*} change 
+     */
+    changeMonth(change) {
+        this.currentMonth += change;
+        if (this.currentMonth &lt; 0) {
+            this.currentYear -= 1;
+            this.currentMonth = 11;
+        } else if (this.currentMonth > 11) {
+            this.currentYear += 1;
+            this.currentMonth = 0;
+        }
+      
+        this.renderCalendars(this.hijos);
+    }
+    
+    /**
+     * loadCalendarData - Carga los datos del calendario para los hijos proporcionados.
+     * @param {*} hijos 
+     */
+    loadCalendarData(hijos) {
+        // Mostrar el mensaje de "Cargando..."
+        this.calendarContainer.innerHTML = '';
+        this.calendarContainer.appendChild(this.loadingMessage);
+    
+        // Renderizar los datos
+        this.renderCalendars(hijos);
+    }
+    
+    /**
+     * renderCalendars - Renderiza los calendarios para los hijos proporcionados.
+     * @param {*} hijos 
+     */
+    renderCalendars(hijos) {
+       this.hijos = hijos;
+        if (hijos &amp;&amp; hijos.length > 0) {
+            this.calendarContainer.innerHTML = '';
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const monthName = monthNames[this.currentMonth];
+            this.monthYearHeader.textContent = `${monthName} ${this.currentYear}`;
+            hijos.forEach(child => {
+                const childCalendar = document.createElement('div');
+                childCalendar.classList.add('child-calendar');
+                const childMonthYearHeader = document.createElement('h2');
+                childMonthYearHeader.textContent = `${child.nombre}`;
+                childCalendar.appendChild(childMonthYearHeader);
+                const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+                const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+                let firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
+                const weekRow = document.createElement('div');
+                weekRow.classList.add('calendar', 'week-row');
+                daysOfWeek.forEach(day => {
+                    const weekDay = document.createElement('div');
+                    weekDay.classList.add('day', 'week-day');
+                    weekDay.textContent = day;
+                    weekRow.appendChild(weekDay);
+                });
+                childCalendar.appendChild(weekRow);
+                const daysList = document.createElement('div');
+                daysList.classList.add('calendar');
+                for (let i = 0; i &lt; firstDayIndex; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.classList.add('day');
+                    emptyDay.textContent = '';
+                    daysList.appendChild(emptyDay);
+                }
+                for (let i = 1; i &lt;= daysInMonth; i++) {
+                    const day = document.createElement('div');
+                    day.classList.add('day');
+                    day.textContent = i;
+                    const date = new Date(this.currentYear, this.currentMonth, i);
+                    if (date.getDay() === 6 || date.getDay() === 0) {
+                        day.classList.add('weekend');
+                    }
+                    const formattedDate = `${('0' + i).slice(-2)}-${('0' + (this.currentMonth + 1)).slice(-2)}-${this.currentYear}`;
+                   const diaObj = child.dias.find(d => d.fecha === formattedDate);
+                        if (diaObj) {
+                            if (diaObj.tupper == 1) {
+                                day.classList.add('yellow-day'); // día con tupper
+                            } else {
+                                day.classList.add('blue-day'); // día normal
+                            }
+                        }
+                    daysList.appendChild(day);
+                }
+                childCalendar.appendChild(daysList);
+                this.calendarContainer.appendChild(childCalendar);
+            });
+        } else {
+            this.calendarContainer.innerHTML = '&lt;p>No hay días marcados para mostrar.&lt;/p>';
+        }
+    }
+    
+    /**
+     * Método para mostrar la vista.
+     * @param {boolean} ver - Indica si se debe mostrar o no la vista.
+     */
+    mostrar(ver) {
+        super.mostrar(ver); // Llama al método mostrar de la clase padre
+      
+        this.controlador.obtenerDatosCalendario(this.currentYear, this.currentMonth + 1);
+    }
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControladorPadres.html">ControladorPadres</a></li><li><a href="ControladorSecretaria.html">ControladorSecretaria</a></li><li><a href="Datatable.html">Datatable</a></li><li><a href="Login.html">Login</a></li><li><a href="LoginGoogle.html">LoginGoogle</a></li><li><a href="Modelo.html">Modelo</a></li><li><a href="Recuperar.html">Recuperar</a></li><li><a href="Registro.html">Registro</a></li><li><a href="Restaurar.html">Restaurar</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaGestionCertificados_VistaGestionCertificados.html">VistaGestionCertificados</a></li><li><a href="VistaGestionDiaria.html">VistaGestionDiaria</a></li><li><a href="VistaGestionHijos.html">VistaGestionHijos</a></li><li><a href="VistaGestionMensual.html">VistaGestionMensual</a></li><li><a href="VistaGestionPadres.html">VistaGestionPadres</a></li><li><a href="VistaMenuSecretaria.html">VistaMenuSecretaria</a></li><li><a href="VistaModificarPadres.html">VistaModificarPadres</a></li><li><a href="VistaQ19.html">VistaQ19</a></li><li><a href="VistaResumenMensual.html">VistaResumenMensual</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_URL">API_URL</a></li><li><a href="global.html#cargarFestivos">cargarFestivos</a></li><li><a href="global.html#escapeHtml">escapeHtml</a></li><li><a href="global.html#fetchJson">fetchJson</a></li><li><a href="global.html#formatDisplayISO">formatDisplayISO</a></li><li><a href="global.html#getDisplayedMonth">getDisplayedMonth</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#initMenusLinks">initMenusLinks</a></li><li><a href="global.html#isValidISODate">isValidISODate</a></li><li><a href="global.html#loadMenus">loadMenus</a></li><li><a href="global.html#mostrarFeedback">mostrarFeedback</a></li><li><a href="global.html#renderAllMonths">renderAllMonths</a></li><li><a href="global.html#renderForMonth">renderForMonth</a></li><li><a href="global.html#renderTabla">renderTabla</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 13:40:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

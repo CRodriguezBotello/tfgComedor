@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/padres/vistamenu.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/padres/vistamenu.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>export class VistaMenuPadres {
+    constructor(controlador, nav) {
+        this.controlador = controlador;
+        this.nav = nav;
+        this.liHamburger = this.nav.getElementsByTagName('li')[0];
+        this.liInicio = this.nav.getElementsByTagName('li')[1];
+        this.liGestionHijos = this.nav.getElementsByTagName('li')[2];
+        this.liGestionCalendario = this.nav.getElementsByTagName('li')[3];
+        this.liModificacion = this.nav.getElementsByTagName('li')[4];
+        this.liCerrarSesion = this.nav.getElementsByTagName('li')[5];
+        this.liGestionDiaria = this.nav.getElementsByTagName('li')[6];
+        this.liResumenMensual = this.nav.getElementsByTagName('li')[7];
+        this.liHamburger.onclick = this.toggleMenu.bind(this);
+        this.liInicio.onclick = this.inicio.bind(this);
+        this.liGestionHijos.onclick = this.gestionHijos.bind(this);
+        this.liModificacion.onclick = this.modificacion.bind(this);
+        this.liGestionCalendario.onclick = this.gestionCalendario.bind(this);
+        this.liCerrarSesion.onclick = this.cerrarSesion.bind(this);
+        this.liGestionDiaria.onclick = this.gestionDiaria.bind(this);
+        this.liResumenMensual.onclick = this.resumenMensual.bind(this);
+    }
+    /**
+     * Atención al evento de mostrar vista inicio.
+     */
+    inicio() {
+        this.controlador.verVistaInicio();
+        this.liInicio.classList.add('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+    /**
+     * Muestra/oculta menú de navegación.
+     */
+    toggleMenu() {
+        this.nav.classList.toggle('responsive');
+    }
+    /**
+     * Atención al evento de mostrar vista gestión de hijos.
+     */
+    gestionHijos() {
+        this.controlador.verVistaGestionHijos();
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.add('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+    /**
+     * Atención al evento de mostrar vista gestión diaria.
+     */
+    gestionDiaria(){
+        this.controlador.verVistaGestionDiaria();
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liGestionDiaria.classList.add('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+    /**
+     * Atención al evento de mostrar vista resumen mensual.
+     */
+    resumenMensual(){
+        this.controlador.verVistaResumenMensual();
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.add('active');
+    }
+    /**
+     * Atención al evento de mostrar vista modificación de datos.
+     */
+    modificacion() {
+        this.controlador.verVistaModificacion();
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liGestionCalendario.classList.remove('active');
+        this.liModificacion.classList.add('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+    /**
+     * Atención al evento de mostrar vista gestión de calendario.
+     */
+    gestionCalendario() {
+        this.controlador.verVistaCalendario();
+        this.liInicio.classList.remove('active');
+        this.liGestionHijos.classList.remove('active');
+        this.liModificacion.classList.remove('active');
+        this.liGestionCalendario.classList.add('active');
+        this.liGestionDiaria.classList.remove('active');
+        this.liResumenMensual.classList.remove('active');
+    }
+    /**
+     * Atención al evento de cerrar sesión.
+     */
+    cerrarSesion() {
+        this.controlador.cerrarSesion();
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControladorPadres.html">ControladorPadres</a></li><li><a href="ControladorSecretaria.html">ControladorSecretaria</a></li><li><a href="Datatable.html">Datatable</a></li><li><a href="Login.html">Login</a></li><li><a href="LoginGoogle.html">LoginGoogle</a></li><li><a href="Modelo.html">Modelo</a></li><li><a href="Recuperar.html">Recuperar</a></li><li><a href="Registro.html">Registro</a></li><li><a href="Restaurar.html">Restaurar</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaGestionCertificados_VistaGestionCertificados.html">VistaGestionCertificados</a></li><li><a href="VistaGestionDiaria.html">VistaGestionDiaria</a></li><li><a href="VistaGestionHijos.html">VistaGestionHijos</a></li><li><a href="VistaGestionMensual.html">VistaGestionMensual</a></li><li><a href="VistaGestionPadres.html">VistaGestionPadres</a></li><li><a href="VistaMenuSecretaria.html">VistaMenuSecretaria</a></li><li><a href="VistaModificarPadres.html">VistaModificarPadres</a></li><li><a href="VistaQ19.html">VistaQ19</a></li><li><a href="VistaResumenMensual.html">VistaResumenMensual</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_URL">API_URL</a></li><li><a href="global.html#cargarFestivos">cargarFestivos</a></li><li><a href="global.html#escapeHtml">escapeHtml</a></li><li><a href="global.html#fetchJson">fetchJson</a></li><li><a href="global.html#formatDisplayISO">formatDisplayISO</a></li><li><a href="global.html#getDisplayedMonth">getDisplayedMonth</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#initMenusLinks">initMenusLinks</a></li><li><a href="global.html#isValidISODate">isValidISODate</a></li><li><a href="global.html#loadMenus">loadMenus</a></li><li><a href="global.html#mostrarFeedback">mostrarFeedback</a></li><li><a href="global.html#renderAllMonths">renderAllMonths</a></li><li><a href="global.html#renderForMonth">renderForMonth</a></li><li><a href="global.html#renderTabla">renderTabla</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 13:40:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

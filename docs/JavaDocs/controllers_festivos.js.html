@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/festivos.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/festivos.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Controlador cliente para gestión de festivos (formulario inline).
+ * Usa API REST existente en php/api/controllers/festivos.php (JSON bodies).
+ */
+const API_URL = 'php/api/index.php?controller=festivos&amp;public=1';
+
+/**
+ * muestra mensajes de feedback al usuario
+ * @param {*} msg 
+ * @param {*} tipo 
+ */
+function mostrarFeedback(msg, tipo = 'info') {
+  const fb = document.getElementById('festivosMsg');
+  if (!fb) return;
+  fb.innerHTML = `&lt;div class="alert alert-${tipo}" role="alert">${msg}&lt;/div>`;
+  setTimeout(() => { fb.innerHTML = ''; }, 3500);
+}
+
+/**
+ * coge JSON de la API REST
+ * @param {*} url 
+ * @param {*} opts 
+ */
+async function fetchJson(url, opts = {}) {
+  const res = await fetch(url, Object.assign({ credentials: 'same-origin' }, opts));
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    throw new Error(`HTTP ${res.status}: ${t || res.statusText}`);
+  }
+  return res.json().catch(() => ({}));
+}
+
+/**
+ * Cargar y renderizar festivos
+ */
+async function cargarFestivos() {
+  try {
+    const data = await fetchJson(API_URL);
+    renderTabla(Array.isArray(data) ? data : []);
+  } catch (e) {
+    console.error(e);
+    mostrarFeedback('Error cargando festivos', 'danger');
+  }
+}
+
+/**
+ * uso display DD/MM/YYYY
+ * @param {*} iso 
+ */
+function formatDisplayISO(iso) {
+  if (!iso) return '';
+  const p = String(iso).split('-');
+  if (p.length !== 3) return iso;
+  return `${p[2].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[0]}`;
+}
+
+/**
+ * crea tabla de festivos
+ * @param {*} items 
+ */
+function renderTabla(items) {
+  const tabla = document.getElementById('tablaFestivos');
+  if (!tabla) return;
+  let tbody = tabla.querySelector('tbody');
+  if (!tbody) {
+    tbody = document.createElement('tbody');
+    tabla.appendChild(tbody);
+  }
+  tbody.innerHTML = '';
+  if (!items || items.length === 0) {
+    tbody.innerHTML = '&lt;tr>&lt;td colspan="3">&lt;em>No hay festivos registrados.&lt;/em>&lt;/td>&lt;/tr>';
+    return;
+  }
+  for (const f of items) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-fecha', f.diaFestivo ?? f.fecha ?? f.fechaFest ?? '');
+    tr.innerHTML = `&lt;td>${escapeHtml(formatDisplayISO(f.diaFestivo ?? f.fecha ?? f.fechaFest ?? ''))}&lt;/td>
+                    &lt;td>${escapeHtml(f.definicion ?? f.descripcion ?? '')}&lt;/td>
+                    &lt;td>
+                      &lt;button class="btn btn-sm btn-outline-primary btn-edit-festivo" data-fecha="${escapeHtml(f.diaFestivo ?? f.fecha ?? '')}" data-definicion="${escapeHtml(f.definicion ?? f.descripcion ?? '')}">Editar&lt;/button>
+                      &lt;button class="btn btn-sm btn-outline-danger btn-delete-festivo" data-fecha="${escapeHtml(f.diaFestivo ?? f.fecha ?? '')}">Eliminar&lt;/button>
+                    &lt;/td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+/**
+ * escapea para HTML
+ * @param {*} s 
+ */
+function escapeHtml(s) {
+  return String(s || '').replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/>/g,'&amp;gt;').replace(/"/g,'&amp;quot;').replace(/'/g,'&amp;#039;');
+}
+
+/**
+ * comprueba la fecha en formato ISO YYYY-MM-DD
+ * @param {*} s 
+ */
+function isValidISODate(s) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) &amp;&amp; !Number.isNaN(new Date(s + 'T00:00:00').getTime());
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!document.getElementById('gestionFestivos')) return;
+
+  // soportar dos variantes del HTML: formulario compacto (formFestivo) o inputs sueltos (nuevoFestivo ...)
+  const form = document.getElementById('formFestivo');
+  const inputFecha = document.getElementById('festivoFecha') || document.getElementById('nuevoFestivo');
+  const inputDesc = document.getElementById('festivoDescripcion') || document.getElementById('nuevoFestivoDescripcion');
+  const inputId = document.getElementById('festivoId'); // opcional: oldFecha cuando editamos
+  const btnCancelar = document.getElementById('btnCancelarEdicion');
+  const btnMostrarConfirm = document.getElementById('btnMostrarConfirmBorrarTodos');
+  const divConfirm = document.getElementById('confirmBorrarTodos');
+  const btnConfirmSi = document.getElementById('btnConfirmBorrarTodosSi');
+  const btnConfirmNo = document.getElementById('btnConfirmBorrarTodosNo');
+  const tabla = document.getElementById('tablaFestivos');
+  // botones del layout de index_evg.html
+  const btnCrearSimple = document.getElementById('btnCrearFestivo');
+  const btnBorrarTodosSimple = document.getElementById('btnBorrarTodosFestivos');
+
+  // inicializar listado
+  cargarFestivos();
+
+  // delegación para botones Editar / Eliminar dentro de la tabla
+  if (tabla) {
+    tabla.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button');
+      if (!btn) return;
+      if (btn.classList.contains('btn-edit-festivo')) {
+        const fecha = btn.getAttribute('data-fecha');
+        const definicion = btn.getAttribute('data-definicion') || '';
+        abrirEdicion(fecha, definicion);
+      } else if (btn.classList.contains('btn-delete-festivo')) {
+        const fecha = btn.getAttribute('data-fecha');
+        if (!fecha) return;
+        // pedir confirmación visual simple
+        if (!confirm(`Borrar festivo ${formatDisplayISO(fecha)} ?`)) return;
+        borrarFestivo(fecha);
+      }
+    });
+  }
+
+  /**
+   * abre el modo edicion de los festivos
+   * @param {*} fecha 
+   * @param {*} definicion 
+   */
+  function abrirEdicion(fecha, definicion) {
+    if (!fecha) return;
+    // Si no existe inputFecha/similares, evitar errores
+    if (inputFecha) {
+      inputFecha.value = fecha;
+      // guardar fecha antigua en dataset para el layout compacto
+      inputFecha.dataset.oldFecha = fecha;
+    }
+    if (inputDesc) inputDesc.value = definicion || '';
+    if (inputId) inputId.value = fecha; // si existe el form completo
+    if (btnCancelar) btnCancelar.classList.remove('d-none');
+    if (inputFecha) inputFecha.focus();
+  }
+
+  /**
+   * Resetea el formulario o inputs sueltos
+   */
+  function resetForm() {
+    if (form) form.reset();
+    if (inputFecha) {
+      inputFecha.removeAttribute('data-old-fecha');
+      // si no hay form debería limpiar el valor (opcional)
+      inputFecha.value = '';
+    }
+    if (inputDesc) inputDesc.value = '';
+    if (inputId) inputId.value = '';
+    if (btnCancelar) btnCancelar.classList.add('d-none');
+  }
+
+  // submit: crear o modificar según inputId
+  if (form) {
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const fecha = inputFecha.value;
+      // descripción NO obligatoria
+      const descripcion = (inputDesc.value || '').trim();
+      if (!fecha) {
+        mostrarFeedback('Fecha obligatoria', 'warning');
+        return;
+      }
+      if (!isValidISODate(fecha)) {
+        mostrarFeedback('Fecha debe ser YYYY-MM-DD', 'warning');
+        return;
+      }
+      try {
+        if (inputId.value) {
+          // PUT: oldFecha + fecha + definicion (definicion puede estar vacía)
+          const payload = { oldFecha: inputId.value, fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'PUT', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo modificado', 'success');
+        } else {
+          // POST: fecha + definicion (definicion puede estar vacía)
+          const payload = { fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo creado', 'success');
+        }
+        resetForm();
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error guardando festivo', 'danger');
+      }
+    });
+  }
+
+  if (btnCancelar) btnCancelar.addEventListener('click', (ev) => { ev.preventDefault(); resetForm(); });
+
+  // Borrar todos — confirm in-page
+  if (btnMostrarConfirm &amp;&amp; divConfirm) btnMostrarConfirm.addEventListener('click', () => divConfirm.classList.toggle('d-none'));
+  if (btnConfirmNo &amp;&amp; divConfirm) btnConfirmNo.addEventListener('click', () => divConfirm.classList.add('d-none'));
+  if (btnConfirmSi) {
+    btnConfirmSi.addEventListener('click', async () => {
+      try {
+        await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ borrarTodos: true }) });
+        mostrarFeedback('Todos los festivos borrados', 'success');
+        divConfirm.classList.add('d-none');
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error borrando todos', 'danger');
+      }
+    });
+  }
+
+  // borrar individual
+  /**
+   * funcion para borrar los festivos
+   * @param {*} fecha 
+   */
+  async function borrarFestivo(fecha) {
+    try {
+      await fetchJson(API_URL, { method: 'DELETE', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ fecha }) });
+      mostrarFeedback('Festivo eliminado', 'success');
+      cargarFestivos();
+    } catch (e) {
+      console.error(e);
+      mostrarFeedback('Error eliminando festivo', 'danger');
+    }
+  }
+
+  // Handlers para los controles simples de index_evg.html
+  if (btnCrearSimple &amp;&amp; inputFecha) {
+    btnCrearSimple.addEventListener('click', async (ev) => {
+      ev.preventDefault();
+      const fecha = inputFecha.value;
+      const descripcion = (inputDesc &amp;&amp; inputDesc.value) ? inputDesc.value.trim() : '';
+      if (!fecha) {
+        mostrarFeedback('Fecha obligatoria', 'warning');
+        return;
+      }
+      if (!isValidISODate(fecha)) {
+        mostrarFeedback('Fecha debe ser YYYY-MM-DD', 'warning');
+        return;
+      }
+      try {
+        // Si existe data-old-fecha hacemos PUT (editar), si no POST (crear)
+        const oldFecha = inputFecha.dataset ? inputFecha.dataset.oldFecha : null;
+        if (oldFecha) {
+          const payload = { oldFecha: oldFecha, fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'PUT', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo modificado', 'success');
+        } else {
+          const payload = { fecha, definicion: descripcion };
+          await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+          mostrarFeedback('Festivo creado', 'success');
+        }
+        // limpiar campos si existen
+        resetForm();
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error guardando festivo', 'danger');
+      }
+    });
+  }
+
+  if (btnBorrarTodosSimple) {
+    btnBorrarTodosSimple.addEventListener('click', async () => {
+      if (!confirm('¿Borrar todos los festivos?')) return;
+      try {
+        await fetchJson(API_URL, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ borrarTodos: true }) });
+        mostrarFeedback('Todos los festivos borrados', 'success');
+        cargarFestivos();
+      } catch (e) {
+        console.error(e);
+        mostrarFeedback('Error borrando todos', 'danger');
+      }
+    });
+  }
+
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControladorPadres.html">ControladorPadres</a></li><li><a href="ControladorSecretaria.html">ControladorSecretaria</a></li><li><a href="Datatable.html">Datatable</a></li><li><a href="Login.html">Login</a></li><li><a href="LoginGoogle.html">LoginGoogle</a></li><li><a href="Modelo.html">Modelo</a></li><li><a href="Recuperar.html">Recuperar</a></li><li><a href="Registro.html">Registro</a></li><li><a href="Restaurar.html">Restaurar</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaGestionCertificados_VistaGestionCertificados.html">VistaGestionCertificados</a></li><li><a href="VistaGestionDiaria.html">VistaGestionDiaria</a></li><li><a href="VistaGestionHijos.html">VistaGestionHijos</a></li><li><a href="VistaGestionMensual.html">VistaGestionMensual</a></li><li><a href="VistaGestionPadres.html">VistaGestionPadres</a></li><li><a href="VistaMenuSecretaria.html">VistaMenuSecretaria</a></li><li><a href="VistaModificarPadres.html">VistaModificarPadres</a></li><li><a href="VistaQ19.html">VistaQ19</a></li><li><a href="VistaResumenMensual.html">VistaResumenMensual</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_URL">API_URL</a></li><li><a href="global.html#cargarFestivos">cargarFestivos</a></li><li><a href="global.html#escapeHtml">escapeHtml</a></li><li><a href="global.html#fetchJson">fetchJson</a></li><li><a href="global.html#formatDisplayISO">formatDisplayISO</a></li><li><a href="global.html#getDisplayedMonth">getDisplayedMonth</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#initMenusLinks">initMenusLinks</a></li><li><a href="global.html#isValidISODate">isValidISODate</a></li><li><a href="global.html#loadMenus">loadMenus</a></li><li><a href="global.html#mostrarFeedback">mostrarFeedback</a></li><li><a href="global.html#renderAllMonths">renderAllMonths</a></li><li><a href="global.html#renderForMonth">renderForMonth</a></li><li><a href="global.html#renderTabla">renderTabla</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 13:40:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

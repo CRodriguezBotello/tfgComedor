@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/padres/vistamodificar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/padres/vistamodificar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Vista} from '../vista.js';
+
+/**
+ * Contiene la vista de modificación de datos de padres
+ */
+export class VistaModificarPadres extends Vista {
+    /**
+	 *	Constructor de la clase.
+	 *	@param {Controlador} controlador Controlador de la vista.
+	 *	@param {HTMLDivElement} div Div de HTML en el que se desplegará la vista.
+	 */
+    constructor(controlador, div) {
+        super(controlador, div);
+
+        this.form = this.div.getElementsByTagName('form')[0];
+        this.inputs = this.div.getElementsByTagName('input');
+        this.btnActualizar = this.div.getElementsByTagName('button')[0];
+        this.btnBorrarCuenta = this.div.getElementsByTagName('button')[1];
+        this.divExito = this.div.querySelector('#divExitoModificacion');
+        this.divError = this.div.querySelector('#divErrorModificacion');
+        this.divErrorBorrado = this.div.querySelector('#divErrorBorrado');
+        this.idUsuario = 0;
+        this.divCargando = this.div.querySelector('#loadingImg');
+
+        this.btnActualizar.addEventListener('click', this.validarFormulario.bind(this));
+        this.btnBorrarCuenta.addEventListener('click', this.confirmacionBorrado.bind(this));
+    }
+
+    /**
+     * Actualiza los campos con los datos del usuario actual.
+     * @param {Object} datos Datos del usuario.
+     */
+    actualizarCampos(datos) {
+        this.inputs[0].value = datos.nombre;
+        this.inputs[1].value = datos.apellidos;
+        this.inputs[2].value = datos.telefono;
+        this.inputs[3].value = datos.correo;
+        this.inputs[4].value = datos.iban;
+        this.idUsuario = datos.id;
+    }
+
+    /**
+     * Confirmar borrado cuenta padre.
+     */
+    confirmacionBorrado() {
+        if (confirm("¿Estas seguro de que desea eliminar su cuenta? Esta operación es irreversible.")) {
+            this.controlador.eliminarCuentaPadre(this.idUsuario);
+            this.btnBorrarCuenta.disabled = true;
+        }
+    }
+
+    /**
+     * Aviso de error de borrado de cuenta al usuario.
+     * @param {Object} e Error.
+     */
+    errorBorrado(e) {
+        this.btnBorrarCuenta.disabled = false;
+        
+        if (e != null) {
+            if (e == 'Error: 400 - Bad Request 1') {
+                this.divErrorBorrado.innerHTML = '&lt;p>No puedes eliminar tu cuenta si tienes hijos asociados.&lt;/p>';
+            }
+            else {
+                this.divErrorBorrado.innerHTML = '&lt;p>' + e + '&lt;/p>';
+            }
+
+            this.divErrorBorrado.style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+        else {
+            this.divErrorBorrado.style.display = 'none';
+        }
+    }
+
+    /**
+     * Aviso de error de modificación de datos al usuario.
+     * @param {Object} e Error.
+     */
+    errorModificacion(e) {
+        this.divCargando.style.display = 'none';
+        this.btnActualizar.disabled = false;
+        
+        if (e != null) {
+            if (e == 'Error: 500 - Internal Server Error 1') {
+                this.divError.innerHTML = '&lt;p>Ya existe una cuenta con esa dirección de correo.&lt;/p>';
+            }
+            else {
+                this.divError.innerHTML = '&lt;p>' + e + '&lt;/p>';
+            }
+
+            this.divError.style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+        else {
+            this.divError.style.display = 'none';
+        }
+    }
+
+    /**
+     * Valida los campos del formulario y realiza el proceso de modificar.
+     */
+    validarFormulario() {
+        let cont;
+        let total = this.inputs.length;
+
+        for (cont=0; cont&lt;total; cont++) {
+            if (!this.inputs[cont].checkValidity()) break;
+        }
+
+        this.form.classList.add('was-validated');
+
+        if (this.divExito.style.display == 'block') 
+            this.exito(false);
+            
+        if (this.divError.style.display == 'block') 
+            this.divError.style.display = 'none'
+
+        if (cont == total) {
+            // Validar IBAN: debe ser 2 letras + 22 números (sin espacios)
+            const ibanValor = this.inputs[4].value || '';
+            if (!this.validarIBAN(ibanValor)) {
+                this.divError.innerHTML = '&lt;p>Introduzca un IBAN válido (2 letras seguidas de 22 dígitos, p. ej. ES1234567890123456789012).&lt;/p>';
+                this.divError.style.display = 'block';
+                this.inputs[4].focus();
+                return;
+            }
+
+            const datos = {
+                'id': this.idUsuario,
+                'nombre': this.inputs[0].value,
+                'apellidos': this.inputs[1].value,
+                'telefono': this.inputs[2].value,
+                'correo': this.inputs[3].value,
+                'iban': ibanValor
+            };
+
+            this.btnActualizar.disabled = true;
+            this.divCargando.style.display = 'block';
+            this.controlador.modificarPadre(datos);
+        }
+    }
+
+    /**
+     * Informar al usuario de la modificación exitosa.
+     * @param {Boolean} activar Activar o no mensaje de éxito.
+     */
+    exito(activar) {
+        this.form.classList.remove('was-validated');
+        this.divCargando.style.display = 'none';
+        this.btnActualizar.disabled = false;
+        this.divExito.style.display = activar ? 'block' : 'none';
+    }
+
+	mostrar(ver) {
+		super.mostrar(ver);
+		
+        if (this.divExito.style.display == 'block')
+            this.exito(false);
+
+        if (this.divError.style.display == 'block')
+            this.divError.style.display = 'none'
+
+        if (this.divErrorBorrado.style.display == 'block')
+            this.divErrorBorrado.style = 'none';
+	}
+
+    // Nuevo método: validar IBAN → 2 letras + 22 dígitos (ignora espacios)
+    validarIBAN(iban) {
+        if (!iban) return false;
+        const limpio = iban.replace(/\s+/g, '').toUpperCase();
+        // debe tener exactamente 24 caracteres: 2 letras + 22 dígitos
+        return /^[A-Z]{2}\d{22}$/.test(limpio);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControladorPadres.html">ControladorPadres</a></li><li><a href="ControladorSecretaria.html">ControladorSecretaria</a></li><li><a href="Datatable.html">Datatable</a></li><li><a href="Login.html">Login</a></li><li><a href="LoginGoogle.html">LoginGoogle</a></li><li><a href="Modelo.html">Modelo</a></li><li><a href="Recuperar.html">Recuperar</a></li><li><a href="Registro.html">Registro</a></li><li><a href="Restaurar.html">Restaurar</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaGestionCertificados_VistaGestionCertificados.html">VistaGestionCertificados</a></li><li><a href="VistaGestionDiaria.html">VistaGestionDiaria</a></li><li><a href="VistaGestionHijos.html">VistaGestionHijos</a></li><li><a href="VistaGestionMensual.html">VistaGestionMensual</a></li><li><a href="VistaGestionPadres.html">VistaGestionPadres</a></li><li><a href="VistaMenuSecretaria.html">VistaMenuSecretaria</a></li><li><a href="VistaModificarPadres.html">VistaModificarPadres</a></li><li><a href="VistaQ19.html">VistaQ19</a></li><li><a href="VistaResumenMensual.html">VistaResumenMensual</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_URL">API_URL</a></li><li><a href="global.html#cargarFestivos">cargarFestivos</a></li><li><a href="global.html#escapeHtml">escapeHtml</a></li><li><a href="global.html#fetchJson">fetchJson</a></li><li><a href="global.html#formatDisplayISO">formatDisplayISO</a></li><li><a href="global.html#getDisplayedMonth">getDisplayedMonth</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#initMenusLinks">initMenusLinks</a></li><li><a href="global.html#isValidISODate">isValidISODate</a></li><li><a href="global.html#loadMenus">loadMenus</a></li><li><a href="global.html#mostrarFeedback">mostrarFeedback</a></li><li><a href="global.html#renderAllMonths">renderAllMonths</a></li><li><a href="global.html#renderForMonth">renderForMonth</a></li><li><a href="global.html#renderTabla">renderTabla</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 13:40:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

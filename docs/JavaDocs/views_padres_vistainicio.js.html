@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/padres/vistainicio.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/padres/vistainicio.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Vista } from '../vista.js';
+
+export class VistaInicioPadres extends Vista {
+    constructor(controlador, div) {
+        super(controlador, div);
+
+        this.hijos = null;
+        this.diasComedor = null;
+        this.festivos = null;
+
+        this.listaMeses = [
+            "Enero","Febrero","Marzo",
+            "Abril","Mayo","Junio",
+            "Julio","Agosto","Septiembre",
+            "Octubre","Noviembre","Diciembre"
+        ];
+        this.listaDias = ["L","M","X","J","V","S","D"];
+        this.idPadre = 0;
+
+        const fechaActual = new Date();
+        this.mes = fechaActual.getMonth();
+        this.anio = fechaActual.getFullYear();
+
+        this.tabla = this.div.querySelector('#menuHijos');
+
+        // Notificaciones
+        this.DURACION_NOTIFICACION = 3000;
+        this.VERTICAL_POSITION = 80;
+        this.NOTIFICACIONES_GENERADAS = 0;
+    }
+
+    /**
+     * obtenerPadre - Establece el ID del padre actual.
+     * @param {*} datos 
+     */
+    obtenerPadre(datos) {
+        this.idPadre = datos.id;
+    }
+
+    /**
+     * obtenerFestivos - Establece los días festivos.
+     * @param {*} festivos 
+     */
+    obtenerFestivos(festivos) {
+        // Normalizar la respuesta de backend a un array de strings 'YYYY-MM-DD'
+        if (Array.isArray(festivos)) {
+            this.festivos = festivos
+                .map(f => f.diaFestivo || f.fecha || f.dia || null)
+                .filter(Boolean);
+        } else {
+            this.festivos = [];
+        }
+        this.controlador.dameHijosCalendario(this.idPadre);
+    }
+
+    /**
+     * inicializar - Inicializa el calendario con los hijos proporcionados.
+     * @param {*} hijos 
+     */
+    inicializar(hijos) {
+        this.hijos = hijos;
+        if (this.hijos.length > 0) {
+            const ids = this.hijos.map(h => h.id);
+            this.controlador.obtenerDiasComedor(ids);
+        } else {
+            this.iniciarCalendario();
+        }
+    }
+
+    /**
+     * montarCalendario - Monta el calendario con los días de comedor proporcionados.
+     * @param {*} dias 
+     */
+    montarCalendario(dias) {
+        this.diasComedor = dias;
+        this.iniciarCalendario();
+    }
+
+    /**
+     * iniciarCalendario - Inicia la construcción del calendario.
+     */
+    iniciarCalendario() {
+        if (this.hijos &amp;&amp; this.hijos.length > 0) {
+            this.tabla.style.display = 'block';
+            this.tabla.innerHTML = '';
+            this.crearBotones();
+            this.crearCalendariosHijos();
+        } else {
+            this.tabla.style.display = 'none';
+        }
+    }
+
+    /**
+     * crearBotones - Crea los botones de navegación del mes.
+     */
+    crearBotones() {
+        const contenedorBotones = document.createElement('div');
+        contenedorBotones.classList.add('controlesMes');
+
+        const botonMesAnterior = document.createElement('button');
+        botonMesAnterior.textContent = 'Mes anterior';
+        botonMesAnterior.addEventListener('click', this.mesAnterior.bind(this));
+
+        const tituloMes = document.createElement('span');
+        tituloMes.classList.add('tituloMes');
+        tituloMes.textContent = `${this.listaMeses[this.mes]} ${this.anio}`;
+
+        const botonMesSiguiente = document.createElement('button');
+        botonMesSiguiente.textContent = 'Mes siguiente';
+        botonMesSiguiente.addEventListener('click', this.mesSiguiente.bind(this));
+
+        contenedorBotones.appendChild(botonMesAnterior);
+        contenedorBotones.appendChild(tituloMes);
+        contenedorBotones.appendChild(botonMesSiguiente);
+
+        this.tabla.appendChild(contenedorBotones);
+    }
+
+    /**
+     * crearCalendariosHijos - Crea los calendarios individuales para cada hijo.
+     */
+    crearCalendariosHijos() {
+        for (const hijo of this.hijos) {
+            const contenedorHijo = document.createElement('div');
+            contenedorHijo.classList.add('calendarioHijo');
+
+            const tituloHijo = document.createElement('h3');
+            // Mostrar solo apellidos; si no existen, usar el nombre
+            const nombreCompleto = ((hijo.nombre || hijo.firstName || '') + ' ' + (hijo.apellidos || hijo.apellido || '')).trim();
+            tituloHijo.textContent = nombreCompleto;
+            contenedorHijo.appendChild(tituloHijo);
+
+            const tablaHijo = document.createElement('table');
+            tablaHijo.classList.add('tablaMes');
+
+            // Encabezado
+            const thead = document.createElement('thead');
+            const trHead = document.createElement('tr');
+            for (const dia of this.listaDias) {
+                const th = document.createElement('th');
+                th.textContent = dia;
+                trHead.appendChild(th);
+                
+            }
+            thead.appendChild(trHead);
+            tablaHijo.appendChild(thead);
+
+            // Cuerpo
+            const tbody = document.createElement('tbody');
+            const primerDiaMes = new Date(this.anio, this.mes, 1);
+            const ultimoDiaMes = new Date(this.anio, this.mes + 1, 0);
+
+            let fechaActual = new Date(primerDiaMes);
+            fechaActual.setDate(fechaActual.getDate() - ((fechaActual.getDay() + 6) % 7)); // lunes previo
+
+            while (fechaActual &lt;= ultimoDiaMes || fechaActual.getDay() !== 1) {
+                const tr = document.createElement('tr');
+
+                for (let i = 0; i &lt; 7; i++) {
+                    const td = document.createElement('td');
+                    const fecha = new Date(fechaActual);
+                    const diaMes = fecha.getDate();
+                    const esDelMes = (fecha.getMonth() === this.mes);
+                    const fechaString = this.formatearStringFecha(fecha);
+
+                    if (esDelMes) {
+                        td.textContent = diaMes;
+
+                        // añadir atributo data-dia para que la detección de días funcione
+                        td.setAttribute('data-dia', fechaString);
+
+                        const ahora = new Date();
+                        const manana = new Date(ahora);
+                        manana.setDate(ahora.getDate() + 1);
+                        manana.setHours(0,0,0,0);
+
+                        const esFestivo = this.esDiaFestivo(fechaString);
+                        const esFinDeSemana = (i === 5 || i === 6);
+
+                        const esDiaBloqueado = 
+                            fecha &lt; ahora || 
+                            fecha.toDateString() === ahora.toDateString() || 
+                            (fecha.toDateString() === manana.toDateString() &amp;&amp; ahora.getHours() >= 14);
+
+                        const marcado = this.diasComedor &amp;&amp; this.diasComedor.some(d => d.idPersona == hijo.id &amp;&amp; d.dia === fechaString);
+                        if (marcado) td.classList.add('marcado');
+
+                        if (esFestivo || esFinDeSemana || esDiaBloqueado) {
+                            // marcar festivos visualmente en naranja y bloquear interacción
+                            if (esFestivo) td.classList.add('festivo');
+                            td.classList.add('no-seleccionable');
+                        } else {
+                            td.classList.add('clicable');
+                            td.addEventListener('click', () => {
+                                const yaMarcado = td.classList.contains('marcado');
+                                td.classList.toggle('marcado');
+                                this.marcarDesmarcarDia(!yaMarcado, hijo.id, this.idPadre, false, fechaString);
+                                // actualizar precio tras el toggle
+                                if (window.updateComedorPrice) window.updateComedorPrice();
+                            });
+                        }
+                    } else {
+                        td.classList.add('fueraMes');
+                    }
+
+                    tr.appendChild(td);
+                    fechaActual.setDate(fechaActual.getDate() + 1);
+                }
+
+                // Botón marcar/desmarcar semana
+                const tdBotonSemana = document.createElement('td');
+                const botonSemana = document.createElement('button');
+                botonSemana.textContent = 'Marcar semana';
+                botonSemana.addEventListener('click', () => {
+                    const marcar = botonSemana.textContent.startsWith('Marcar');
+                    tr.querySelectorAll('td.clicable').forEach(tdDia => {
+                        const diaString = this.formatearStringFecha(new Date(this.anio, this.mes, parseInt(tdDia.textContent)));
+                        if (marcar &amp;&amp; !tdDia.classList.contains('marcado')) {
+                            tdDia.classList.add('marcado');
+                            this.marcarDesmarcarDia(true, hijo.id, this.idPadre, false, diaString);
+                        } else if (!marcar &amp;&amp; tdDia.classList.contains('marcado')) {
+                            tdDia.classList.remove('marcado');
+                            this.marcarDesmarcarDia(false, hijo.id, this.idPadre, false, diaString);
+                        }
+                    });
+                    botonSemana.textContent = marcar ? 'Desmarcar semana' : 'Marcar semana';
+                    // actualizar precio al terminar la operación
+                    if (window.updateComedorPrice) window.updateComedorPrice();
+                });
+                tdBotonSemana.appendChild(botonSemana);
+                tr.appendChild(tdBotonSemana);
+
+                tbody.appendChild(tr);
+                if (fechaActual.getMonth() > this.mes &amp;&amp; fechaActual.getDate() > 7) break;
+            }
+
+            tablaHijo.appendChild(tbody);
+            contenedorHijo.appendChild(tablaHijo);
+
+            // Botón marcar/desmarcar mes
+            const botonMes = document.createElement('button');
+            botonMes.textContent = 'Marcar mes';
+
+            // Desactivar botón si hoy es día ≥ 3 y el mes mostrado es el mes actual
+            const hoy = new Date();
+            const mesActual = hoy.getMonth();
+            const diaActual = hoy.getDate();
+            if (this.mes === mesActual &amp;&amp; diaActual >= 3) {
+                botonMes.disabled = true;
+                botonMes.style.cursor = 'not-allowed';
+                botonMes.style.opacity = '0.6';
+            }
+            botonMes.addEventListener('click', () => {
+                const marcar = botonMes.textContent.startsWith('Marcar');
+                tablaHijo.querySelectorAll('td.clicable').forEach(tdDia => {
+                    const diaString = this.formatearStringFecha(new Date(this.anio, this.mes, parseInt(tdDia.textContent)));
+                    if (marcar &amp;&amp; !tdDia.classList.contains('marcado')) {
+                        tdDia.classList.add('marcado');
+                        this.marcarDesmarcarDia(true, hijo.id, this.idPadre, false, diaString);
+                    } else if (!marcar &amp;&amp; tdDia.classList.contains('marcado')) {
+                        tdDia.classList.remove('marcado');
+                        this.marcarDesmarcarDia(false, hijo.id, this.idPadre, false, diaString);
+                    }
+                });
+                botonMes.textContent = marcar ? 'Desmarcar mes' : 'Marcar mes';
+
+                // Si se ha marcado el mes, indicar explícitamente "mes completo" en el contenedor
+                if (marcar) {
+                    contenedorHijo.setAttribute('data-mes-completo', '1');
+                } else {
+                    contenedorHijo.removeAttribute('data-mes-completo');
+                }
+
+                // actualizar precio tras marcar/desmarcar mes
+                if (window.updateComedorPrice) window.updateComedorPrice();
+            });
+            contenedorHijo.appendChild(botonMes);
+
+            this.tabla.appendChild(contenedorHijo);
+        }
+        // actualizar precio después de montar todos los calendarios
+        if (window.updateComedorPrice) window.updateComedorPrice();
+    }
+
+    /**
+     * formatearStringFecha - Formatea una fecha como 'YYYY-MM-DD'.
+     * @param {*} fecha 
+     * @returns fecha formateada
+     */
+    formatearStringFecha(fecha) {
+        return fecha.getFullYear() + '-' +
+            ("0" + (fecha.getMonth() + 1)).slice(-2) + '-' +
+            ("0" + fecha.getDate()).slice(-2);
+    }
+
+    /**
+     * esDiaFestivo - Comprueba si una fecha es festiva.
+     * @param {*} stringFecha 
+     * @returns fecha es festivo
+     */
+    esDiaFestivo(stringFecha) {
+        return (this.festivos &amp;&amp; this.festivos.includes(stringFecha));
+    }
+
+    /**
+     * marcarDesmarcarDia - Marca o desmarca un día en el comedor.
+     * @param {*} marcado 
+     * @param {*} idHijo 
+     * @param {*} idPadre 
+     * @param {*} validarFecha 
+     * @param {*} fecha 
+     */
+    marcarDesmarcarDia(marcado, idHijo, idPadre, validarFecha, fecha) {
+        const datos = {
+            'dia': fecha,
+            'idPersona': idHijo,
+            'idPadre': idPadre
+        };
+
+        if (marcado) this.controlador.marcarDiaComedor(datos);
+        else this.controlador.desmarcarDiaComedor(datos);
+
+        this.mostrarNotificacion(marcado ? 'marcada' : 'desmarcada', fecha);
+    }
+
+    /**
+     * mostrarNotificacion - Muestra una notificación de acción realizada.
+     * @param {*} estado 
+     * @param {*} fechaString 
+     */
+    mostrarNotificacion(estado, fechaString) {
+        this.NOTIFICACIONES_GENERADAS++;
+        if (this.NOTIFICACIONES_GENERADAS === 7) {
+            this.VERTICAL_POSITION = 80;
+            this.NOTIFICACIONES_GENERADAS = 0;
+        }
+
+        let divNotificacion = document.getElementById('divNotificacion');
+        let notificacion = document.createElement('div');
+
+        notificacion.classList.add(estado === 'marcada' ? 'marcado' : 'desmarcado');
+
+        const dia = fechaString.slice(-2);
+        notificacion.textContent = (estado === 'marcada')
+            ? `Ha marcado el día ${dia}.`
+            : `Ha desmarcado el día ${dia}.`;
+
+        notificacion.style.top = this.VERTICAL_POSITION + 'px';
+        this.VERTICAL_POSITION += 60;
+
+        divNotificacion.appendChild(notificacion);
+
+        setTimeout(() => {
+            divNotificacion.removeChild(notificacion);
+        }, this.DURACION_NOTIFICACION);
+    }
+
+    /**
+     * mesAnterior - Navega al mes anterior.
+     */
+    mesAnterior() {
+        this.mes--;
+        if (this.mes &lt; 0) {
+            this.mes = 11;
+            this.anio--;
+        }
+        this.refrescarCalendario();
+    }
+
+    /**
+     * mesSiguiente - Navega al mes siguiente.
+     */
+    mesSiguiente() {
+        this.mes++;
+        if (this.mes > 11) {
+            this.mes = 0;
+            this.anio++;
+        }
+        this.refrescarCalendario();
+    }
+
+    /**
+     * refrescarCalendario - Refresca el calendario obteniendo los festivos del mes actual.
+     */
+    refrescarCalendario() {
+        let inicioMes = new Date(this.anio, this.mes, 1);
+        let finMes = new Date(this.anio, this.mes + 1, 0);
+        this.controlador.obtenerFestivos(inicioMes, finMes);
+    }
+
+    mostrar(ver) {
+        super.mostrar(ver);
+        if (ver) this.refrescarCalendario();
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControladorPadres.html">ControladorPadres</a></li><li><a href="ControladorSecretaria.html">ControladorSecretaria</a></li><li><a href="Datatable.html">Datatable</a></li><li><a href="Login.html">Login</a></li><li><a href="LoginGoogle.html">LoginGoogle</a></li><li><a href="Modelo.html">Modelo</a></li><li><a href="Recuperar.html">Recuperar</a></li><li><a href="Registro.html">Registro</a></li><li><a href="Restaurar.html">Restaurar</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaGestionCertificados_VistaGestionCertificados.html">VistaGestionCertificados</a></li><li><a href="VistaGestionDiaria.html">VistaGestionDiaria</a></li><li><a href="VistaGestionHijos.html">VistaGestionHijos</a></li><li><a href="VistaGestionMensual.html">VistaGestionMensual</a></li><li><a href="VistaGestionPadres.html">VistaGestionPadres</a></li><li><a href="VistaMenuSecretaria.html">VistaMenuSecretaria</a></li><li><a href="VistaModificarPadres.html">VistaModificarPadres</a></li><li><a href="VistaQ19.html">VistaQ19</a></li><li><a href="VistaResumenMensual.html">VistaResumenMensual</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_URL">API_URL</a></li><li><a href="global.html#cargarFestivos">cargarFestivos</a></li><li><a href="global.html#escapeHtml">escapeHtml</a></li><li><a href="global.html#fetchJson">fetchJson</a></li><li><a href="global.html#formatDisplayISO">formatDisplayISO</a></li><li><a href="global.html#getDisplayedMonth">getDisplayedMonth</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#initMenusLinks">initMenusLinks</a></li><li><a href="global.html#isValidISODate">isValidISODate</a></li><li><a href="global.html#loadMenus">loadMenus</a></li><li><a href="global.html#mostrarFeedback">mostrarFeedback</a></li><li><a href="global.html#renderAllMonths">renderAllMonths</a></li><li><a href="global.html#renderForMonth">renderForMonth</a></li><li><a href="global.html#renderTabla">renderTabla</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 13:40:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
