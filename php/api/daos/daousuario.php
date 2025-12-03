@@ -1224,21 +1224,21 @@
                         p.id, 
                         p.nombre, 
                         p.apellidos,
-                        COUNT(d.dia) AS numeroMenus  
+                        COUNT(d.dia) AS numeroMenus,
+                        COALESCE(c.nombre, '') AS nombreCurso
                     FROM Persona p
                     JOIN Dias d ON p.id = d.idPersona
+                    LEFT JOIN Hijo h ON h.id = p.id AND h.activo = 1
+                    LEFT JOIN Curso c ON c.id = h.idCurso
                     WHERE YEAR(d.dia) = :anio
-                    GROUP BY p.id, p.nombre, p.apellidos 
+                    GROUP BY p.id, p.nombre, p.apellidos, c.nombre
                     ORDER BY p.apellidos, p.nombre";
         
-            $params = array('anio' => $anio);
-            
-            // Asumiendo que BD::seleccionar devuelve un array de objetos/arrays
-            return BD::seleccionar($sql, $params); 
-        }
-
-        // DAOUsuario.php
-// ...
+             $params = array('anio' => $anio);
+             
+             // Asumiendo que BD::seleccionar devuelve un array de objetos/arrays
+             return BD::seleccionar($sql, $params); 
+         }
 
         /**
          * Obtiene las fechas de asistencia de un alumno para un año, organizado por mes.
@@ -1254,14 +1254,20 @@
                     p.apellidos AS apellidosAlumno,
                     MONTH(d.dia) AS mes,
                     COUNT(d.idPersona) AS diasAsistidos,
-                    pr.precioDiario,
-                    (COUNT(d.idPersona) * pr.precioDiario) AS totalMes
+                    SUM(COALESCE(d.tupper,0)) AS tupperMensual,
+                    CASE
+                        WHEN COALESCE(ANY_VALUE(padre.tipo), '') IN ('E','A') THEN MAX(pr.precioDiaHijoProfe)
+                        ELSE MAX(pr.precioDiario)
+                    END AS precioDiario,
+                    MAX(pr.precioTupper) AS precioTupper
                 FROM Persona p
                 JOIN Dias d ON p.id = d.idPersona
-                JOIN Precios pr ON pr.idPrecio = 2
+                LEFT JOIN Hijo_Padre hp ON hp.idHijo = p.id AND hp.activo = 1
+                LEFT JOIN Persona padre ON padre.id = hp.idPadre
+                CROSS JOIN (SELECT precioDiario, precioDiaHijoProfe, precioTupper FROM Precios LIMIT 1) pr
                 WHERE p.id = :id
                 AND YEAR(d.dia) = :anio
-                GROUP BY mes
+                GROUP BY p.id, p.nombre, p.apellidos, mes
                 ORDER BY mes ASC
             ";
         

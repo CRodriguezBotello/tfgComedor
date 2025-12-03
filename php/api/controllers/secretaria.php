@@ -5,14 +5,9 @@
      * Controlador de secretaría.
      */
     class Secretaria {
-
-
-
-
-
         public function post($pathParams, $queryParams, $body, $usuario) {
             
-            // ⚠️ La función ini_set debe estar fuera de la clase si quieres que tenga efecto en la ejecución del script.
+            // La función ini_set debe estar fuera de la clase si quieres que tenga efecto en la ejecución del script.
             // La he movido dentro de generarCertificado, pero si sigue fallando, prueba a ponerla al inicio del archivo.
 
             if (!$usuario) {
@@ -26,14 +21,15 @@
                 
                 $id = $body->id ?? null;
                 $anio = $body->anio ?? null;
+                $anioSig = $body->anioSig ?? null;
 
-                if (!$id || !$anio) {
+                if (!$id || !$anio || !$anioSig) {
                     header('HTTP/1.1 400 Bad Request');
-                    echo json_encode(['ok' => false, 'error' => 'Faltan parámetros (id o anio)']);
+                    echo json_encode(['ok' => false, 'error' => 'Faltan parámetros (id, anio o anioSig)']);
                     die();
                 }
 
-                $this->generarCertificado($id, $anio);
+                $this->generarCertificado($id, $anio, $anioSig);
                 // La función generarCertificado ahora maneja su propia respuesta HTTP y die()
                 return; 
             }
@@ -43,136 +39,173 @@
             die();
         }
 
-       // ----------------------------------------------------
-        // LÓGICA DE GENERACIÓN DEL PDF (NUEVA Y ADAPTADA AL PRECIO MENSUAL)
-        // ----------------------------------------------------
-        private function generarCertificado($id, $anio) {
+// ----------------------------------------------------
+// LÓGICA DE GENERACIÓN DEL PDF (MILIMÉTRICA + CAMPOS RELLENABLES)
+// ----------------------------------------------------
+private function generarCertificado($id, $anio, $anioSig)
+{
+    ini_set('display_errors', 0);
+    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
-            ini_set('display_errors', 0);
-            error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+    try {
+        // Obtener datos agregados
+        $detalle = DAOUsuario::obtenerDetalleAsistenciaAnual($id, $anio, $anioSig);
 
-            try {
-                // 1. Obtener datos del DAO (formato nuevo: 1 fila por mes)
-                $detalle = DAOUsuario::obtenerDetalleAsistenciaAnual($id, $anio);
-
-                if (empty($detalle)) {
-                    header('Content-Type: application/json');
-                    header('HTTP/1.1 404 Not Found');
-                    echo json_encode(['ok' => false, 'error' => 'No hay asistencias registradas para ese año.']);
-                    die();
-                }
-
-                // Primer registro para sacar nombre del alumno
-                $primer = $detalle[0];
-                $nombreAlumno = is_array($primer) ? $primer['nombreAlumno'] : $primer->nombreAlumno;
-                $apellidosAlumno = is_array($primer) ? $primer['apellidosAlumno'] : $primer->apellidosAlumno;
-                $nombreCompleto = trim($nombreAlumno . " " . $apellidosAlumno);
-
-                // Intento de carga de TCPDF si no está disponible (ayuda en entornos sin autoload)
-                if (!class_exists('TCPDF')) {
-                    $possible = [
-                        dirname(__DIR__, 3) . '/vendor/tecnickcom/tcpdf/tcpdf.php',
-                        dirname(__DIR__, 2) . '/lib/tcpdf/tcpdf.php',
-                        dirname(__DIR__) . '/../lib/tcpdf/tcpdf.php',
-                        __DIR__ . '/../../lib/tcpdf/tcpdf.php'
-                    ];
-                    foreach ($possible as $p) {
-                        if (file_exists($p)) {
-                            @require_once $p;
-                            if (class_exists('TCPDF')) break;
-                        }
-                    }
-                }
-
-                if (!class_exists('TCPDF')) {
-                    throw new Exception('Clase TCPDF no encontrada.');
-                }
-
-                // --- INICIO TCPDF ---
-                $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-                $pdf->SetAutoPageBreak(TRUE, 10);
-                $pdf->AddPage();
-                $pdf->SetFont('helvetica', 'B', 16);
-                $pdf->Cell(0, 10, utf8_decode('CERTIFICADO ANUAL DE ASISTENCIA'), 0, 1, 'C');
-
-                $pdf->SetFont('helvetica', '', 12);
-                $pdf->Cell(0, 8, utf8_decode("Se certifica que el alumno/a: ") . utf8_decode($nombreCompleto), 0, 1);
-                $pdf->Cell(0, 10, utf8_decode("Asistencia al comedor durante el año: $anio"), 0, 1);
-
-                $pdf->Ln(5);
-
-                // TABLA CON MESES, DÍAS Y COSTE
-                $pdf->SetFont('helvetica', 'B', 12);
-                $pdf->Cell(60, 7, 'Mes', 1, 0, 'C');
-                $pdf->Cell(40, 7, 'Días asistidos', 1, 0, 'C');
-                $pdf->Cell(50, 7, 'Precio diario (€)', 1, 0, 'C');
-                $pdf->Cell(40, 7, 'Coste mensual (€)', 1, 1, 'C');
-
-                $pdf->SetFont('helvetica', '', 10);
-
-                $totalAnual = 0;
-
-                foreach ($detalle as $r) {
-
-                    $mes = is_array($r) ? $r['mes'] : $r->mes;
-                    $dias = is_array($r) ? $r['diasAsistidos'] : $r->diasAsistidos;
-                    $precioDiario = is_array($r) ? $r['precioDiario'] : $r->precioDiario;
-                    $totalMes = is_array($r) ? $r['totalMes'] : $r->totalMes;
-
-                    $totalAnual += $totalMes;
-
-                    $nombreMes = $this->getNombreMes((int)$mes);
-
-                    $pdf->Cell(60, 7, utf8_decode($nombreMes), 1, 0, 'L');
-                    $pdf->Cell(40, 7, $dias, 1, 0, 'C');
-                    $pdf->Cell(50, 7, number_format($precioDiario, 2), 1, 0, 'C');
-                    $pdf->Cell(40, 7, number_format($totalMes, 2), 1, 1, 'C');
-                }
-
-                // TOTAL ANUAL
-                $pdf->Ln(5);
-                $pdf->SetFont('helvetica', 'B', 12);
-                $pdf->Cell(0, 10, "TOTAL ANUAL: " . number_format($totalAnual, 2) . " €", 0, 1, 'R');
-
-                // --- FIN TCPDF ---
-
-                // Crear nombre del archivo
-                $cleanName = preg_replace('/[^a-zA-Z0-9\s-]/', '', $nombreCompleto);
-                $cleanName = trim(str_replace(' ', '-', $cleanName));
-                if ($cleanName === '') $cleanName = "Alumno-$id";
-
-                $filename = "Certificado-{$cleanName}-{$anio}.pdf";
-                $filepath = dirname(__DIR__) . "/public/certificates/" . $filename;
-
-                if (!is_dir(dirname($filepath))) {
-                    mkdir(dirname($filepath), 0775, true);
-                }
-
-                $pdf->Output($filepath, 'F');
-
-                if (!file_exists($filepath) || filesize($filepath) < 100) {
-                    throw new Exception("El archivo PDF se generó, pero parece estar vacío o dañado.");
-                }
-
-                // Construir URL pública absoluta basada en el host/protocolo y la ruta del script
-                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-                // dirname($_SERVER['SCRIPT_NAME']) normalmente apunta a /.../php/api
-                $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-                $publicUrl = $scheme . '://' . $host . $scriptDir . '/public/certificates/' . $filename;
-                error_log("Certificado guardado: $filepath => $publicUrl");
-
-                header('Content-Type: application/json');
-                echo json_encode(['ok' => true, 'url' => $publicUrl]);
-
-            } catch (Throwable $e) {
-                error_log("Error generando certificado PDF: " . $e->getMessage());
-                header('Content-Type: application/json');
-                header('HTTP/1.1 500 Internal Server Error');
-                echo json_encode(['ok' => false, 'error' => 'Error interno al generar el PDF: ' . $e->getMessage()]);
-            }
+        if (empty($detalle)) {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['ok' => false, 'error' => 'No hay datos para ese año.']);
             die();
         }
+
+        // Datos del alumno
+        $primer = $detalle[0];
+        $nombre = is_array($primer) ? $primer['nombreAlumno'] : $primer->nombreAlumno;
+        $apellidos = is_array($primer) ? $primer['apellidosAlumno'] : $primer->apellidosAlumno;
+        $nombreCompleto = trim("$nombre $apellidos");
+        $anioSig = intval($anio) + 1;
+
+        // TCPDF
+        if (!class_exists('TCPDF')) {
+            require_once dirname(__DIR__,3)."/vendor/tecnickcom/tcpdf/tcpdf.php";
+        }
+
+        $pdf = new TCPDF('P','mm','A4',true,'UTF-8',false);
+        $pdf->SetAutoPageBreak(true, 15);
+        $pdf->AddPage();
+
+        // --------------------------------------------------------
+        // LOGO ARRIBA IZQUIERDA
+        // --------------------------------------------------------
+        $logoPath = dirname(__DIR__) . "/public/logo.png";
+        if (file_exists($logoPath)) {
+            $pdf->Image($logoPath, 10, 10, 32, 0);
+        }
+
+        // --------------------------------------------------------
+        // TÍTULO
+        // --------------------------------------------------------
+        $pdf->SetFont('helvetica','B',20);
+        $pdf->SetXY(0, 25);
+        $pdf->Cell(0, 35, "CERTIFICADO DE ASISTENCIA COMEDOR", 0, 1, 'C');
+
+        $pdf->Ln(10);
+
+        // --------------------------------------------------------
+        // DATOS FIJOS DEL ALUMNO
+        // --------------------------------------------------------
+        $pdf->SetFont('helvetica','',12);
+        $pdf->Write(0, "Alumno/a: ");
+        $pdf->SetFont('helvetica','B',12);
+        $pdf->Write(0, utf8_decode($nombreCompleto));
+        $pdf->Ln(8);
+
+        $pdf->SetFont('helvetica','',12);
+        $pdf->Write(0, "Curso escolar: ");
+        $pdf->SetFont('helvetica','B',12);
+        $pdf->Write(0, "$anio - $anioSig");
+        $pdf->Ln(12);
+
+        // --------------------------------------------------------
+        // CAMPOS RELLENABLES (sin borde azul feo)
+        // --------------------------------------------------------
+        $pdf->setFormDefaultProp([
+            'lineWidth' => 0,
+            'borderStyle' => 'none',
+            'fillColor' => [255, 255, 255],
+            'strokeColor' => [255, 255, 255]
+        ]);
+
+        $pdf->SetFont('helvetica','',11);
+
+        $pdf->Write(0, "DNI del alumno/a: ");
+        $pdf->TextField('dni', 62, 6);
+        $pdf->Ln(9);
+
+        $pdf->Write(0, "Número de Identificación Escolar: ");
+        $pdf->TextField('nie', 62, 6);
+        $pdf->Ln(9);
+
+        // --------------------------------------------------------
+        // TABLA
+        // --------------------------------------------------------
+        $pdf->SetFont('helvetica','B',13);
+        $pdf->Cell(0, 10, "Resumen mensual de asistencia y costes", 0, 1, 'L');
+
+        $pdf->SetFont('helvetica','B',11);
+        $pdf->Cell(70, 8, "Mes", 1, 0, 'C');
+        $pdf->Cell(40, 8, "Días asistidos", 1, 0, 'C');
+        $pdf->Cell(60, 8, "Coste mensual (€)", 1, 1, 'C');
+
+        $pdf->SetFont('helvetica','',10);
+
+        $totalAnual = 0;
+
+        foreach ($detalle as $r) {
+            $mes = is_array($r) ? intval($r['mes']) : intval($r->mes);
+            $dias = is_array($r) ? intval($r['diasAsistidos']) : intval($r->diasAsistidos);
+            $precio = floatval(is_array($r) ? $r['precioDiario'] : $r->precioDiario);
+            $tuppers = intval(is_array($r) ? ($r['tupperMensual'] ?? 0) : ($r->tupperMensual ?? 0));
+            $precioTupper = floatval(is_array($r) ? ($r['precioTupper'] ?? 0) : ($r->precioTupper ?? 0));
+
+            // total mensual = precio diario * dias + precio tupper * nº tuppers
+            $totalMes = ($precio * $dias) + ($precioTupper * $tuppers);
+            $totalAnual += $totalMes;
+
+            $nombreMes = $this->getNombreMes($mes);
+            $pdf->Cell(70, 8, utf8_decode($nombreMes . " " . intval($anio)), 1, 0, 'L');
+            $pdf->Cell(40, 8, $dias . ($tuppers ? " (t:$tuppers)" : ''), 1, 0, 'C');
+            $pdf->Cell(60, 8, number_format($totalMes, 2), 1, 1, 'C');
+        }
+
+        // --------------------------------------------------------
+        // TOTAL ANUAL
+        // --------------------------------------------------------
+        $pdf->Ln(5);
+        $pdf->SetFont('helvetica','B',12);
+        $pdf->Cell(165, 8, "TOTAL ANUAL: " . number_format($totalAnual, 2) . " €", 0, 1, 'R');
+
+        // --------------------------------------------------------
+        // FIRMA
+        // --------------------------------------------------------
+        $pdf->Ln(15);
+
+        $pdf->SetFont('helvetica','',11);
+        $pdf->Write(0, "Firma del responsable: ");
+        $pdf->Ln(12);
+
+        // --------------------------------------------------------
+        // GUARDAR PDF
+        // --------------------------------------------------------
+        $clean = preg_replace('/[^a-zA-Z0-9\s-]/','', $nombreCompleto);
+        $clean = trim(str_replace(' ','-', $clean));
+        if ($clean == '') $clean = "Alumno-$id";
+
+        $filename = "Certificado-$clean.pdf";
+        $filepath = dirname(__DIR__) . "/public/certificates/$filename";
+
+        if (!is_dir(dirname($filepath))) mkdir(dirname($filepath), 0775, true);
+
+        $pdf->Output($filepath, 'F');
+
+        // URL pública
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        $publicUrl = "$scheme://$host$scriptDir/public/certificates/$filename";
+
+        header('Content-Type: application/json');
+        echo json_encode(['ok' => true, 'url' => $publicUrl]);
+
+    } catch (Throwable $e) {
+        error_log("Error generando PDF: ".$e->getMessage());
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['ok' => false, 'error' => "Error interno: ".$e->getMessage()]);
+    }
+    die();
+}
+
+
 
         /**
          * Devuelve el nombre del mes en español a partir de su número (1-12).
