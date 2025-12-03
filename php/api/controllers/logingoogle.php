@@ -58,7 +58,7 @@
             // Preferir el 'tipo' que está en la BBDD si existe (p. ej. 'E' para empleado)
             $tipo = null;
             if (!empty($usuario->tipo)) {
-                $dbtipo = strtoupper($usuario->tipo);
+                $dbtipo = strtoupper(trim($usuario->tipo));
                 // Mapear tipos de la base de datos a las cadenas usadas aquí
                 if ($dbtipo === 'S') {
                     $tipo = 'secretaria';
@@ -68,6 +68,9 @@
                 } else if ($dbtipo === 'A') {
                     // Admin -> permitir como secretaria/admin si aplica
                     $tipo = 'secretaria';
+                } else if ($dbtipo === 'U') {
+                    // Usuario (padre/madre) -> permitir acceso como usuario general
+                    $tipo = 'alumnado';
                 } else {
                     $tipo = null;
                 }
