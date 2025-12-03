@@ -126,6 +126,28 @@ class ControladorSecretaria {
         }
     }
 
+    async eliminarPadre(padreSeleccionado) {
+        if (!padreSeleccionado || !padreSeleccionado.id) {
+            console.error("No hay padre seleccionado o no tiene ID");
+            return;
+        }
+        // Solo enviamos el ID
+        const datos = { id: padreSeleccionado.id };
+        console.log("Enviando a eliminar definitivamente:", datos);
+        try {
+            // Llamada al modelo que hace el PUT
+            const respuesta = await this.modelo.eliminarPadreSecretaria(datos);
+            console.log("Padre eliminado definitivamente:", respuesta);
+            alert(`Padre ${padreSeleccionado.nombre} eliminado definitivamente`);
+        } catch (error) {
+            console.error("Fallo al eliminar definitivamente al  padre:", error);
+            alert("Error al eliminar definitivamente al padre, revisa la consola");
+        }
+    }
+    cancelar() {
+        this.verVistaGestionPadres();
+    }
+
     /**
      * Realizar proceso de modificación de padre desde secretaría.
      * @param {Object} padre Datos del padre.
