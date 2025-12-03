@@ -188,9 +188,8 @@ class Registro {
      * @param {Object} usuario Datos de la persona.
      */
     insertarPadre(id, usuario) {
-        // Enviar objeto con la clave foránea (ajusta la propiedad según lo que espere tu API)
-        const payload = { id_persona: id };
-        Rest.post('padres', [], payload, false)
+        // La API de /padres espera el ID simple en el body, no un objeto.
+        Rest.post('padres', [], id, false)
          .then(() => {
              this.divCargando.style.display = 'none';
              this.exito(usuario);
