@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+            <title>Documentación del proyecto Comedor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <link rel="icon" href="images/favicon.ico"/>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/base.css">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/template.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-okaidia.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
+                <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
+        <script src="js/search.js"></script>
+        <script defer src="js/searchIndex.js"></script>
+    </head>
+<body id="top">
+    <header class="phpdocumentor-header phpdocumentor-section">
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Documentación del proyecto Comedor</a></h1>
+    <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
+    <label class="phpdocumentor-header__menu-icon" for="menu-button">
+        <i class="fas fa-bars"></i>
+    </label>
+    <section data-search-form class="phpdocumentor-search">
+    <label>
+        <span class="visually-hidden">Search for</span>
+        <svg class="phpdocumentor-search__icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="2"/>
+            <line x1="12.4892" y1="12.2727" x2="19.1559" y2="18.9393" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
+    </label>
+</section>
+
+    <nav class="phpdocumentor-topnav">
+    <ul class="phpdocumentor-topnav__menu">
+        </ul>
+</nav>
+</header>
+
+    <main class="phpdocumentor">
+        <div class="phpdocumentor-section">
+            <input class="phpdocumentor-sidebar__menu-button" type="checkbox" id="sidebar-button" name="sidebar-button" />
+<label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
+    Menu
+</label>
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
+                    <section class="phpdocumentor-sidebar__category -namespaces">
+            <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/composer.html" class="">Composer</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/composer-autoload.html" class="">Autoload</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/firebase.html" class="">Firebase</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/firebase-jwt.html" class="">JWT</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/google.html" class="">Google</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/google-accesstoken.html" class="">AccessToken</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-authhandler.html" class="">AuthHandler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-http.html" class="">Http</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-service.html" class="">Service</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-task.html" class="">Task</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-utils.html" class="">Utils</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-auth.html" class="">Auth</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/guzzlehttp.html" class="">GuzzleHttp</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/guzzlehttp-cookie.html" class="">Cookie</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-exception.html" class="">Exception</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-handler.html" class="">Handler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-promise.html" class="">Promise</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-psr7.html" class="">Psr7</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/monolog.html" class="">Monolog</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/monolog-attribute.html" class="">Attribute</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-formatter.html" class="">Formatter</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-handler.html" class="">Handler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-processor.html" class="">Processor</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/paragonie.html" class="">ParagonIE</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/paragonie-constanttime.html" class="">ConstantTime</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/phpseclib3.html" class="">phpseclib3</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/phpseclib3-common.html" class="">Common</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-crypt.html" class="">Crypt</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-exception.html" class="">Exception</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-file.html" class="">File</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-math.html" class="">Math</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-net.html" class="">Net</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-system.html" class="">System</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/psr.html" class="">Psr</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/psr-cache.html" class="">Cache</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/psr-http.html" class="">Http</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/psr-log.html" class="">Log</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+                <section class="phpdocumentor-sidebar__category -packages">
+            <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Application.html" class="">Application</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Authentication.html" class="">Authentication</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Authentication-JWT.html" class="">JWT</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ParagonIE.html" class="">ParagonIE</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/ParagonIE-ConstantTime.html" class="">ConstantTime</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Functions.html" class="">Functions</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Functions-Strings.html" class="">Strings</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/AES.html" class="">AES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Blowfish.html" class="">Blowfish</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ChaCha20.html" class="">ChaCha20</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/AsymmetricKey.html" class="">AsymmetricKey</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BlockCipher.html" class="">BlockCipher</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Common.html" class="">Common</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RSA.html" class="">RSA</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/StreamCipher.html" class="">StreamCipher</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Base.html" class="">Base</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DES.html" class="">DES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DH.html" class="">DH</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DSA.html" class="">DSA</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/EC.html" class="">EC</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Prime.html" class="">Prime</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Binary.html" class="">Binary</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/KoblitzPrime.html" class="">KoblitzPrime</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Hash.html" class="">Hash</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PublicKeyLoader.html" class="">PublicKeyLoader</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Random.html" class="">Random</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RC2.html" class="">RC2</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RC4.html" class="">RC4</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Rijndael.html" class="">Rijndael</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Salsa20.html" class="">Salsa20</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/TripleDES.html" class="">TripleDES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Twofish.html" class="">Twofish</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadConfigurationException.html" class="">BadConfigurationException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadDecryptionException.html" class="">BadDecryptionException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadModeException.html" class="">BadModeException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ConnectionClosedException.html" class="">ConnectionClosedException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/FileNotFoundException.html" class="">FileNotFoundException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/InconsistentSetupException.html" class="">InconsistentSetupException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/InsufficientSetupException.html" class="">InsufficientSetupException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/NoKeyLoadedException.html" class="">NoKeyLoadedException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/NoSupportedAlgorithmsException.html" class="">NoSupportedAlgorithmsException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnableToConnectException.html" class="">UnableToConnectException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedAlgorithmException.html" class="">UnsupportedAlgorithmException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedCurveException.html" class="">UnsupportedCurveException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedFormatException.html" class="">UnsupportedFormatException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedOperationException.html" class="">UnsupportedOperationException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ANSI.html" class="">ANSI</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ASN1.html" class="">ASN1</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/X509.html" class="">X509</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BigInteger.html" class="">BigInteger</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PHP.html" class="">PHP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BCMath.html" class="">BCMath</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Engine.html" class="">Engine</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/GMP.html" class="">GMP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Engines.html" class="">Engines</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PHP32.html" class="">PHP32</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Math.html" class="">Math</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SFTP.html" class="">SFTP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SSH2.html" class="">SSH2</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SSH.html" class="">SSH</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/SSH-Agent.html" class="">Agent</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+            
+    <section class="phpdocumentor-sidebar__category -reports">
+        <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
+                <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
+    </section>
+
+    <section class="phpdocumentor-sidebar__category -indices">
+        <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
+    </section>
+</aside>
+
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/google.html">Google</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/google-service.html">Service</a></li>
+    </ul>
+
+    <article class="phpdocumentor-element -namespace">
+        <h2 class="phpdocumentor-content__title">Sheets</h2>
+
+        
+<h3 id="toc">
+    Table of Contents
+    <a href="namespaces/google-service-sheets.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h3>
+
+
+<h4 id="namespaces">
+    Namespaces
+    <a href="namespaces/google-service-sheets.html#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/google-service-sheets-resource.html"><abbr title="\Google\Service\Sheets\Resource">Resource</abbr></a></dt>
+    </dl>
+
+
+    <h4 id="toc-classes">
+        Classes
+        <a href="namespaces/google-service-sheets.html#toc-classes" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+                    <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddBandingRequest.html"><abbr title="\Google\Service\Sheets\AddBandingRequest">AddBandingRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddBandingResponse.html"><abbr title="\Google\Service\Sheets\AddBandingResponse">AddBandingResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddChartRequest.html"><abbr title="\Google\Service\Sheets\AddChartRequest">AddChartRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddChartResponse.html"><abbr title="\Google\Service\Sheets\AddChartResponse">AddChartResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddConditionalFormatRuleRequest.html"><abbr title="\Google\Service\Sheets\AddConditionalFormatRuleRequest">AddConditionalFormatRuleRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddDataSourceRequest.html"><abbr title="\Google\Service\Sheets\AddDataSourceRequest">AddDataSourceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddDataSourceResponse.html"><abbr title="\Google\Service\Sheets\AddDataSourceResponse">AddDataSourceResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddDimensionGroupRequest.html"><abbr title="\Google\Service\Sheets\AddDimensionGroupRequest">AddDimensionGroupRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddDimensionGroupResponse.html"><abbr title="\Google\Service\Sheets\AddDimensionGroupResponse">AddDimensionGroupResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddFilterViewRequest.html"><abbr title="\Google\Service\Sheets\AddFilterViewRequest">AddFilterViewRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddFilterViewResponse.html"><abbr title="\Google\Service\Sheets\AddFilterViewResponse">AddFilterViewResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddNamedRangeRequest.html"><abbr title="\Google\Service\Sheets\AddNamedRangeRequest">AddNamedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddNamedRangeResponse.html"><abbr title="\Google\Service\Sheets\AddNamedRangeResponse">AddNamedRangeResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddProtectedRangeRequest.html"><abbr title="\Google\Service\Sheets\AddProtectedRangeRequest">AddProtectedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddProtectedRangeResponse.html"><abbr title="\Google\Service\Sheets\AddProtectedRangeResponse">AddProtectedRangeResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddSheetRequest.html"><abbr title="\Google\Service\Sheets\AddSheetRequest">AddSheetRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddSheetResponse.html"><abbr title="\Google\Service\Sheets\AddSheetResponse">AddSheetResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddSlicerRequest.html"><abbr title="\Google\Service\Sheets\AddSlicerRequest">AddSlicerRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AddSlicerResponse.html"><abbr title="\Google\Service\Sheets\AddSlicerResponse">AddSlicerResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AppendCellsRequest.html"><abbr title="\Google\Service\Sheets\AppendCellsRequest">AppendCellsRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AppendDimensionRequest.html"><abbr title="\Google\Service\Sheets\AppendDimensionRequest">AppendDimensionRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AppendValuesResponse.html"><abbr title="\Google\Service\Sheets\AppendValuesResponse">AppendValuesResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AutoFillRequest.html"><abbr title="\Google\Service\Sheets\AutoFillRequest">AutoFillRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-AutoResizeDimensionsRequest.html"><abbr title="\Google\Service\Sheets\AutoResizeDimensionsRequest">AutoResizeDimensionsRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BandedRange.html"><abbr title="\Google\Service\Sheets\BandedRange">BandedRange</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BandingProperties.html"><abbr title="\Google\Service\Sheets\BandingProperties">BandingProperties</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BaselineValueFormat.html"><abbr title="\Google\Service\Sheets\BaselineValueFormat">BaselineValueFormat</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicChartAxis.html"><abbr title="\Google\Service\Sheets\BasicChartAxis">BasicChartAxis</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicChartDomain.html"><abbr title="\Google\Service\Sheets\BasicChartDomain">BasicChartDomain</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicChartSeries.html"><abbr title="\Google\Service\Sheets\BasicChartSeries">BasicChartSeries</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicChartSpec.html"><abbr title="\Google\Service\Sheets\BasicChartSpec">BasicChartSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicFilter.html"><abbr title="\Google\Service\Sheets\BasicFilter">BasicFilter</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BasicSeriesDataPointStyleOverride.html"><abbr title="\Google\Service\Sheets\BasicSeriesDataPointStyleOverride">BasicSeriesDataPointStyleOverride</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchClearValuesByDataFilterRequest.html"><abbr title="\Google\Service\Sheets\BatchClearValuesByDataFilterRequest">BatchClearValuesByDataFilterRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchClearValuesByDataFilterResponse.html"><abbr title="\Google\Service\Sheets\BatchClearValuesByDataFilterResponse">BatchClearValuesByDataFilterResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchClearValuesRequest.html"><abbr title="\Google\Service\Sheets\BatchClearValuesRequest">BatchClearValuesRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchClearValuesResponse.html"><abbr title="\Google\Service\Sheets\BatchClearValuesResponse">BatchClearValuesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchGetValuesByDataFilterRequest.html"><abbr title="\Google\Service\Sheets\BatchGetValuesByDataFilterRequest">BatchGetValuesByDataFilterRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchGetValuesByDataFilterResponse.html"><abbr title="\Google\Service\Sheets\BatchGetValuesByDataFilterResponse">BatchGetValuesByDataFilterResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchGetValuesResponse.html"><abbr title="\Google\Service\Sheets\BatchGetValuesResponse">BatchGetValuesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateSpreadsheetRequest.html"><abbr title="\Google\Service\Sheets\BatchUpdateSpreadsheetRequest">BatchUpdateSpreadsheetRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateSpreadsheetResponse.html"><abbr title="\Google\Service\Sheets\BatchUpdateSpreadsheetResponse">BatchUpdateSpreadsheetResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateValuesByDataFilterRequest.html"><abbr title="\Google\Service\Sheets\BatchUpdateValuesByDataFilterRequest">BatchUpdateValuesByDataFilterRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateValuesByDataFilterResponse.html"><abbr title="\Google\Service\Sheets\BatchUpdateValuesByDataFilterResponse">BatchUpdateValuesByDataFilterResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateValuesRequest.html"><abbr title="\Google\Service\Sheets\BatchUpdateValuesRequest">BatchUpdateValuesRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BatchUpdateValuesResponse.html"><abbr title="\Google\Service\Sheets\BatchUpdateValuesResponse">BatchUpdateValuesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BigQueryDataSourceSpec.html"><abbr title="\Google\Service\Sheets\BigQueryDataSourceSpec">BigQueryDataSourceSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BigQueryQuerySpec.html"><abbr title="\Google\Service\Sheets\BigQueryQuerySpec">BigQueryQuerySpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BigQueryTableSpec.html"><abbr title="\Google\Service\Sheets\BigQueryTableSpec">BigQueryTableSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BooleanCondition.html"><abbr title="\Google\Service\Sheets\BooleanCondition">BooleanCondition</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BooleanRule.html"><abbr title="\Google\Service\Sheets\BooleanRule">BooleanRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Border.html"><abbr title="\Google\Service\Sheets\Border">Border</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Borders.html"><abbr title="\Google\Service\Sheets\Borders">Borders</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-BubbleChartSpec.html"><abbr title="\Google\Service\Sheets\BubbleChartSpec">BubbleChartSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CandlestickChartSpec.html"><abbr title="\Google\Service\Sheets\CandlestickChartSpec">CandlestickChartSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CandlestickData.html"><abbr title="\Google\Service\Sheets\CandlestickData">CandlestickData</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CandlestickDomain.html"><abbr title="\Google\Service\Sheets\CandlestickDomain">CandlestickDomain</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CandlestickSeries.html"><abbr title="\Google\Service\Sheets\CandlestickSeries">CandlestickSeries</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CellData.html"><abbr title="\Google\Service\Sheets\CellData">CellData</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CellFormat.html"><abbr title="\Google\Service\Sheets\CellFormat">CellFormat</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartAxisViewWindowOptions.html"><abbr title="\Google\Service\Sheets\ChartAxisViewWindowOptions">ChartAxisViewWindowOptions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartCustomNumberFormatOptions.html"><abbr title="\Google\Service\Sheets\ChartCustomNumberFormatOptions">ChartCustomNumberFormatOptions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartData.html"><abbr title="\Google\Service\Sheets\ChartData">ChartData</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartDateTimeRule.html"><abbr title="\Google\Service\Sheets\ChartDateTimeRule">ChartDateTimeRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartGroupRule.html"><abbr title="\Google\Service\Sheets\ChartGroupRule">ChartGroupRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartHistogramRule.html"><abbr title="\Google\Service\Sheets\ChartHistogramRule">ChartHistogramRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartSourceRange.html"><abbr title="\Google\Service\Sheets\ChartSourceRange">ChartSourceRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ChartSpec.html"><abbr title="\Google\Service\Sheets\ChartSpec">ChartSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ClearBasicFilterRequest.html"><abbr title="\Google\Service\Sheets\ClearBasicFilterRequest">ClearBasicFilterRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ClearValuesRequest.html"><abbr title="\Google\Service\Sheets\ClearValuesRequest">ClearValuesRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ClearValuesResponse.html"><abbr title="\Google\Service\Sheets\ClearValuesResponse">ClearValuesResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Color.html"><abbr title="\Google\Service\Sheets\Color">Color</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ColorStyle.html"><abbr title="\Google\Service\Sheets\ColorStyle">ColorStyle</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ConditionalFormatRule.html"><abbr title="\Google\Service\Sheets\ConditionalFormatRule">ConditionalFormatRule</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ConditionValue.html"><abbr title="\Google\Service\Sheets\ConditionValue">ConditionValue</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CopyPasteRequest.html"><abbr title="\Google\Service\Sheets\CopyPasteRequest">CopyPasteRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CopySheetToAnotherSpreadsheetRequest.html"><abbr title="\Google\Service\Sheets\CopySheetToAnotherSpreadsheetRequest">CopySheetToAnotherSpreadsheetRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CreateDeveloperMetadataRequest.html"><abbr title="\Google\Service\Sheets\CreateDeveloperMetadataRequest">CreateDeveloperMetadataRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CreateDeveloperMetadataResponse.html"><abbr title="\Google\Service\Sheets\CreateDeveloperMetadataResponse">CreateDeveloperMetadataResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-CutPasteRequest.html"><abbr title="\Google\Service\Sheets\CutPasteRequest">CutPasteRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataExecutionStatus.html"><abbr title="\Google\Service\Sheets\DataExecutionStatus">DataExecutionStatus</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataFilter.html"><abbr title="\Google\Service\Sheets\DataFilter">DataFilter</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataFilterValueRange.html"><abbr title="\Google\Service\Sheets\DataFilterValueRange">DataFilterValueRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataLabel.html"><abbr title="\Google\Service\Sheets\DataLabel">DataLabel</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSource.html"><abbr title="\Google\Service\Sheets\DataSource">DataSource</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceChartProperties.html"><abbr title="\Google\Service\Sheets\DataSourceChartProperties">DataSourceChartProperties</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceColumn.html"><abbr title="\Google\Service\Sheets\DataSourceColumn">DataSourceColumn</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceColumnReference.html"><abbr title="\Google\Service\Sheets\DataSourceColumnReference">DataSourceColumnReference</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceFormula.html"><abbr title="\Google\Service\Sheets\DataSourceFormula">DataSourceFormula</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceObjectReference.html"><abbr title="\Google\Service\Sheets\DataSourceObjectReference">DataSourceObjectReference</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceObjectReferences.html"><abbr title="\Google\Service\Sheets\DataSourceObjectReferences">DataSourceObjectReferences</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceParameter.html"><abbr title="\Google\Service\Sheets\DataSourceParameter">DataSourceParameter</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceRefreshDailySchedule.html"><abbr title="\Google\Service\Sheets\DataSourceRefreshDailySchedule">DataSourceRefreshDailySchedule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceRefreshMonthlySchedule.html"><abbr title="\Google\Service\Sheets\DataSourceRefreshMonthlySchedule">DataSourceRefreshMonthlySchedule</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceRefreshSchedule.html"><abbr title="\Google\Service\Sheets\DataSourceRefreshSchedule">DataSourceRefreshSchedule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceRefreshWeeklySchedule.html"><abbr title="\Google\Service\Sheets\DataSourceRefreshWeeklySchedule">DataSourceRefreshWeeklySchedule</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceSheetDimensionRange.html"><abbr title="\Google\Service\Sheets\DataSourceSheetDimensionRange">DataSourceSheetDimensionRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceSheetProperties.html"><abbr title="\Google\Service\Sheets\DataSourceSheetProperties">DataSourceSheetProperties</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceSpec.html"><abbr title="\Google\Service\Sheets\DataSourceSpec">DataSourceSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataSourceTable.html"><abbr title="\Google\Service\Sheets\DataSourceTable">DataSourceTable</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DataValidationRule.html"><abbr title="\Google\Service\Sheets\DataValidationRule">DataValidationRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DateTimeRule.html"><abbr title="\Google\Service\Sheets\DateTimeRule">DateTimeRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteBandingRequest.html"><abbr title="\Google\Service\Sheets\DeleteBandingRequest">DeleteBandingRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteConditionalFormatRuleRequest.html"><abbr title="\Google\Service\Sheets\DeleteConditionalFormatRuleRequest">DeleteConditionalFormatRuleRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteConditionalFormatRuleResponse.html"><abbr title="\Google\Service\Sheets\DeleteConditionalFormatRuleResponse">DeleteConditionalFormatRuleResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDataSourceRequest.html"><abbr title="\Google\Service\Sheets\DeleteDataSourceRequest">DeleteDataSourceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDeveloperMetadataRequest.html"><abbr title="\Google\Service\Sheets\DeleteDeveloperMetadataRequest">DeleteDeveloperMetadataRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDeveloperMetadataResponse.html"><abbr title="\Google\Service\Sheets\DeleteDeveloperMetadataResponse">DeleteDeveloperMetadataResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDimensionGroupRequest.html"><abbr title="\Google\Service\Sheets\DeleteDimensionGroupRequest">DeleteDimensionGroupRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDimensionGroupResponse.html"><abbr title="\Google\Service\Sheets\DeleteDimensionGroupResponse">DeleteDimensionGroupResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDimensionRequest.html"><abbr title="\Google\Service\Sheets\DeleteDimensionRequest">DeleteDimensionRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDuplicatesRequest.html"><abbr title="\Google\Service\Sheets\DeleteDuplicatesRequest">DeleteDuplicatesRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteDuplicatesResponse.html"><abbr title="\Google\Service\Sheets\DeleteDuplicatesResponse">DeleteDuplicatesResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteEmbeddedObjectRequest.html"><abbr title="\Google\Service\Sheets\DeleteEmbeddedObjectRequest">DeleteEmbeddedObjectRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteFilterViewRequest.html"><abbr title="\Google\Service\Sheets\DeleteFilterViewRequest">DeleteFilterViewRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteNamedRangeRequest.html"><abbr title="\Google\Service\Sheets\DeleteNamedRangeRequest">DeleteNamedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteProtectedRangeRequest.html"><abbr title="\Google\Service\Sheets\DeleteProtectedRangeRequest">DeleteProtectedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteRangeRequest.html"><abbr title="\Google\Service\Sheets\DeleteRangeRequest">DeleteRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeleteSheetRequest.html"><abbr title="\Google\Service\Sheets\DeleteSheetRequest">DeleteSheetRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeveloperMetadata.html"><abbr title="\Google\Service\Sheets\DeveloperMetadata">DeveloperMetadata</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeveloperMetadataLocation.html"><abbr title="\Google\Service\Sheets\DeveloperMetadataLocation">DeveloperMetadataLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DeveloperMetadataLookup.html"><abbr title="\Google\Service\Sheets\DeveloperMetadataLookup">DeveloperMetadataLookup</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DimensionGroup.html"><abbr title="\Google\Service\Sheets\DimensionGroup">DimensionGroup</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DimensionProperties.html"><abbr title="\Google\Service\Sheets\DimensionProperties">DimensionProperties</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DimensionRange.html"><abbr title="\Google\Service\Sheets\DimensionRange">DimensionRange</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DuplicateFilterViewRequest.html"><abbr title="\Google\Service\Sheets\DuplicateFilterViewRequest">DuplicateFilterViewRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DuplicateFilterViewResponse.html"><abbr title="\Google\Service\Sheets\DuplicateFilterViewResponse">DuplicateFilterViewResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DuplicateSheetRequest.html"><abbr title="\Google\Service\Sheets\DuplicateSheetRequest">DuplicateSheetRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-DuplicateSheetResponse.html"><abbr title="\Google\Service\Sheets\DuplicateSheetResponse">DuplicateSheetResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Editors.html"><abbr title="\Google\Service\Sheets\Editors">Editors</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-EmbeddedChart.html"><abbr title="\Google\Service\Sheets\EmbeddedChart">EmbeddedChart</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-EmbeddedObjectBorder.html"><abbr title="\Google\Service\Sheets\EmbeddedObjectBorder">EmbeddedObjectBorder</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-EmbeddedObjectPosition.html"><abbr title="\Google\Service\Sheets\EmbeddedObjectPosition">EmbeddedObjectPosition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ErrorValue.html"><abbr title="\Google\Service\Sheets\ErrorValue">ErrorValue</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ExtendedValue.html"><abbr title="\Google\Service\Sheets\ExtendedValue">ExtendedValue</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-FilterCriteria.html"><abbr title="\Google\Service\Sheets\FilterCriteria">FilterCriteria</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-FilterSpec.html"><abbr title="\Google\Service\Sheets\FilterSpec">FilterSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-FilterView.html"><abbr title="\Google\Service\Sheets\FilterView">FilterView</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-FindReplaceRequest.html"><abbr title="\Google\Service\Sheets\FindReplaceRequest">FindReplaceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-FindReplaceResponse.html"><abbr title="\Google\Service\Sheets\FindReplaceResponse">FindReplaceResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GetSpreadsheetByDataFilterRequest.html"><abbr title="\Google\Service\Sheets\GetSpreadsheetByDataFilterRequest">GetSpreadsheetByDataFilterRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GradientRule.html"><abbr title="\Google\Service\Sheets\GradientRule">GradientRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GridCoordinate.html"><abbr title="\Google\Service\Sheets\GridCoordinate">GridCoordinate</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GridData.html"><abbr title="\Google\Service\Sheets\GridData">GridData</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GridProperties.html"><abbr title="\Google\Service\Sheets\GridProperties">GridProperties</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-GridRange.html"><abbr title="\Google\Service\Sheets\GridRange">GridRange</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-HistogramChartSpec.html"><abbr title="\Google\Service\Sheets\HistogramChartSpec">HistogramChartSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-HistogramRule.html"><abbr title="\Google\Service\Sheets\HistogramRule">HistogramRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-HistogramSeries.html"><abbr title="\Google\Service\Sheets\HistogramSeries">HistogramSeries</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-InsertDimensionRequest.html"><abbr title="\Google\Service\Sheets\InsertDimensionRequest">InsertDimensionRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-InsertRangeRequest.html"><abbr title="\Google\Service\Sheets\InsertRangeRequest">InsertRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-InterpolationPoint.html"><abbr title="\Google\Service\Sheets\InterpolationPoint">InterpolationPoint</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Interval.html"><abbr title="\Google\Service\Sheets\Interval">Interval</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-IterativeCalculationSettings.html"><abbr title="\Google\Service\Sheets\IterativeCalculationSettings">IterativeCalculationSettings</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-KeyValueFormat.html"><abbr title="\Google\Service\Sheets\KeyValueFormat">KeyValueFormat</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-LineStyle.html"><abbr title="\Google\Service\Sheets\LineStyle">LineStyle</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Link.html"><abbr title="\Google\Service\Sheets\Link">Link</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ManualRule.html"><abbr title="\Google\Service\Sheets\ManualRule">ManualRule</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ManualRuleGroup.html"><abbr title="\Google\Service\Sheets\ManualRuleGroup">ManualRuleGroup</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-MatchedDeveloperMetadata.html"><abbr title="\Google\Service\Sheets\MatchedDeveloperMetadata">MatchedDeveloperMetadata</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-MatchedValueRange.html"><abbr title="\Google\Service\Sheets\MatchedValueRange">MatchedValueRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-MergeCellsRequest.html"><abbr title="\Google\Service\Sheets\MergeCellsRequest">MergeCellsRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-MoveDimensionRequest.html"><abbr title="\Google\Service\Sheets\MoveDimensionRequest">MoveDimensionRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-NamedRange.html"><abbr title="\Google\Service\Sheets\NamedRange">NamedRange</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-NumberFormat.html"><abbr title="\Google\Service\Sheets\NumberFormat">NumberFormat</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-OrgChartSpec.html"><abbr title="\Google\Service\Sheets\OrgChartSpec">OrgChartSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-OverlayPosition.html"><abbr title="\Google\Service\Sheets\OverlayPosition">OverlayPosition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Padding.html"><abbr title="\Google\Service\Sheets\Padding">Padding</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PasteDataRequest.html"><abbr title="\Google\Service\Sheets\PasteDataRequest">PasteDataRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PieChartSpec.html"><abbr title="\Google\Service\Sheets\PieChartSpec">PieChartSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotFilterCriteria.html"><abbr title="\Google\Service\Sheets\PivotFilterCriteria">PivotFilterCriteria</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotFilterSpec.html"><abbr title="\Google\Service\Sheets\PivotFilterSpec">PivotFilterSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotGroup.html"><abbr title="\Google\Service\Sheets\PivotGroup">PivotGroup</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotGroupLimit.html"><abbr title="\Google\Service\Sheets\PivotGroupLimit">PivotGroupLimit</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotGroupRule.html"><abbr title="\Google\Service\Sheets\PivotGroupRule">PivotGroupRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotGroupSortValueBucket.html"><abbr title="\Google\Service\Sheets\PivotGroupSortValueBucket">PivotGroupSortValueBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotGroupValueMetadata.html"><abbr title="\Google\Service\Sheets\PivotGroupValueMetadata">PivotGroupValueMetadata</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotTable.html"><abbr title="\Google\Service\Sheets\PivotTable">PivotTable</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PivotValue.html"><abbr title="\Google\Service\Sheets\PivotValue">PivotValue</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-PointStyle.html"><abbr title="\Google\Service\Sheets\PointStyle">PointStyle</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ProtectedRange.html"><abbr title="\Google\Service\Sheets\ProtectedRange">ProtectedRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RandomizeRangeRequest.html"><abbr title="\Google\Service\Sheets\RandomizeRangeRequest">RandomizeRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RefreshDataSourceObjectExecutionStatus.html"><abbr title="\Google\Service\Sheets\RefreshDataSourceObjectExecutionStatus">RefreshDataSourceObjectExecutionStatus</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RefreshDataSourceRequest.html"><abbr title="\Google\Service\Sheets\RefreshDataSourceRequest">RefreshDataSourceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RefreshDataSourceResponse.html"><abbr title="\Google\Service\Sheets\RefreshDataSourceResponse">RefreshDataSourceResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RepeatCellRequest.html"><abbr title="\Google\Service\Sheets\RepeatCellRequest">RepeatCellRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Request.html"><abbr title="\Google\Service\Sheets\Request">Request</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Response.html"><abbr title="\Google\Service\Sheets\Response">Response</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-RowData.html"><abbr title="\Google\Service\Sheets\RowData">RowData</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ScorecardChartSpec.html"><abbr title="\Google\Service\Sheets\ScorecardChartSpec">ScorecardChartSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SearchDeveloperMetadataRequest.html"><abbr title="\Google\Service\Sheets\SearchDeveloperMetadataRequest">SearchDeveloperMetadataRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SearchDeveloperMetadataResponse.html"><abbr title="\Google\Service\Sheets\SearchDeveloperMetadataResponse">SearchDeveloperMetadataResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SetBasicFilterRequest.html"><abbr title="\Google\Service\Sheets\SetBasicFilterRequest">SetBasicFilterRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SetDataValidationRequest.html"><abbr title="\Google\Service\Sheets\SetDataValidationRequest">SetDataValidationRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Sheet.html"><abbr title="\Google\Service\Sheets\Sheet">Sheet</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SheetProperties.html"><abbr title="\Google\Service\Sheets\SheetProperties">SheetProperties</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Slicer.html"><abbr title="\Google\Service\Sheets\Slicer">Slicer</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SlicerSpec.html"><abbr title="\Google\Service\Sheets\SlicerSpec">SlicerSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SortRangeRequest.html"><abbr title="\Google\Service\Sheets\SortRangeRequest">SortRangeRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SortSpec.html"><abbr title="\Google\Service\Sheets\SortSpec">SortSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SourceAndDestination.html"><abbr title="\Google\Service\Sheets\SourceAndDestination">SourceAndDestination</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-Spreadsheet.html"><abbr title="\Google\Service\Sheets\Spreadsheet">Spreadsheet</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SpreadsheetProperties.html"><abbr title="\Google\Service\Sheets\SpreadsheetProperties">SpreadsheetProperties</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-SpreadsheetTheme.html"><abbr title="\Google\Service\Sheets\SpreadsheetTheme">SpreadsheetTheme</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TextFormat.html"><abbr title="\Google\Service\Sheets\TextFormat">TextFormat</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TextFormatRun.html"><abbr title="\Google\Service\Sheets\TextFormatRun">TextFormatRun</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TextPosition.html"><abbr title="\Google\Service\Sheets\TextPosition">TextPosition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TextRotation.html"><abbr title="\Google\Service\Sheets\TextRotation">TextRotation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TextToColumnsRequest.html"><abbr title="\Google\Service\Sheets\TextToColumnsRequest">TextToColumnsRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ThemeColorPair.html"><abbr title="\Google\Service\Sheets\ThemeColorPair">ThemeColorPair</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TimeOfDay.html"><abbr title="\Google\Service\Sheets\TimeOfDay">TimeOfDay</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TreemapChartColorScale.html"><abbr title="\Google\Service\Sheets\TreemapChartColorScale">TreemapChartColorScale</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TreemapChartSpec.html"><abbr title="\Google\Service\Sheets\TreemapChartSpec">TreemapChartSpec</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TrimWhitespaceRequest.html"><abbr title="\Google\Service\Sheets\TrimWhitespaceRequest">TrimWhitespaceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-TrimWhitespaceResponse.html"><abbr title="\Google\Service\Sheets\TrimWhitespaceResponse">TrimWhitespaceResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UnmergeCellsRequest.html"><abbr title="\Google\Service\Sheets\UnmergeCellsRequest">UnmergeCellsRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateBandingRequest.html"><abbr title="\Google\Service\Sheets\UpdateBandingRequest">UpdateBandingRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateBordersRequest.html"><abbr title="\Google\Service\Sheets\UpdateBordersRequest">UpdateBordersRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateCellsRequest.html"><abbr title="\Google\Service\Sheets\UpdateCellsRequest">UpdateCellsRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateChartSpecRequest.html"><abbr title="\Google\Service\Sheets\UpdateChartSpecRequest">UpdateChartSpecRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateConditionalFormatRuleRequest.html"><abbr title="\Google\Service\Sheets\UpdateConditionalFormatRuleRequest">UpdateConditionalFormatRuleRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateConditionalFormatRuleResponse.html"><abbr title="\Google\Service\Sheets\UpdateConditionalFormatRuleResponse">UpdateConditionalFormatRuleResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDataSourceRequest.html"><abbr title="\Google\Service\Sheets\UpdateDataSourceRequest">UpdateDataSourceRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDataSourceResponse.html"><abbr title="\Google\Service\Sheets\UpdateDataSourceResponse">UpdateDataSourceResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDeveloperMetadataRequest.html"><abbr title="\Google\Service\Sheets\UpdateDeveloperMetadataRequest">UpdateDeveloperMetadataRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDeveloperMetadataResponse.html"><abbr title="\Google\Service\Sheets\UpdateDeveloperMetadataResponse">UpdateDeveloperMetadataResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDimensionGroupRequest.html"><abbr title="\Google\Service\Sheets\UpdateDimensionGroupRequest">UpdateDimensionGroupRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateDimensionPropertiesRequest.html"><abbr title="\Google\Service\Sheets\UpdateDimensionPropertiesRequest">UpdateDimensionPropertiesRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateEmbeddedObjectBorderRequest.html"><abbr title="\Google\Service\Sheets\UpdateEmbeddedObjectBorderRequest">UpdateEmbeddedObjectBorderRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateEmbeddedObjectPositionRequest.html"><abbr title="\Google\Service\Sheets\UpdateEmbeddedObjectPositionRequest">UpdateEmbeddedObjectPositionRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateEmbeddedObjectPositionResponse.html"><abbr title="\Google\Service\Sheets\UpdateEmbeddedObjectPositionResponse">UpdateEmbeddedObjectPositionResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateFilterViewRequest.html"><abbr title="\Google\Service\Sheets\UpdateFilterViewRequest">UpdateFilterViewRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateNamedRangeRequest.html"><abbr title="\Google\Service\Sheets\UpdateNamedRangeRequest">UpdateNamedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateProtectedRangeRequest.html"><abbr title="\Google\Service\Sheets\UpdateProtectedRangeRequest">UpdateProtectedRangeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateSheetPropertiesRequest.html"><abbr title="\Google\Service\Sheets\UpdateSheetPropertiesRequest">UpdateSheetPropertiesRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateSlicerSpecRequest.html"><abbr title="\Google\Service\Sheets\UpdateSlicerSpecRequest">UpdateSlicerSpecRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateSpreadsheetPropertiesRequest.html"><abbr title="\Google\Service\Sheets\UpdateSpreadsheetPropertiesRequest">UpdateSpreadsheetPropertiesRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateValuesByDataFilterResponse.html"><abbr title="\Google\Service\Sheets\UpdateValuesByDataFilterResponse">UpdateValuesByDataFilterResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-UpdateValuesResponse.html"><abbr title="\Google\Service\Sheets\UpdateValuesResponse">UpdateValuesResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-ValueRange.html"><abbr title="\Google\Service\Sheets\ValueRange">ValueRange</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-WaterfallChartColumnStyle.html"><abbr title="\Google\Service\Sheets\WaterfallChartColumnStyle">WaterfallChartColumnStyle</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-WaterfallChartCustomSubtotal.html"><abbr title="\Google\Service\Sheets\WaterfallChartCustomSubtotal">WaterfallChartCustomSubtotal</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-WaterfallChartDomain.html"><abbr title="\Google\Service\Sheets\WaterfallChartDomain">WaterfallChartDomain</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-WaterfallChartSeries.html"><abbr title="\Google\Service\Sheets\WaterfallChartSeries">WaterfallChartSeries</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-Sheets-WaterfallChartSpec.html"><abbr title="\Google\Service\Sheets\WaterfallChartSpec">WaterfallChartSpec</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>    </dl>
+
+
+
+
+
+
+
+
+        
+
+        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
+
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('GET', src, true);
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+                            Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
+                            return;
+                        }
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
+                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
+                    }
+                    modal.classList.add("phpdocumentor-modal__open");
+
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
+                    });
+                });
+            });
+        })();
+    </script>
+
+    </article>
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                            
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                                                                    <li><a href="namespaces/google-service-sheets.html#toc-classes">Classes</a></li>
+                                                                                                                    </ul>
+            </li>
+
+            
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+    <section class="phpdocumentor-search-results__dialog">
+        <header class="phpdocumentor-search-results__header">
+            <h2 class="phpdocumentor-search-results__title">Search results</h2>
+            <button class="phpdocumentor-search-results__close"><i class="fas fa-times"></i></button>
+        </header>
+        <section class="phpdocumentor-search-results__body">
+            <ul class="phpdocumentor-search-results__entries"></ul>
+        </section>
+    </section>
+</section>
+        </div>
+        <a href="namespaces/google-service-sheets.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+
+    </main>
+
+    <script>
+        cssVars({});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión Padres</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <ul>
+        <li>Gestión diaria</li>
+        <li>Gestión mensual</li>
+        <li class="active">
+            <span class="icon"></span> Gestión de usuarios
+        </li>
+        <li>Cerrar sesión</li>
+        <li>Gestión de menús</li>
+        <li>Gestión tarifas</li>
+        <li>Gestión de festivos</li>
+        <li>Gestión de certificados</li>
+    </ul>
+</nav>
+
+<h1 class="title">Gestión Padres</h1>
+
+<div class="form-panel">
+    <form>
+
+        <label>Nombre padre/madre (*)</label>
+        <input type="text">
+
+        <label>Apellidos padre/madre (*)</label>
+        <input type="text">
+
+        <label>Dirección de email (*)</label>
+        <input type="email">
+
+        <label>Nº de teléfono (*)</label>
+        <input type="text">
+
+        <label>DNI/NIE/Pasaporte (*)</label>
+        <input type="text">
+
+        <label>IBAN (*)</label>
+        <input type="text">
+
+        <label>Titular de la cuenta (*)</label>
+        <input type="text">
+
+        <label>Fecha del mandato</label>
+        <input type="date">
+
+        <div class="btn-row">
+            <button class="btn btn-red">Cancelar</button>
+            <button class="btn btn-green">Actualizar</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="warning-panel">
+    <p>
+        ¿Desea desactivar este padre/madre? Esta acción desactivará también a todos sus hijos/as
+        y no podrá ser revertida.
+    </p>
+
+    <div class="btn-row-center">
+        <button class="btn btn-gray">Cancelar</button>
+        <button class="btn btn-red">Desactivar padre/madre</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de padres/madres</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+    <a class="home" href="#">Inicio</a>
+    <a href="#">Gestión de hijos</a>
+    <a href="#">Gestión mensual</a>
+    <a href="#">Gestión de tu cuenta</a>
+    <a href="#">Cerrar sesión</a>
+    <a href="#">Gestión diaria</a>
+    <a href="#">Resumen mensual</a>
+</div>
+
+<h1>Bienvenido al panel de padres/madres</h1>
+<p class="subtexto">
+    Desde aquí podrás gestionar tus datos personales, podrás añadir cuáles de tus hijos irán al comedor y también podrás modificar sus datos, añadirles o quitarles los días que irán o no al comedor.
+</p>
+
+<div class="mini-nav">
+    <div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div>
+</div>
+
+<div class="calendar-box">
+
+    <div class="month-header">
+        <button>Mes anterior</button>
+        <div class="title-mes">Diciembre 2025</div>
+        <button>Mes siguiente</button>
+    </div>
+
+    <p class="mockup-text">prueba mockup prueba mockup</p>
+
+    <!-- CALENDARIO -->
+    <table class="calendar">
+        <thead>
+        <tr>
+            <th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th><th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td class="dia-inactivo">1</td>
+            <td class="dia-inactivo">2</td>
+            <td class="dia-inactivo">3</td>
+            <td class="dia-habil">4</td>
+            <td class="dia-habil">5</td>
+            <td class="disabled dia-inactivo">6</td>
+            <td class="disabled dia-inactivo">7</td>
+            <td><button class="marcar-semana">Marcar semana</button></td>
+        </tr>
+
+        <tr>
+            <td class="dia-especial">8</td>
+            <td class="dia-habil">9</td>
+            <td class="dia-habil">10</td>
+            <td class="dia-habil">11</td>
+            <td class="dia-habil">12</td>
+            <td class="disabled dia-inactivo">13</td>
+            <td class="disabled dia-inactivo">14</td>
+            <td><button class="marcar-semana">Marcar semana</button></td>
+        </tr>
+
+        <tr>
+            <td class="dia-habil">15</td>
+            <td class="dia-habil">16</td>
+            <td class="dia-habil">17</td>
+            <td class="dia-habil">18</td>
+            <td class="dia-habil">19</td>
+            <td class="disabled dia-inactivo">20</td>
+            <td class="disabled dia-inactivo">21</td>
+            <td><button class="marcar-semana">Marcar semana</button></td>
+        </tr>
+
+        <tr>
+            <td class="dia-especial">22</td>
+            <td class="dia-especial">23</td>
+            <td class="dia-especial">24</td>
+            <td class="dia-especial">25</td>
+            <td class="dia-especial">26</td>
+            <td class="disabled dia-inactivo">27</td>
+            <td class="disabled dia-inactivo">28</td>
+            <td><button class="marcar-semana">Marcar semana</button></td>
+        </tr>
+
+        <tr>
+            <td class="dia-especial">29</td>
+            <td class="dia-especial">30</td>
+            <td class="dia-especial">31</td>
+            <td class="disabled dia-inactivo"></td>
+            <td class="disabled dia-inactivo"></td>
+            <td class="disabled dia-inactivo"></td>
+            <td class="disabled dia-inactivo"></td>
+            <td><button class="marcar-semana">Marcar semana</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button id="select-month" class="marcar-mes">Marcar mes</button>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

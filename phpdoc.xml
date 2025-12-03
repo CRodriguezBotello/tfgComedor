@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdoc>
+    <title>Documentación del proyecto Comedor</title>
+    <files>
+        <directory>php</directory>
+    </files>
+</phpdoc>

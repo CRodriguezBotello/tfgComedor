@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  <title>Vista mensual</title>
+</head>
+<body>
+
+  <div class="info-adicional">
+    <strong>Información Adicional:</strong> Los números que están en <span class="rojo">rojo</span> son los días en los que seleccionó tupper.
+  </div>
+
+  <div class="container">
+    <button class="btn btn-info btn-prev">Anterior</button>
+    <span id="mes-actual">Mes Actual de 202X</span>
+    <button class="btn btn-info btn-next">Siguiente</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Enanos</th>
+        <th>Curso/TipoUsuario</th>
+        <th>Número de Menús</th>
+        <th>Número de Tuppers</th>
+        <th>Días de Menú</th>
+        <th class="small-cell">Incidencias</th>
+        <th>Importe Total (€)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sergio</td>
+        <td>2º ESO</td>
+        <td>15</td>
+        <td>10</td>
+        <td>
+          1, <span class="rojo">3</span>, 5, <span class="rojo">7</span>, <span class="rojo">9</span>, 11, <span class="rojo">12</span>, <span class="rojo">14</span>, <span class="rojo">16</span>, 19, <span class="rojo">21</span>, <span class="rojo">22</span>, 25, <span class="rojo">28</span>, <span class="rojo">30</span>
+        </td>
+        <td class="small-cell"><textarea></textarea></td>
+        <td class="importe"></td>
+      </tr>
+      <tr>
+        <td>Raúl</td>
+        <td>2º Primaria</td>
+        <td>13</td>
+        <td>5</td>
+        <td>
+          <span class="rojo">1</span>, 2, 4, <span class="rojo">6</span>, 8, 10, 13, <span class="rojo">15</span>, 17, 20, <span class="rojo">23</span>, 26, <span class="rojo">29</span>
+        </td>
+        <td class="small-cell"><textarea></textarea></td>
+        <td class="importe"></td>
+      </tr>
+      <tr>
+        <td>Miguel</td>
+        <td>Profesor</td>
+        <td>10</td>
+        <td>3</td>
+        <td>
+          2, <span class="rojo">3</span>, 5, 8, 11, <span class="rojo">14</span>, 19, 23, <span class="rojo">27</span>, 30
+        </td>
+        <td class="small-cell"><textarea></textarea></td>
+        <td class="importe"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    // Rellenar columna de Importe Total con precio aleatorio entre 5€ y 20€
+    document.querySelectorAll('.importe').forEach(cell => {
+      const precio = (Math.random() * 15 + 5).toFixed(2); // 5€ a 20€
+      cell.textContent = precio + ' €';
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+    }
+
+    /* NAVBAR */
+    .navbar {
+        display: flex;
+        align-items: center;
+        background-color: #2b2b2b;
+        color: white;
+        padding: 12px 20px;
+        font-size: 15px;
+        gap: 25px;
+    }
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+    }
+    .navbar-item.active {
+        background-color: #00b5d9;
+        padding: 8px 14px;
+        border-radius: 4px;
+    }
+
+    /* Título */
+    h1 {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 36px;
+        color: #222;
+    }
+
+    /* Buscador */
+    .search-container {
+        text-align: center;
+        margin: 20px 0 35px 0;
+    }
+
+    .search-container input[type="text"] {
+        width: 450px;
+        padding: 8px;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .search-container button {
+        padding: 8px 18px;
+        margin-left: 6px;
+        background-color: #e3e3e3;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .search-container label {
+        display: block;
+        margin-top: 10px;
+        font-size: 15px;
+    }
+
+    /* Tabla */
+    .table-container {
+        max-width: 1400px;
+        margin: 0 auto 60px auto;
+        background-color: white;
+        border: 1px solid #cfcfcf;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+    }
+
+    th, td {
+        border: 1px solid #d0d0d0;
+        padding: 14px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #003d73;
+        color: white;
+        font-weight: bold;
+    }
+
+    td {
+        background-color: white;
+    }

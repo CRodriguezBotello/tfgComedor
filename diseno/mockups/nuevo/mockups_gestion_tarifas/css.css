@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #2e2e2e;
+    color: white;
+    padding: 12px 0;
+}
+.navbar ul {
+    display: flex;
+    list-style: none;
+    padding: 0 15px;
+    margin: 0;
+    align-items: center;
+    gap: 25px;
+}
+.navbar li {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.85;
+}
+.navbar li.active {
+    background: #00a8cc;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    opacity: 1;
+}
+
+/* TITULO */
+.title {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+/* CONTENEDOR */
+.container {
+    width: 55%;
+    margin: 40px auto;
+}
+
+/* TABLA */
+.tarifas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tarifas-table th {
+    text-align: left;
+    padding: 10px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.tarifas-table td {
+    padding: 14px 8px;
+    background: #f6f6f6;
+    border-bottom: 2px solid #ffffff;
+}
+
+/* INPUT */
+.tarifas-table input {
+    padding: 8px 10px;
+    width: 180px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+/* BOTONES */
+.btn {
+    padding: 7px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+.btn.blue {
+    background: #0d6efd;
+    color: white;
+}

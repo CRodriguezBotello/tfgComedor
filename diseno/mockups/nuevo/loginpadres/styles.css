@@ -1,0 +1,72 @@
+.formLogin {
+	font-family:sans serif, Open-sans;
+    width: 398px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 6em auto;
+    padding: 10px;
+    color: #014179;
+    background-color: aliceblue;
+}
+
+.formLogin h3{
+	text-align:center;
+	margin-bottom:30px;
+}
+#imgLogin{
+	background-color:red;
+	width:150px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:40px;
+	margin-bottom:20px;
+}
+
+.imgLogin{
+	width:100%;
+}
+.formLogin div.formItemLogin {
+    cursor: pointer;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.formLogin div.formItemLoginError{
+    margin: 10px auto;
+    text-align: center;
+    display:none;
+    color:red;
+}
+
+.formLogin div.formItemLogin label{
+	text-align:left;
+}
+
+div.formItemLogin input {
+    display: block;
+    margin: auto;
+	margin-top:5px;
+    min-height: 20px;
+    min-width: 198px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.btn-info{
+  min-width: 210px;
+}
+
+div.formItemLogin input[type="checkbox"] {
+    min-width: 20px;
+    display: inline-block;
+}
+
+@media (max-width:575.98px) {
+    .formLogin {
+        width: 100%;
+		margin: 0em auto;
+		height:100vh;
+        padding: 3.355704697986577%;
+    }
+}

@@ -1,0 +1,88 @@
+* {
+  font-family: sans-serif;
+}
+
+thead tr th {
+  height: 50px;
+  background-color: #014179;
+  color: white;
+  text-align: center;
+}
+
+table {
+  border: 1px #014179 solid;
+  border-collapse: collapse;
+  width: 60%;
+  margin: 40px auto;
+}
+
+th, td {
+  font-size: larger;
+  border: 1px #014179 solid;
+  padding: 8px;
+  text-align: left;
+}
+
+tbody td {
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-prev {
+  margin-right: 10px;
+}
+
+.btn-next {
+  margin-left: 10px;
+}
+
+.small-cell {
+  width: 20%;
+}
+
+.btn-info {
+  min-width: 150px;
+}
+
+/* 🔵 Texto de información adicional */
+.info-adicional {
+  background-color: #5bc0de; /* mismo color que los botones .btn-info */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* 🔴 Color rojo para los días de tupper */
+.rojo {
+  color: red;
+  font-weight: bold;
+}
+
+/* Hacer la columna Importe Total más ancha */
+table th:last-child,
+table td.importe {
+  width: 15%; /* Puedes ajustar a 20% si quieres aún más ancho */
+}

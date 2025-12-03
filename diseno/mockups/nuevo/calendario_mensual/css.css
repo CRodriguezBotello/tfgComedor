@@ -1,0 +1,88 @@
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    /* Navbar superior */
+    .navbar {
+        display: flex;
+        align-items: center;
+        background-color: #222;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        gap: 20px;
+    }
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+    }
+    .navbar-item.active {
+        background-color: #03b4d8;
+        padding: 6px 12px;
+        border-radius: 4px;
+    }
+
+    /* Avisos */
+    .info-banner, .success-banner {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .info-banner {
+        background-color: #d5eef7;
+    }
+    .success-banner {
+        background-color: #c9f2bf;
+    }
+
+    /* Contenido principal */
+    .container {
+        max-width: 900px;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .nav-buttons {
+        margin-bottom: 10px;
+    }
+
+    .nav-buttons button {
+        padding: 6px 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    /* Calendario */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background: white;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 15px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #f8f8f8;
+        font-weight: bold;
+    }
+
+    .blue {
+        background-color: #09b8d4 !important;
+        color: white;
+    }
+
+    .dark {
+        background-color: #333 !important;
+        color: white;
+    }

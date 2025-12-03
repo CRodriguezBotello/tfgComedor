@@ -1,0 +1,99 @@
+ body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+    }
+
+    /* NAVBAR */
+    .navbar {
+        display: flex;
+        align-items: center;
+        background-color: #2b2b2b;
+        color: white;
+        padding: 12px 20px;
+        font-size: 15px;
+        gap: 25px;
+    }
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+    }
+    .navbar-item.active {
+        background-color: #00b5d9;
+        padding: 8px 14px;
+        border-radius: 4px;
+    }
+
+    /* Título */
+    h1 {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 36px;
+        color: #222;
+    }
+
+    /* Botones superiores */
+    .top-buttons {
+        text-align: center;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 10px 22px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+        color: white;
+    }
+    .btn-blue {
+        background-color: #00b5d9;
+    }
+    .btn-red {
+        background-color: #d9534f;
+    }
+
+    /* Tabla */
+    .table-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        background-color: white;
+        border: 1px solid #cfcfcf;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+    }
+
+    th, td {
+        border: 1px solid #d0d0d0;
+        padding: 14px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #003d73;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table-header-info {
+        background-color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    textarea {
+        width: 90%;
+        height: 40px;
+        resize: none;
+    }

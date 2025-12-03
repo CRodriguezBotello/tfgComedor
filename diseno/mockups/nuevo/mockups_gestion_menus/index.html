@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de menús</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <ul>
+        <li>Gestión diaria</li>
+        <li>Gestión mensual</li>
+        <li>Gestión de usuarios</li>
+        <li>Cerrar sesión</li>
+        <li class="active">Gestión de menús</li>
+        <li>Gestión tarifas</li>
+        <li>Gestión de festivos</li>
+        <li>Gestión de certificados</li>
+    </ul>
+</nav>
+
+<h1 class="title">Gestión de menús</h1>
+
+<div class="container">
+
+    <div class="form-section">
+        <div class="field">
+            <label>Mes</label>
+            <select>
+                <option>-- Selecciona mes --</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>PDF Menú</label>
+            <input type="file">
+        </div>
+
+        <button class="btn btn-green">Subir</button>
+    </div>
+
+    <h3 class="subtitle">Menús actuales</h3>
+
+    <table class="menu-table">
+        <tr><td><b>Enero</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Febrero</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Marzo</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Abril</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Mayo</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Junio</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Julio</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+
+        <tr>
+            <td><b>Agosto</b></td>
+            <td><a class="pdf-link">Ver PDF</a></td>
+            <td class="right"><button class="btn-small">Borrar</button></td>
+        </tr>
+
+        <tr><td><b>Septiembre</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Octubre</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Noviembre</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+        <tr><td><b>Diciembre</b></td><td>No hay menú</td><td class="right">Sin archivo</td></tr>
+    </table>
+
+</div>
+
+</body>
+</html>

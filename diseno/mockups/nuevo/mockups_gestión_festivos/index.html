@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de festivos - Mockup</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-item">Gestión diaria</div>
+        <div class="nav-item">Gestión mensual</div>
+        <div class="nav-item">Gestión de usuarios</div>
+        <div class="nav-item">Cerrar sesión</div>
+        <div class="nav-item">Gestión de menús</div>
+        <div class="nav-item">Gestión tarifas</div>
+        <div class="nav-item active">Gestión de festivos</div>
+        <div class="nav-item">Gestión de certificados</div>
+        <div class="nav-item right">Acerca de</div>
+    </nav>
+
+    <h1 class="titulo">Gestión de festivos</h1>
+
+    <div class="form-container">
+        <input type="text" class="input-fecha" placeholder="dd/mm/aaaa">
+        <input type="text" class="input-descripcion" placeholder="Descripción">
+        <button class="btn add">Añadir festivo</button>
+        <button class="btn delete-all">Borrar todos los festivos</button>
+    </div>
+
+    <table class="tabla-festivos">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>01/10/2023</td>
+                <td></td>
+                <td>
+                    <button class="btn edit">Editar</button>
+                    <button class="btn delete">Eliminar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>13/10/2023</td>
+                <td></td>
+                <td>
+                    <button class="btn edit">Editar</button>
+                    <button class="btn delete">Eliminar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>01/11/2023</td>
+                <td></td>
+                <td>
+                    <button class="btn edit">Editar</button>
+                    <button class="btn delete">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

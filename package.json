@@ -1,0 +1,19 @@
+{
+  "name": "comedor02-12-2025",
+  "version": "1.0.0",
+  "source": {
+    "include": [
+      "js"
+    ],
+    "includePattern": ".js$"
+  },
+  "opts": {
+    "destination": "/docs"
+  },
+  "scripts": {
+    "docs": "jsdoc -c jsdoc.json"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
+  }
+}

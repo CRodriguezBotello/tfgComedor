@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    background: #f4f4f4;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.topbar {
+    background: #1a1a1a;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 14px;
+}
+
+.topbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.topbar .home {
+    background: #0aa4d8;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    font-weight: normal;
+}
+
+.subtexto {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.mini-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mini-nav div {
+    width: 60px;
+    height: 20px;
+    background: #777;
+    border-radius: 4px;
+}
+
+.calendar-box {
+    width: 80%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.month-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.month-header button {
+    background: #007bff;
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.title-mes {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mockup-text {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* ===== TABLA ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+th {
+    background: #003d6b;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 18px 10px;
+    border: 1px solid #ddd;
+}
+
+/* ===== COLORES ===== */
+
+/* Días verdes → ahora fondo blanco */
+.dia-habil {
+    background: white;
+}
+
+/* Días naranjas (festivos) */
+.dia-especial {
+    background: #e8952f;
+    color: white;
+    font-weight: bold;
+}
+
+/* Días grises (inactivos, NO seleccionables) */
+.dia-inactivo {
+    background: #dcdcdc;
+}
+
+/* Fines de semana */
+.disabled {
+    opacity: 0.5;
+}
+
+/* ===== DÍAS SELECCIONADOS ===== */
+.selected {
+    background: #7ed97a !important; /* verde */
+}
+
+/* ===== BOTONES ===== */
+.marcar-semana, .marcar-mes {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}

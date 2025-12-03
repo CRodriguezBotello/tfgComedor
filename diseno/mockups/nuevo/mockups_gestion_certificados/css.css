@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    background: #2b2b2b;
+    padding: 10px 20px;
+    color: #fff;
+    gap: 20px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.nav-item {
+    color: #fff;
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    background: #00aab4;
+    padding: 6px 12px;
+    border-radius: 4px;
+    opacity: 1;
+}
+
+/* TITULO */
+.titulo {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* TABLA */
+.tabla-container {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.tabla thead {
+    background: #eef0f3;
+}
+
+.tabla th {
+    padding: 15px;
+    font-size: 16px;
+    color: #444;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+/* BOTÓN */
+.btn-primary {
+    padding: 8px 16px;
+    background: #1284ff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #0a6fd1;
+}

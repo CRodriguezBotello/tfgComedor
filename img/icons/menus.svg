@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" role="img" aria-labelledby="title desc" focusable="false">
+  <title id="title">Icono de gestión de menús</title>
+  <desc id="desc">Icono de carta/menú con cloche</desc>
+
+  <!-- Portada del menú (izquierda) -->
+  <rect x="1.5" y="2" width="12" height="20" rx="1.6" ry="1.6" fill="none" stroke="#ffffff" stroke-width="2.2"/>
+
+  <!-- Página doblada (lado derecho) -->
+  <path d="M13.5 2.8 L21 6.8 L21 17.2 L13.5 21.2" fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linejoin="round"/>
+
+  <!-- Marco interior (decorativo) -->
+  <path d="M3.2 5.5 h9.1 v9.0 h-9.1 z" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Cloche / bandeja (relleno blanco para consistencia en nav oscuro) -->
+  <g transform="translate(3,1.5)">
+    <path d="M6.2 12.2c1.2-2.1 4.8-2.1 6.0 0" fill="#ffffff"/>
+    <rect x="3.6" y="13.0" width="10.8" height="1.1" rx="0.55" fill="#ffffff"/>
+    <circle cx="9.2" cy="10.6" r="0.6" fill="#ffffff"/>
+  </g>
+</svg>

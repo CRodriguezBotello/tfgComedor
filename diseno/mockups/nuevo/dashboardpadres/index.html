@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+		<script src="https://kit.fontawesome.com/9e50a00cdb.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="styles.css" type="text/css"/>
+        <title>Panel padres</title>
+    </head>
+	<body>
+		<nav id="menuPadres" class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-link active">Inicio</li>
+                <li class="nav-item nav-link">Gestión de hijos</li>
+                <li class="nav-item nav-link">Modificación datos personales</li>
+                <li class="nav-item nav-link">Cerrar sesión</li>
+            </ul>
+        </nav>
+        <div id="gestionHijosPadres" >
+            <form method="POST" style="display:none">
+                <div class="formItem">
+                    <label for="nombre">
+                        Nombre hijo/a (*) <input type="text" class="form-control" name="nombre" maxlength="30" required/>
+                        <div class="invalid-feedback">Por favor, introduzca el nombre.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="apellidos">
+                        Apellidos hijo/a (*) <input type="text" class="form-control" name="apellidos" maxlength="90" required/>
+                        <div class="invalid-feedback">Por favor, introduzca los apellidos.</div>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <label for="curso">
+                        Curso
+                        <select><option value="-1">Curso</option></select>
+                    </label>
+                </div>
+                <div class="formItem">
+                    <button type="button" class="btn btn-danger" onclick="cancelar()" >Cancelar</button>
+                    <button type="button" class="btn btn-success">Dar de alta</button>
+                </div>
+            </form>
+			<table class="tablaListado">
+				<thead>
+					<tr>
+						<td colspan="3">Tus hijos</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Maria</td>
+						<td><i class="fa-solid fa-pen-to-square fa-xl" style="color: #014179;"></i></td>
+						<td><i class="fa-solid fa-user-xmark fa-xl" style="color: #014179;"></i></td>
+					</tr>
+					<tr>
+						<td>Roberto</td>
+						<td><i class="fa-solid fa-pen-to-square fa-xl" style="color: #014179;"></i></td>
+						<td><i class="fa-solid fa-user-xmark fa-xl" style="color: #014179;"></i></td>
+					</tr>
+					<tr>
+						<td id="añadir" colspan="3" > <i onclick="anadir()" class="fa-solid fa-circle-plus fa-2xl" style="color: #2ae52d;"></i></td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+	</body>
+	<script>
+			function anadir(){
+				const formulario = document.getElementsByTagName("form")[0]
+				
+				const table = document.getElementsByTagName('table')[0]
+				
+				table.style.display = 'none';
+				formulario.style.display = '';
+			}
+			function cancelar() {
+				const formulario = document.getElementsByTagName("form")[0]
+				
+				const table = document.getElementsByTagName('table')[0]
+				
+				table.style.display = '';
+				formulario.style.display = 'none';
+			}
+		</script>
+</html>

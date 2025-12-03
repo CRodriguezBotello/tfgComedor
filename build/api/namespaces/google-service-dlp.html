@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+            <title>Documentación del proyecto Comedor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <link rel="icon" href="images/favicon.ico"/>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/base.css">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/template.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-okaidia.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
+                <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
+        <script src="js/search.js"></script>
+        <script defer src="js/searchIndex.js"></script>
+    </head>
+<body id="top">
+    <header class="phpdocumentor-header phpdocumentor-section">
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Documentación del proyecto Comedor</a></h1>
+    <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
+    <label class="phpdocumentor-header__menu-icon" for="menu-button">
+        <i class="fas fa-bars"></i>
+    </label>
+    <section data-search-form class="phpdocumentor-search">
+    <label>
+        <span class="visually-hidden">Search for</span>
+        <svg class="phpdocumentor-search__icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="2"/>
+            <line x1="12.4892" y1="12.2727" x2="19.1559" y2="18.9393" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
+    </label>
+</section>
+
+    <nav class="phpdocumentor-topnav">
+    <ul class="phpdocumentor-topnav__menu">
+        </ul>
+</nav>
+</header>
+
+    <main class="phpdocumentor">
+        <div class="phpdocumentor-section">
+            <input class="phpdocumentor-sidebar__menu-button" type="checkbox" id="sidebar-button" name="sidebar-button" />
+<label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
+    Menu
+</label>
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
+                    <section class="phpdocumentor-sidebar__category -namespaces">
+            <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/composer.html" class="">Composer</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/composer-autoload.html" class="">Autoload</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/firebase.html" class="">Firebase</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/firebase-jwt.html" class="">JWT</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/google.html" class="">Google</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/google-accesstoken.html" class="">AccessToken</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-authhandler.html" class="">AuthHandler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-http.html" class="">Http</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-service.html" class="">Service</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-task.html" class="">Task</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-utils.html" class="">Utils</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/google-auth.html" class="">Auth</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/guzzlehttp.html" class="">GuzzleHttp</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/guzzlehttp-cookie.html" class="">Cookie</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-exception.html" class="">Exception</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-handler.html" class="">Handler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-promise.html" class="">Promise</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/guzzlehttp-psr7.html" class="">Psr7</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/monolog.html" class="">Monolog</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/monolog-attribute.html" class="">Attribute</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-formatter.html" class="">Formatter</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-handler.html" class="">Handler</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/monolog-processor.html" class="">Processor</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/paragonie.html" class="">ParagonIE</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/paragonie-constanttime.html" class="">ConstantTime</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/phpseclib3.html" class="">phpseclib3</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/phpseclib3-common.html" class="">Common</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-crypt.html" class="">Crypt</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-exception.html" class="">Exception</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-file.html" class="">File</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-math.html" class="">Math</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-net.html" class="">Net</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/phpseclib3-system.html" class="">System</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/psr.html" class="">Psr</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/psr-cache.html" class="">Cache</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/psr-http.html" class="">Http</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/psr-log.html" class="">Log</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+                <section class="phpdocumentor-sidebar__category -packages">
+            <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Application.html" class="">Application</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Authentication.html" class="">Authentication</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Authentication-JWT.html" class="">JWT</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ParagonIE.html" class="">ParagonIE</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/ParagonIE-ConstantTime.html" class="">ConstantTime</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Functions.html" class="">Functions</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Functions-Strings.html" class="">Strings</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/AES.html" class="">AES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Blowfish.html" class="">Blowfish</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ChaCha20.html" class="">ChaCha20</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/AsymmetricKey.html" class="">AsymmetricKey</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BlockCipher.html" class="">BlockCipher</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Common.html" class="">Common</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RSA.html" class="">RSA</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/StreamCipher.html" class="">StreamCipher</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Base.html" class="">Base</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DES.html" class="">DES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DH.html" class="">DH</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/DSA.html" class="">DSA</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/EC.html" class="">EC</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Prime.html" class="">Prime</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Binary.html" class="">Binary</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/KoblitzPrime.html" class="">KoblitzPrime</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Hash.html" class="">Hash</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PublicKeyLoader.html" class="">PublicKeyLoader</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Random.html" class="">Random</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RC2.html" class="">RC2</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/RC4.html" class="">RC4</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Rijndael.html" class="">Rijndael</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Salsa20.html" class="">Salsa20</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/TripleDES.html" class="">TripleDES</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Twofish.html" class="">Twofish</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadConfigurationException.html" class="">BadConfigurationException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadDecryptionException.html" class="">BadDecryptionException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BadModeException.html" class="">BadModeException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ConnectionClosedException.html" class="">ConnectionClosedException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/FileNotFoundException.html" class="">FileNotFoundException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/InconsistentSetupException.html" class="">InconsistentSetupException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/InsufficientSetupException.html" class="">InsufficientSetupException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/NoKeyLoadedException.html" class="">NoKeyLoadedException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/NoSupportedAlgorithmsException.html" class="">NoSupportedAlgorithmsException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnableToConnectException.html" class="">UnableToConnectException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedAlgorithmException.html" class="">UnsupportedAlgorithmException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedCurveException.html" class="">UnsupportedCurveException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedFormatException.html" class="">UnsupportedFormatException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/UnsupportedOperationException.html" class="">UnsupportedOperationException</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ANSI.html" class="">ANSI</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/ASN1.html" class="">ASN1</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/X509.html" class="">X509</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BigInteger.html" class="">BigInteger</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PHP.html" class="">PHP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/BCMath.html" class="">BCMath</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Engine.html" class="">Engine</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/GMP.html" class="">GMP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Engines.html" class="">Engines</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/PHP32.html" class="">PHP32</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Math.html" class="">Math</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SFTP.html" class="">SFTP</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SSH2.html" class="">SSH2</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/SSH.html" class="">SSH</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/SSH-Agent.html" class="">Agent</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+            
+    <section class="phpdocumentor-sidebar__category -reports">
+        <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
+                <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
+    </section>
+
+    <section class="phpdocumentor-sidebar__category -indices">
+        <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
+    </section>
+</aside>
+
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/google.html">Google</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/google-service.html">Service</a></li>
+    </ul>
+
+    <article class="phpdocumentor-element -namespace">
+        <h2 class="phpdocumentor-content__title">DLP</h2>
+
+        
+<h3 id="toc">
+    Table of Contents
+    <a href="namespaces/google-service-dlp.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h3>
+
+
+<h4 id="namespaces">
+    Namespaces
+    <a href="namespaces/google-service-dlp.html#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/google-service-dlp-resource.html"><abbr title="\Google\Service\DLP\Resource">Resource</abbr></a></dt>
+    </dl>
+
+
+    <h4 id="toc-classes">
+        Classes
+        <a href="namespaces/google-service-dlp.html#toc-classes" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+                    <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Action.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Action">GooglePrivacyDlpV2Action</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ActivateJobTriggerRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ActivateJobTriggerRequest">GooglePrivacyDlpV2ActivateJobTriggerRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails">GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2AuxiliaryTable.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2AuxiliaryTable">GooglePrivacyDlpV2AuxiliaryTable</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BigQueryField.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BigQueryField">GooglePrivacyDlpV2BigQueryField</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BigQueryKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BigQueryKey">GooglePrivacyDlpV2BigQueryKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BigQueryOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BigQueryOptions">GooglePrivacyDlpV2BigQueryOptions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BigQueryTable.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BigQueryTable">GooglePrivacyDlpV2BigQueryTable</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BoundingBox.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BoundingBox">GooglePrivacyDlpV2BoundingBox</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Bucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Bucket">GooglePrivacyDlpV2Bucket</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2BucketingConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2BucketingConfig">GooglePrivacyDlpV2BucketingConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ByteContentItem.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ByteContentItem">GooglePrivacyDlpV2ByteContentItem</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CancelDlpJobRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CancelDlpJobRequest">GooglePrivacyDlpV2CancelDlpJobRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CategoricalStatsConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CategoricalStatsConfig">GooglePrivacyDlpV2CategoricalStatsConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CategoricalStatsHistogramBucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CategoricalStatsHistogramBucket">GooglePrivacyDlpV2CategoricalStatsHistogramBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CategoricalStatsResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CategoricalStatsResult">GooglePrivacyDlpV2CategoricalStatsResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CharacterMaskConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CharacterMaskConfig">GooglePrivacyDlpV2CharacterMaskConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CharsToIgnore.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CharsToIgnore">GooglePrivacyDlpV2CharsToIgnore</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CloudStorageFileSet.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CloudStorageFileSet">GooglePrivacyDlpV2CloudStorageFileSet</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CloudStorageOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CloudStorageOptions">GooglePrivacyDlpV2CloudStorageOptions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CloudStoragePath.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CloudStoragePath">GooglePrivacyDlpV2CloudStoragePath</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CloudStorageRegexFileSet.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CloudStorageRegexFileSet">GooglePrivacyDlpV2CloudStorageRegexFileSet</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Color.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Color">GooglePrivacyDlpV2Color</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Condition.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Condition">GooglePrivacyDlpV2Condition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Conditions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Conditions">GooglePrivacyDlpV2Conditions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Container.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Container">GooglePrivacyDlpV2Container</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ContentItem.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ContentItem">GooglePrivacyDlpV2ContentItem</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ContentLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ContentLocation">GooglePrivacyDlpV2ContentLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CreateDeidentifyTemplateRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CreateDeidentifyTemplateRequest">GooglePrivacyDlpV2CreateDeidentifyTemplateRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CreateDlpJobRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CreateDlpJobRequest">GooglePrivacyDlpV2CreateDlpJobRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CreateInspectTemplateRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CreateInspectTemplateRequest">GooglePrivacyDlpV2CreateInspectTemplateRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CreateJobTriggerRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CreateJobTriggerRequest">GooglePrivacyDlpV2CreateJobTriggerRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CreateStoredInfoTypeRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CreateStoredInfoTypeRequest">GooglePrivacyDlpV2CreateStoredInfoTypeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CryptoDeterministicConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CryptoDeterministicConfig">GooglePrivacyDlpV2CryptoDeterministicConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CryptoHashConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CryptoHashConfig">GooglePrivacyDlpV2CryptoHashConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CryptoKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CryptoKey">GooglePrivacyDlpV2CryptoKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CryptoReplaceFfxFpeConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CryptoReplaceFfxFpeConfig">GooglePrivacyDlpV2CryptoReplaceFfxFpeConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2CustomInfoType.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2CustomInfoType">GooglePrivacyDlpV2CustomInfoType</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfileAction.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfileAction">GooglePrivacyDlpV2DataProfileAction</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfileConfigSnapshot.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfileConfigSnapshot">GooglePrivacyDlpV2DataProfileConfigSnapshot</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfileJobConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfileJobConfig">GooglePrivacyDlpV2DataProfileJobConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfileLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfileLocation">GooglePrivacyDlpV2DataProfileLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfilePubSubCondition.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfilePubSubCondition">GooglePrivacyDlpV2DataProfilePubSubCondition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataProfilePubSubMessage.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataProfilePubSubMessage">GooglePrivacyDlpV2DataProfilePubSubMessage</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DataRiskLevel.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DataRiskLevel">GooglePrivacyDlpV2DataRiskLevel</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DatastoreKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DatastoreKey">GooglePrivacyDlpV2DatastoreKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DatastoreOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DatastoreOptions">GooglePrivacyDlpV2DatastoreOptions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DateShiftConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DateShiftConfig">GooglePrivacyDlpV2DateShiftConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DateTime.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DateTime">GooglePrivacyDlpV2DateTime</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeidentifyConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeidentifyConfig">GooglePrivacyDlpV2DeidentifyConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeidentifyContentRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeidentifyContentRequest">GooglePrivacyDlpV2DeidentifyContentRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeidentifyContentResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeidentifyContentResponse">GooglePrivacyDlpV2DeidentifyContentResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeidentifyTemplate.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeidentifyTemplate">GooglePrivacyDlpV2DeidentifyTemplate</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeltaPresenceEstimationConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeltaPresenceEstimationConfig">GooglePrivacyDlpV2DeltaPresenceEstimationConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket">GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues">GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DeltaPresenceEstimationResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DeltaPresenceEstimationResult">GooglePrivacyDlpV2DeltaPresenceEstimationResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DetectionRule.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DetectionRule">GooglePrivacyDlpV2DetectionRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Dictionary.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Dictionary">GooglePrivacyDlpV2Dictionary</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DlpJob.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DlpJob">GooglePrivacyDlpV2DlpJob</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2DocumentLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2DocumentLocation">GooglePrivacyDlpV2DocumentLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2EntityId.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2EntityId">GooglePrivacyDlpV2EntityId</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Error.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Error">GooglePrivacyDlpV2Error</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ExcludeInfoTypes.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ExcludeInfoTypes">GooglePrivacyDlpV2ExcludeInfoTypes</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ExclusionRule.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ExclusionRule">GooglePrivacyDlpV2ExclusionRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Export.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Export">GooglePrivacyDlpV2Export</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Expressions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Expressions">GooglePrivacyDlpV2Expressions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FieldId.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FieldId">GooglePrivacyDlpV2FieldId</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FieldTransformation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FieldTransformation">GooglePrivacyDlpV2FieldTransformation</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FileSet.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FileSet">GooglePrivacyDlpV2FileSet</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Finding.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Finding">GooglePrivacyDlpV2Finding</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FindingLimits.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FindingLimits">GooglePrivacyDlpV2FindingLimits</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FinishDlpJobRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FinishDlpJobRequest">GooglePrivacyDlpV2FinishDlpJobRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2FixedSizeBucketingConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2FixedSizeBucketingConfig">GooglePrivacyDlpV2FixedSizeBucketingConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HotwordRule.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HotwordRule">GooglePrivacyDlpV2HotwordRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridContentItem.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridContentItem">GooglePrivacyDlpV2HybridContentItem</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridFindingDetails.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridFindingDetails">GooglePrivacyDlpV2HybridFindingDetails</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridInspectDlpJobRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridInspectDlpJobRequest">GooglePrivacyDlpV2HybridInspectDlpJobRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridInspectJobTriggerRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridInspectJobTriggerRequest">GooglePrivacyDlpV2HybridInspectJobTriggerRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridInspectResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridInspectResponse">GooglePrivacyDlpV2HybridInspectResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridInspectStatistics.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridInspectStatistics">GooglePrivacyDlpV2HybridInspectStatistics</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2HybridOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2HybridOptions">GooglePrivacyDlpV2HybridOptions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ImageLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ImageLocation">GooglePrivacyDlpV2ImageLocation</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ImageRedactionConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ImageRedactionConfig">GooglePrivacyDlpV2ImageRedactionConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoType.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoType">GooglePrivacyDlpV2InfoType</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeCategory.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeCategory">GooglePrivacyDlpV2InfoTypeCategory</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeDescription.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeDescription">GooglePrivacyDlpV2InfoTypeDescription</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeLimit.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeLimit">GooglePrivacyDlpV2InfoTypeLimit</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeStats.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeStats">GooglePrivacyDlpV2InfoTypeStats</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeSummary.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeSummary">GooglePrivacyDlpV2InfoTypeSummary</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeTransformation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeTransformation">GooglePrivacyDlpV2InfoTypeTransformation</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InfoTypeTransformations.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InfoTypeTransformations">GooglePrivacyDlpV2InfoTypeTransformations</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectConfig">GooglePrivacyDlpV2InspectConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectContentRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectContentRequest">GooglePrivacyDlpV2InspectContentRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectContentResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectContentResponse">GooglePrivacyDlpV2InspectContentResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectDataSourceDetails.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectDataSourceDetails">GooglePrivacyDlpV2InspectDataSourceDetails</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectionRule.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectionRule">GooglePrivacyDlpV2InspectionRule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectionRuleSet.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectionRuleSet">GooglePrivacyDlpV2InspectionRuleSet</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectJobConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectJobConfig">GooglePrivacyDlpV2InspectJobConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectResult">GooglePrivacyDlpV2InspectResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2InspectTemplate.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2InspectTemplate">GooglePrivacyDlpV2InspectTemplate</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2JobNotificationEmails.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2JobNotificationEmails">GooglePrivacyDlpV2JobNotificationEmails</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2JobTrigger.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2JobTrigger">GooglePrivacyDlpV2JobTrigger</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KAnonymityConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KAnonymityConfig">GooglePrivacyDlpV2KAnonymityConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KAnonymityEquivalenceClass.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KAnonymityEquivalenceClass">GooglePrivacyDlpV2KAnonymityEquivalenceClass</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KAnonymityHistogramBucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KAnonymityHistogramBucket">GooglePrivacyDlpV2KAnonymityHistogramBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KAnonymityResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KAnonymityResult">GooglePrivacyDlpV2KAnonymityResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Key.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Key">GooglePrivacyDlpV2Key</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KindExpression.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KindExpression">GooglePrivacyDlpV2KindExpression</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KMapEstimationConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KMapEstimationConfig">GooglePrivacyDlpV2KMapEstimationConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KMapEstimationHistogramBucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KMapEstimationHistogramBucket">GooglePrivacyDlpV2KMapEstimationHistogramBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KMapEstimationQuasiIdValues.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KMapEstimationQuasiIdValues">GooglePrivacyDlpV2KMapEstimationQuasiIdValues</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KMapEstimationResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KMapEstimationResult">GooglePrivacyDlpV2KMapEstimationResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2KmsWrappedCryptoKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2KmsWrappedCryptoKey">GooglePrivacyDlpV2KmsWrappedCryptoKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LargeCustomDictionaryConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LargeCustomDictionaryConfig">GooglePrivacyDlpV2LargeCustomDictionaryConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LargeCustomDictionaryStats.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LargeCustomDictionaryStats">GooglePrivacyDlpV2LargeCustomDictionaryStats</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LDiversityConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LDiversityConfig">GooglePrivacyDlpV2LDiversityConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LDiversityEquivalenceClass.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LDiversityEquivalenceClass">GooglePrivacyDlpV2LDiversityEquivalenceClass</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LDiversityHistogramBucket.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LDiversityHistogramBucket">GooglePrivacyDlpV2LDiversityHistogramBucket</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LDiversityResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LDiversityResult">GooglePrivacyDlpV2LDiversityResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LeaveUntransformed.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LeaveUntransformed">GooglePrivacyDlpV2LeaveUntransformed</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2LikelihoodAdjustment.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2LikelihoodAdjustment">GooglePrivacyDlpV2LikelihoodAdjustment</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListDeidentifyTemplatesResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListDeidentifyTemplatesResponse">GooglePrivacyDlpV2ListDeidentifyTemplatesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListDlpJobsResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListDlpJobsResponse">GooglePrivacyDlpV2ListDlpJobsResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListInfoTypesResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListInfoTypesResponse">GooglePrivacyDlpV2ListInfoTypesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListInspectTemplatesResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListInspectTemplatesResponse">GooglePrivacyDlpV2ListInspectTemplatesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListJobTriggersResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListJobTriggersResponse">GooglePrivacyDlpV2ListJobTriggersResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ListStoredInfoTypesResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ListStoredInfoTypesResponse">GooglePrivacyDlpV2ListStoredInfoTypesResponse</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Location.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Location">GooglePrivacyDlpV2Location</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Manual.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Manual">GooglePrivacyDlpV2Manual</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2MetadataLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2MetadataLocation">GooglePrivacyDlpV2MetadataLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2NumericalStatsConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2NumericalStatsConfig">GooglePrivacyDlpV2NumericalStatsConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2NumericalStatsResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2NumericalStatsResult">GooglePrivacyDlpV2NumericalStatsResult</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2OtherInfoTypeSummary.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2OtherInfoTypeSummary">GooglePrivacyDlpV2OtherInfoTypeSummary</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2OutputStorageConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2OutputStorageConfig">GooglePrivacyDlpV2OutputStorageConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PartitionId.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PartitionId">GooglePrivacyDlpV2PartitionId</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PathElement.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PathElement">GooglePrivacyDlpV2PathElement</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PrimitiveTransformation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PrimitiveTransformation">GooglePrivacyDlpV2PrimitiveTransformation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PrivacyMetric.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PrivacyMetric">GooglePrivacyDlpV2PrivacyMetric</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ProfileStatus.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ProfileStatus">GooglePrivacyDlpV2ProfileStatus</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Proximity.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Proximity">GooglePrivacyDlpV2Proximity</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PublishFindingsToCloudDataCatalog.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PublishFindingsToCloudDataCatalog">GooglePrivacyDlpV2PublishFindingsToCloudDataCatalog</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PublishSummaryToCscc.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PublishSummaryToCscc">GooglePrivacyDlpV2PublishSummaryToCscc</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PublishToPubSub.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PublishToPubSub">GooglePrivacyDlpV2PublishToPubSub</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PublishToStackdriver.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PublishToStackdriver">GooglePrivacyDlpV2PublishToStackdriver</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PubSubCondition.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PubSubCondition">GooglePrivacyDlpV2PubSubCondition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PubSubExpressions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PubSubExpressions">GooglePrivacyDlpV2PubSubExpressions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2PubSubNotification.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2PubSubNotification">GooglePrivacyDlpV2PubSubNotification</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2QuasiId.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2QuasiId">GooglePrivacyDlpV2QuasiId</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2QuasiIdentifierField.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2QuasiIdentifierField">GooglePrivacyDlpV2QuasiIdentifierField</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2QuasiIdField.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2QuasiIdField">GooglePrivacyDlpV2QuasiIdField</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2QuoteInfo.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2QuoteInfo">GooglePrivacyDlpV2QuoteInfo</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Range.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Range">GooglePrivacyDlpV2Range</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RecordCondition.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RecordCondition">GooglePrivacyDlpV2RecordCondition</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RecordKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RecordKey">GooglePrivacyDlpV2RecordKey</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RecordLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RecordLocation">GooglePrivacyDlpV2RecordLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RecordSuppression.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RecordSuppression">GooglePrivacyDlpV2RecordSuppression</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RecordTransformations.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RecordTransformations">GooglePrivacyDlpV2RecordTransformations</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RedactConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RedactConfig">GooglePrivacyDlpV2RedactConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RedactImageRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RedactImageRequest">GooglePrivacyDlpV2RedactImageRequest</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RedactImageResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RedactImageResponse">GooglePrivacyDlpV2RedactImageResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Regex.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Regex">GooglePrivacyDlpV2Regex</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ReidentifyContentRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ReidentifyContentRequest">GooglePrivacyDlpV2ReidentifyContentRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ReidentifyContentResponse.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ReidentifyContentResponse">GooglePrivacyDlpV2ReidentifyContentResponse</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ReplaceDictionaryConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ReplaceDictionaryConfig">GooglePrivacyDlpV2ReplaceDictionaryConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ReplaceValueConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ReplaceValueConfig">GooglePrivacyDlpV2ReplaceValueConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ReplaceWithInfoTypeConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ReplaceWithInfoTypeConfig">GooglePrivacyDlpV2ReplaceWithInfoTypeConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RequestedOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RequestedOptions">GooglePrivacyDlpV2RequestedOptions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RequestedRiskAnalysisOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RequestedRiskAnalysisOptions">GooglePrivacyDlpV2RequestedRiskAnalysisOptions</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Result.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Result">GooglePrivacyDlpV2Result</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2RiskAnalysisJobConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2RiskAnalysisJobConfig">GooglePrivacyDlpV2RiskAnalysisJobConfig</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Row.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Row">GooglePrivacyDlpV2Row</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2SaveFindings.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2SaveFindings">GooglePrivacyDlpV2SaveFindings</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Schedule.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Schedule">GooglePrivacyDlpV2Schedule</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2SensitivityScore.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2SensitivityScore">GooglePrivacyDlpV2SensitivityScore</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StatisticalTable.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StatisticalTable">GooglePrivacyDlpV2StatisticalTable</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StorageConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StorageConfig">GooglePrivacyDlpV2StorageConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StorageMetadataLabel.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StorageMetadataLabel">GooglePrivacyDlpV2StorageMetadataLabel</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StoredInfoType.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StoredInfoType">GooglePrivacyDlpV2StoredInfoType</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StoredInfoTypeConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StoredInfoTypeConfig">GooglePrivacyDlpV2StoredInfoTypeConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StoredInfoTypeStats.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StoredInfoTypeStats">GooglePrivacyDlpV2StoredInfoTypeStats</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StoredInfoTypeVersion.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StoredInfoTypeVersion">GooglePrivacyDlpV2StoredInfoTypeVersion</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2StoredType.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2StoredType">GooglePrivacyDlpV2StoredType</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2SummaryResult.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2SummaryResult">GooglePrivacyDlpV2SummaryResult</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2SurrogateType.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2SurrogateType">GooglePrivacyDlpV2SurrogateType</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Table.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Table">GooglePrivacyDlpV2Table</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TableDataProfile.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TableDataProfile">GooglePrivacyDlpV2TableDataProfile</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TableLocation.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TableLocation">GooglePrivacyDlpV2TableLocation</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TableOptions.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TableOptions">GooglePrivacyDlpV2TableOptions</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TaggedField.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TaggedField">GooglePrivacyDlpV2TaggedField</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ThrowError.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ThrowError">GooglePrivacyDlpV2ThrowError</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TimePartConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TimePartConfig">GooglePrivacyDlpV2TimePartConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TimespanConfig.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TimespanConfig">GooglePrivacyDlpV2TimespanConfig</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TimeZone.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TimeZone">GooglePrivacyDlpV2TimeZone</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TransformationErrorHandling.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TransformationErrorHandling">GooglePrivacyDlpV2TransformationErrorHandling</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TransformationOverview.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TransformationOverview">GooglePrivacyDlpV2TransformationOverview</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TransformationSummary.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TransformationSummary">GooglePrivacyDlpV2TransformationSummary</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2TransientCryptoKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2TransientCryptoKey">GooglePrivacyDlpV2TransientCryptoKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Trigger.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Trigger">GooglePrivacyDlpV2Trigger</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2UnwrappedCryptoKey.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2UnwrappedCryptoKey">GooglePrivacyDlpV2UnwrappedCryptoKey</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2UpdateDeidentifyTemplateRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2UpdateDeidentifyTemplateRequest">GooglePrivacyDlpV2UpdateDeidentifyTemplateRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2UpdateInspectTemplateRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2UpdateInspectTemplateRequest">GooglePrivacyDlpV2UpdateInspectTemplateRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2UpdateJobTriggerRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2UpdateJobTriggerRequest">GooglePrivacyDlpV2UpdateJobTriggerRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2UpdateStoredInfoTypeRequest.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2UpdateStoredInfoTypeRequest">GooglePrivacyDlpV2UpdateStoredInfoTypeRequest</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2Value.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2Value">GooglePrivacyDlpV2Value</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2ValueFrequency.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2ValueFrequency">GooglePrivacyDlpV2ValueFrequency</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GooglePrivacyDlpV2WordList.html"><abbr title="\Google\Service\DLP\GooglePrivacyDlpV2WordList">GooglePrivacyDlpV2WordList</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GoogleProtobufEmpty.html"><abbr title="\Google\Service\DLP\GoogleProtobufEmpty">GoogleProtobufEmpty</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GoogleRpcStatus.html"><abbr title="\Google\Service\DLP\GoogleRpcStatus">GoogleRpcStatus</abbr></a></dt><dd>Extension to the regular Google\Model that automatically
+exposes the items array for iteration, so you can just
+iterate over the object rather than a reference inside.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GoogleTypeDate.html"><abbr title="\Google\Service\DLP\GoogleTypeDate">GoogleTypeDate</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/Google-Service-DLP-GoogleTypeTimeOfDay.html"><abbr title="\Google\Service\DLP\GoogleTypeTimeOfDay">GoogleTypeTimeOfDay</abbr></a></dt><dd>This class defines attributes, valid values, and usage which is generated
+from a given json schema.</dd>    </dl>
+
+
+
+
+
+
+
+
+        
+
+        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
+
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('GET', src, true);
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+                            Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
+                            return;
+                        }
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
+                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
+                    }
+                    modal.classList.add("phpdocumentor-modal__open");
+
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
+                    });
+                });
+            });
+        })();
+    </script>
+
+    </article>
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                            
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                                                                    <li><a href="namespaces/google-service-dlp.html#toc-classes">Classes</a></li>
+                                                                                                                    </ul>
+            </li>
+
+            
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+    <section class="phpdocumentor-search-results__dialog">
+        <header class="phpdocumentor-search-results__header">
+            <h2 class="phpdocumentor-search-results__title">Search results</h2>
+            <button class="phpdocumentor-search-results__close"><i class="fas fa-times"></i></button>
+        </header>
+        <section class="phpdocumentor-search-results__body">
+            <ul class="phpdocumentor-search-results__entries"></ul>
+        </section>
+    </section>
+</section>
+        </div>
+        <a href="namespaces/google-service-dlp.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+
+    </main>
+
+    <script>
+        cssVars({});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+</body>
+</html>
