@@ -140,15 +140,15 @@ class Registro {
             titular: this.inputs[8].value
         };
 
-        // usuario.correo.includes('@fundacionloyola.es') ||
-        const correoFundacion = usuario.correo.includes('@alumnado.fundacionloyola.net');
+        // Normalizar a minúsculas y aceptar los dominios usados por la fundación
+        const emailLower = usuario.correo.toLowerCase();
+        const correoFundacion = emailLower.includes('@alumnado.fundacionloyola.net') || emailLower.includes('@fundacionloyola.es');
 
         if (correoFundacion) {
             Rest.post('persona', [], usuario, true)
              .then(() => {
                 this.divCargando.style.display = 'none';
                 this.exito(usuario);
-                
              })
              .catch(e => {
                  this.divCargando.style.display = 'none';
@@ -156,8 +156,24 @@ class Registro {
              });
         } else {
             Rest.post('persona', [], usuario, true)
-            .then(id => {
-                this.insertarPadre(id, usuario);
+            .then(response => {
+                // Debug rápido: ver qué devuelve el servidor
+                console.log('respuesta crear persona:', response);
+
+                // Si la API devuelve un objeto, extraer el id por varias posibles claves
+                let newId = response;
+                if (response && typeof response === 'object') {
+                    newId = response.id || response.ID || response.id_persona || response.idPersona || response.insertId || null;
+                }
+
+                if (!newId) {
+                    // Respuesta inesperada: informar y parar
+                    this.divCargando.style.display = 'none';
+                    this.error('Respuesta inválida del servidor al crear persona.');
+                    return;
+                }
+
+                this.insertarPadre(newId, usuario);
             })
             .catch(e => {
                 this.divCargando.style.display = 'none';
@@ -172,7 +188,9 @@ class Registro {
      * @param {Object} usuario Datos de la persona.
      */
     insertarPadre(id, usuario) {
-        Rest.post('padres', [], id, false)
+        // Enviar objeto con la clave foránea (ajusta la propiedad según lo que espere tu API)
+        const payload = { id_persona: id };
+        Rest.post('padres', [], payload, false)
          .then(() => {
              this.divCargando.style.display = 'none';
              this.exito(usuario);
